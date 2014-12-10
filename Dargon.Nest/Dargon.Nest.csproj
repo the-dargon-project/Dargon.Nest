@@ -49,6 +49,7 @@
     <Compile Include="Repl\DispatcherCommand.cs" />
     <Compile Include="EggFileListEntry.cs" />
     <Compile Include="EggFileListSerializer.cs" />
+    <Compile Include="Repl\ExecEggCommand.cs" />
     <Compile Include="Repl\ExitCommand.cs" />
     <Compile Include="Repl\ICommand.cs" />
     <Compile Include="IDargonEgg.cs" />

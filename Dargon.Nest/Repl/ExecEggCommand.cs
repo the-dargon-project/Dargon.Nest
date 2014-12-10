@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Dargon.Nest.Repl {
+   public class ExecEggCommand : ICommand {
+      public string Name { get { return "exec"; } }
+
+      public int Eval(string args) {
+         string eggName;
+         args = Util.NextToken(args, out eggName);
+
+         var nest = new LocalDargonNest(ReplGlobals.NestPath);
+         return nest.ExecuteEgg(eggName, args);
+      }
+   }
+}

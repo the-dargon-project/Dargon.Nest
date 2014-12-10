@@ -30,6 +30,7 @@ namespace Dargon.Nest.Repl {
          dispatcher.RegisterCommand(new InstallEggCommand());
          dispatcher.RegisterCommand(new CreateEggCommand());
          dispatcher.RegisterCommand(new UpdateEggCommand());
+         dispatcher.RegisterCommand(new ExecEggCommand());
          dispatcher.RegisterCommand(new ExitCommand());
 
          if (argsTokens.Length > 0) {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -121,6 +122,24 @@ namespace Dargon.Nest {
 
             Console.WriteLine("Installed egg " + egg.Name + " version " + egg.Version + " to " + localEggPath);
          }
+      }
+
+      public int ExecuteEgg(string eggName, string args) {
+         var localEggPath = Path.Combine(nestPath, eggName);
+         if (!Directory.Exists(localEggPath)) {
+            throw new InvalidOperationException("Could not find egg `" + eggName + "`.");
+         }
+
+         var egg = new LocalDargonEgg(localEggPath);
+         var executables = egg.Files.Where(f => f.InternalPath.EndsWith(".exe", StringComparison.OrdinalIgnoreCase)).ToArray();
+         if (executables.Length == 0) {
+            throw new InvalidOperationException("No executables found for egg " + eggName);
+         } else if (executables.Length >= 2) {
+            throw new InvalidOperationException("Ambiguous execute invocation. More than one exe found in directory");
+         }
+
+         Process.Start(Path.Combine(localEggPath, executables[0].InternalPath), args);
+         return 0;
       }
    }
 }
