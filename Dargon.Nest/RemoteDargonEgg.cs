@@ -50,6 +50,7 @@ namespace Dargon.Nest {
       }
 
       public string Name { get { return name; } }
+      public string Location { get { return remote; } }
       public string Version { get { return version; } }
       public string Remote { get { return remote; } }
 

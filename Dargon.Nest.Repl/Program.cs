@@ -1,27 +1,39 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Security.Policy;
 
 namespace Dargon.Nest.Repl {
    public static class Program {
       public static int Main(string[] argsArray) {
-         var args = string.Join(" ", argsArray);
-         var argsTokens = Util.QASS(args);
-         while (argsTokens.Length > 0) {
-            if (argsTokens[0][0] == '-') {
-               switch (argsTokens[0]) {
-                  case "--nest-path":
-                     ReplGlobals.NestPath = argsTokens[1];
-                     if (ReplGlobals.NestPath == ".") {
-                        ReplGlobals.NestPath = Environment.CurrentDirectory;
-                     }
-                     argsTokens = argsTokens.Skip(2).ToArray();
-                     break;
-                  default:
-                     Console.Error.WriteLine("Unknown argument " + argsTokens[0] + ".");
-                     return 1;
-               }
+         ReplGlobals.NestPath = Environment.CurrentDirectory;
+
+         var tokenQueue = new Queue<string>(string.Join(" ", argsArray).QASS());
+         var freeTokens = new List<string>();
+
+         Dictionary<char, Action> flagHandlers = new Dictionary<char, Action> {
+            { 'i', () => ReplGlobals.InteractiveMode = true }
+         };
+
+         Dictionary<string, Action<Queue<string>>> switchHandlers = new Dictionary<string, Action<Queue<string>>> {
+            { "interactive", (q) => ReplGlobals.InteractiveMode = true },
+            { "nest-path", (q) => ReplGlobals.NestPath = q.Dequeue() }
+         };
+
+         while (tokenQueue.Any()) {
+            var token = tokenQueue.Dequeue();
+            if (!token.StartsWith("-")) {
+               freeTokens.Add(token);
             } else {
-               break;
+               if (token.StartsWith("--")) {
+                  switchHandlers[token.Substring(2)](tokenQueue);
+               } else {
+                  for (var i = 1; i < token.Length; i++) {
+                     flagHandlers[token[i]]();
+                  }
+               }
             }
          }
 
@@ -33,8 +45,8 @@ namespace Dargon.Nest.Repl {
          dispatcher.RegisterCommand(new ExecEggCommand());
          dispatcher.RegisterCommand(new ExitCommand());
 
-         if (argsTokens.Length > 0) {
-            return dispatcher.Eval(string.Join(" ", argsTokens));
+         if (freeTokens.Count > 0) {
+            return dispatcher.Eval(string.Join(" ", freeTokens));
          }
 
          if (ReplGlobals.NestPath == null) {
@@ -45,6 +57,15 @@ namespace Dargon.Nest.Repl {
                Console.WriteLine("Using default nest path C:/Dargon");
             }
             Console.WriteLine();
+         }
+
+         var fileInfo = new FileInfo(ReplGlobals.NestPath);
+         if (fileInfo.Exists) {
+            Console.Error.WriteLine("The nest path is not a directory!");
+            return -1;
+         } else if(!fileInfo.Attributes.HasFlag(FileAttributes.Directory)) {
+            Console.WriteLine("Creating Nest at path `{0}`", ReplGlobals.NestPath);
+            Util.PrepareDirectory(ReplGlobals.NestPath);
          }
 
          while (true) {

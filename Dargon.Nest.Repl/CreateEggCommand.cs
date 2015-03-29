@@ -40,7 +40,7 @@ namespace Dargon.Nest.Repl {
          }
 
          public string Name { get { return name; } }
-
+         public string Location { get { return "(in-memory)"; } }
          public string Version { get { return version; } }
          public string Remote { get { return ""; } }
 

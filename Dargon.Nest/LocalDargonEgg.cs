@@ -20,6 +20,7 @@ namespace Dargon.Nest {
       }
 
       public string Name { get { return directoryInfo.Name; } }
+      public string Location { get { return rootPath; } }
       public string Version { get { return File.ReadAllText(versionFilePath); } }
       public string Remote { get { return File.ReadAllText(remoteFilePath); } }
 
