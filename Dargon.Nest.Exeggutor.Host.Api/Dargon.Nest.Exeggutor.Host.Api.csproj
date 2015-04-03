@@ -48,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="PortableObjects\BootstrapDto.cs" />
     <Compile Include="PortableObjects\ExeggutorPofContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
