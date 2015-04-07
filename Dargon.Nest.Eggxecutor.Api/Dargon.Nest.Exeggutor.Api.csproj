@@ -41,11 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EggNotFoundException.cs" />
@@ -53,12 +49,6 @@
     <Compile Include="ExeggutorService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpawnConfiguration.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dargon.Nest\Dargon.Nest.csproj">
-      <Project>{FEC88CE6-2D59-41DA-9608-00EF6EC91E76}</Project>
-      <Name>Dargon.Nest</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
