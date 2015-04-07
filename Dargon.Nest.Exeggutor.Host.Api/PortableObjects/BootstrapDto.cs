@@ -10,6 +10,8 @@ namespace Dargon.Nest.Exeggutor.Host.PortableObjects {
       private string eggPath;
       private byte[] payloadBytes;
 
+      public BootstrapDto() { }
+
       public BootstrapDto(string name, string eggPath, byte[] payloadBytes) {
          this.name = name;
          this.eggPath = eggPath;
