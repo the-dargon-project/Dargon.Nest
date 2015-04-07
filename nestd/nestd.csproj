@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FD02D2EF-27FA-4C6A-A8D0-9CB4A7FBD5BC}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{6A07D05B-4C55-44A7-A13F-43CF768A6ADF}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dargon.Nest.Exeggutor</RootNamespace>
-    <AssemblyName>Dargon.Nest.Exeggutor.Impl</AssemblyName>
+    <RootNamespace>Dargon.Nest.Daemon</RootNamespace>
+    <AssemblyName>nestd</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -29,22 +31,39 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ImpromptuInterface">
-      <HintPath>..\packages\libwarty.proxies-impl.0.0.12\lib\net45\ImpromptuInterface.dll</HintPath>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\libdsp.0.0.4\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="libdpo">
-      <HintPath>..\packages\libdpo.0.0.13\lib\net45\libdpo.dll</HintPath>
+    <Reference Include="CommandLine">
+      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
+    </Reference>
+    <Reference Include="ImpromptuInterface">
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.14\lib\net45\ImpromptuInterface.dll</HintPath>
+    </Reference>
+    <Reference Include="libdpo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libdsp.0.0.4\lib\net45\libdpo.dll</HintPath>
+    </Reference>
+    <Reference Include="libdsp">
+      <HintPath>..\packages\libdsp.0.0.4\lib\net45\libdsp.dll</HintPath>
     </Reference>
     <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdpo.0.0.13\lib\net45\libwarty.dll</HintPath>
+      <HintPath>..\packages\libdsp.0.0.4\lib\net45\libwarty.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty.proxies-api">
-      <HintPath>..\packages\libdpo.0.0.13\lib\net45\libwarty.proxies-api.dll</HintPath>
+    <Reference Include="libwarty.proxies-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libdsp.0.0.4\lib\net45\libwarty.proxies-api.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-impl">
-      <HintPath>..\packages\libwarty.proxies-impl.0.0.12\lib\net45\libwarty.proxies-impl.dll</HintPath>
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.14\lib\net45\libwarty.proxies-impl.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\libdsp.0.0.4\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,14 +74,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EggContext.cs" />
-    <Compile Include="EggContextFactory.cs" />
-    <Compile Include="ExecutorHostConfiguration.cs" />
-    <Compile Include="ExeggutorServiceImpl.cs" />
-    <Compile Include="HatchlingContext.cs" />
-    <Compile Include="IEggContext.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="HatchlingContextFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dargon.Nest.Eggxecutor.Api\Dargon.Nest.Exeggutor.Api.csproj">
@@ -73,13 +90,10 @@
       <Project>{9C76F6EE-DAC8-436A-8623-A8578353DFB9}</Project>
       <Name>Dargon.Nest.Exeggutor.Host.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dargon.Nest\Dargon.Nest.csproj">
-      <Project>{FEC88CE6-2D59-41DA-9608-00EF6EC91E76}</Project>
-      <Name>Dargon.Nest</Name>
+    <ProjectReference Include="..\Dargon.Nest.Exeggutor.Impl\Dargon.Nest.Exeggutor.Impl.csproj">
+      <Project>{FD02D2EF-27FA-4C6A-A8D0-9CB4A7FBD5BC}</Project>
+      <Name>Dargon.Nest.Exeggutor.Impl</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

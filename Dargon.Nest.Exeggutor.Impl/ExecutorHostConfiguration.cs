@@ -4,12 +4,10 @@
    }
 
    public class ExecutorHostConfigurationImpl : ExecutorHostConfiguration {
-      private readonly string hostExecutablePath;
-
       public ExecutorHostConfigurationImpl(string hostExecutablePath) {
-         this.hostExecutablePath = hostExecutablePath;
+         this.HostExecutablePath = hostExecutablePath;
       }
 
-      public string HostExecutablePath { get { return hostExecutablePath; } }
+      public string HostExecutablePath { get; set; }
    }
 }
