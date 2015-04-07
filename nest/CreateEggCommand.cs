@@ -13,7 +13,7 @@ namespace Dargon.Nest.Repl {
          string name, version;
          args = Util.NextToken(args, out name);
          args = Util.NextToken(args, out version);
-         var path = args.Trim();
+         var path = Path.GetFullPath(args.Trim());
 
          var inMemoryEgg = new InMemoryEgg(name, version, path);
          var nest = new LocalDargonNest(ReplGlobals.NestPath);

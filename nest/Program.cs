@@ -48,6 +48,8 @@ namespace Dargon.Nest.Repl {
             }
          }
 
+         ReplGlobals.NestPath = Path.GetFullPath(ReplGlobals.NestPath);
+
          var dispatcher = new DispatcherCommand("command_root");
          dispatcher.RegisterCommand(new ListEggsCommand());
          dispatcher.RegisterCommand(new InstallEggCommand());
