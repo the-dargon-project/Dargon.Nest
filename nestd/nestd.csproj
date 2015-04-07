@@ -41,23 +41,31 @@
     <Reference Include="CommandLine">
       <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
     </Reference>
+    <Reference Include="Dargon.Nest.Eggxecutor.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dargon.Nest.Exeggutor.Api.0.0.0\lib\net45\Dargon.Nest.Eggxecutor.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Dargon.Nest.Exeggutor.Host.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dargon.Nest.Exeggutor.Host.Api.0.0.0\lib\net45\Dargon.Nest.Exeggutor.Host.Api.dll</HintPath>
+    </Reference>
     <Reference Include="ImpromptuInterface">
       <HintPath>..\packages\libwarty.proxies-impl.0.0.14\lib\net45\ImpromptuInterface.dll</HintPath>
     </Reference>
     <Reference Include="libdpo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdpo.0.0.19\lib\net45\libdpo.dll</HintPath>
+      <HintPath>..\packages\Dargon.Nest.Exeggutor.Host.Api.0.0.0\lib\net45\libdpo.dll</HintPath>
     </Reference>
     <Reference Include="libdsp">
       <HintPath>..\packages\libdsp.0.0.4\lib\net45\libdsp.dll</HintPath>
     </Reference>
     <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdpo.0.0.19\lib\net45\libwarty.dll</HintPath>
+      <HintPath>..\packages\Dargon.Nest.Exeggutor.Host.Api.0.0.0\lib\net45\libwarty.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdpo.0.0.19\lib\net45\libwarty.proxies-api.dll</HintPath>
+      <HintPath>..\packages\Dargon.Nest.Exeggutor.Host.Api.0.0.0\lib\net45\libwarty.proxies-api.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-impl">
       <HintPath>..\packages\libwarty.proxies-impl.0.0.14\lib\net45\libwarty.proxies-impl.dll</HintPath>
@@ -79,14 +87,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dargon.Nest.Exeggutor.Api\Dargon.Nest.Exeggutor.Api.csproj">
-      <Project>{7d1d757d-531b-49f0-8f63-b4e3563be606}</Project>
-      <Name>Dargon.Nest.Exeggutor.Api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dargon.Nest.Exeggutor.Host.Api\Dargon.Nest.Exeggutor.Host.Api.csproj">
-      <Project>{9C76F6EE-DAC8-436A-8623-A8578353DFB9}</Project>
-      <Name>Dargon.Nest.Exeggutor.Host.Api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dargon.Nest.Exeggutor.Impl\Dargon.Nest.Exeggutor.Impl.csproj">
       <Project>{FD02D2EF-27FA-4C6A-A8D0-9CB4A7FBD5BC}</Project>
       <Name>Dargon.Nest.Exeggutor.Impl</Name>
