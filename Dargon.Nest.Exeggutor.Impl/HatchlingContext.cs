@@ -40,6 +40,8 @@ namespace Dargon.Nest.Exeggutor {
 
       public void Bootstrap(byte[] arguments) {
          nestSerializer.Serialize(writer, new BootstrapDto(name, eggPath, arguments));
+         writer.Flush();
+         Console.WriteLine("Wrote bootstrap dto");
       }
    }
 }

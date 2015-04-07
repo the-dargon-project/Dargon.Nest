@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Castle.DynamicProxy;
+using CommandLine;
 using Dargon.Nest.Eggxecutor;
 using Dargon.PortableObjects;
 using Dargon.Services.Client;
@@ -16,10 +17,25 @@ using ItzWarty.Networking;
 using ItzWarty.Threading;
 
 namespace dev_egg_runner {
+   public class Options {
+      [Option('e', "egg", DefaultValue = "dev-egg-example",
+              HelpText = "Name of the Dargon Egg to run.")]
+      public string EggName { get; set; }
+
+      [Option('n', "name", DefaultValue = null,
+              HelpText = "Name of the instance to run.")]
+      public string InstanceName { get; set; }
+   }
+
    public static class Program {
       public const int kDaemonPort = 21337;
 
       public static void Main(string[] args) {
+         var options = new Options();
+         if (!CommandLine.Parser.Default.ParseArguments(args, options)) {
+            return;
+         }
+
          IStreamFactory streamFactory = new StreamFactory();
          ICollectionFactory collectionFactory = new CollectionFactory();
          IThreadingFactory threadingFactory = new ThreadingFactory();
@@ -48,13 +64,14 @@ namespace dev_egg_runner {
          var ms = new MemoryStream();
          pofSerializer.Serialize(ms, (object)"test");
          try {
-            exeggutor.SpawnHatchling("dev-egg-example", new SpawnConfiguration {
+            exeggutor.SpawnHatchling(options.EggName, new SpawnConfiguration {
                Arguments = ms.ToArray(),
-               InstanceName = "asdf"
+               InstanceName = options.InstanceName
             });
-         }catch (PortableException e) {
+         } catch (PortableException e) {
             Console.WriteLine(e.InnerException);
          }
+         while (true) ;
       }
    }
 }

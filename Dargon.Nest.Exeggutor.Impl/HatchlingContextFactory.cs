@@ -33,21 +33,28 @@ namespace Dargon.Nest.Exeggutor {
          }
          args.Add("\"" + eggPath + "\"");
 
-         var hostProcess = Process.Start(
-            new ProcessStartInfo(
-               Path.GetFullPath(configuration.HostExecutablePath),
-               args.Join(" ")
-            ) {
-               UseShellExecute = false,
-               RedirectStandardError = true,
-               RedirectStandardOutput = true,
-               RedirectStandardInput = true
-            }
-         );
-         Console.WriteLine("!B");
+         Console.WriteLine("!A");
+         var processStartInfo = new ProcessStartInfo() {
+            FileName = Path.GetFullPath(configuration.HostExecutablePath),
+            Arguments = args.Join(" "),
+            UseShellExecute = false,
+            RedirectStandardError = true,
+            RedirectStandardOutput = true,
+            RedirectStandardInput = true
+         };
+         var hostProcess = new Process().With(x => { x.StartInfo = processStartInfo; });
+         Console.WriteLine(processStartInfo.FileName);
 
-         var reader = new BinaryReaderWrapper(new StreamWrapper(hostProcess?.StandardOutput.BaseStream));
-         var writer = new BinaryWriterWrapper(new StreamWrapper(hostProcess?.StandardInput.BaseStream));
+         Console.WriteLine("!B");
+         hostProcess.Start();
+         Console.WriteLine("!C");
+
+         var reader = new BinaryReaderWrapper(new StreamWrapper(hostProcess.StandardOutput.BaseStream));
+         var writer = new BinaryWriterWrapper(new StreamWrapper(hostProcess.StandardInput.BaseStream));
+//         writer = new BinaryWriterWrapper(new FileStreamWrapper(File.Open("C:/Dargon/out2.txt", FileMode.Create, FileAccess.Write, FileShare.None)));
+
+         writer.Write(0x5453454e);
+
          var context = new HatchlingContextImpl(nestSerializer, instanceId, name, eggPath, hostProcess.ActLike<IProcess>(), reader, writer);
          context.Initialize();
          return context;

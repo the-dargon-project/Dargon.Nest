@@ -5,9 +5,12 @@ using System.Net.Sockets;
 using Dargon.Nest.Eggxecutor;
 using ItzWarty;
 using ItzWarty.Collections;
+using NLog;
 
 namespace Dargon.Nest.Exeggutor {
    public class ExeggutorServiceImpl : ExeggutorService {
+      private static Logger logger = LogManager.GetCurrentClassLogger();
+
       private readonly string nestPath;
       private readonly EggContextFactory eggContextFactory;
       private readonly IConcurrentDictionary<Guid, HatchlingContext> hatchlingContextsById;
@@ -36,19 +39,24 @@ namespace Dargon.Nest.Exeggutor {
       }
 
       public Guid SpawnHatchling(string eggName, SpawnConfiguration configuration) {
-         Console.WriteLine("Spawning hatchling!");
-         configuration = configuration ?? new SpawnConfiguration();
+         try {
+            Console.WriteLine("Spawning hatchling {0}!", eggName);
+            configuration = configuration ?? new SpawnConfiguration();
 
-         IEggContext eggContext;
-         if (!TryCreateEggContext(eggName, out eggContext)) {
-            throw new EggNotFoundException(eggName);
-         } else {
-            var hatchlingContext = eggContext.Spawn(configuration);
-            hatchlingContextsById.Add(hatchlingContext.InstanceId, hatchlingContext);
-            if (hatchlingContext.Name != null) {
-               hatchlingContextsByName.Add(hatchlingContext.Name, hatchlingContext);
+            IEggContext eggContext;
+            if (!TryCreateEggContext(eggName, out eggContext)) {
+               throw new EggNotFoundException(eggName);
+            } else {
+               var hatchlingContext = eggContext.Spawn(configuration);
+               hatchlingContextsById.Add(hatchlingContext.InstanceId, hatchlingContext);
+               if (hatchlingContext.Name != null) {
+                  hatchlingContextsByName.Add(hatchlingContext.Name, hatchlingContext);
+               }
+               return hatchlingContext.InstanceId;
             }
-            return hatchlingContext.InstanceId;
+         } catch (Exception e) {
+            logger.Error("SpawnHatchling threw", e);
+            return Guid.Empty;
          }
       }
 

@@ -43,10 +43,14 @@ namespace Dargon.Nest.Daemon {
          [Option('n', "NestPath", DefaultValue = "C:/Dargon",
                  HelpText = "Path to dargon nest.")]
          public string NestPath { get; set; }
+
+         [Option('c', "Command", DefaultValue = null,
+                 HelpText = "Nest commands to execute when nest daemon has initialized.")]
+         public string Command { get; set; }
       }
 
       public static void Main(string[] args) {
-         Environment.CurrentDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName;
+         Environment.CurrentDirectory = "C:/Dargon/nestd";// new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName;
          InitializeLogging();
 
          logger.Info("Logging Initialized.");
@@ -76,14 +80,13 @@ namespace Dargon.Nest.Daemon {
          IProcessProxy processProxy = new ProcessProxy();
 
          // POF Dependencies
-         IPofContext nestContext = new ExeggutorHostPofContext(0);
+         IPofContext nestContext = new ExeggutorHostPofContext(3500);
          IPofSerializer nestSerializer = new PofSerializer(nestContext);
 
          // Common POF Context
          var pofContext = new PofContext().With(x => {
             x.MergeContext(new DspPofContext());               // 0 - 999
             x.MergeContext(new ExeggutorPofContext(3000));     // 3000 - 3499, must reflect value in nestd
-            x.MergeContext(new ExeggutorHostPofContext(3500)); // 3500 - 3999 
          });
          var pofSerializer = new PofSerializer(pofContext);
 
@@ -112,8 +115,12 @@ namespace Dargon.Nest.Daemon {
 
       private static void InitializeLogging() {
          var config = new LoggingConfiguration();
-         Target debuggerTarget = new DebuggerTarget();
-         Target consoleTarget = new ColoredConsoleTarget();
+         Target debuggerTarget = new DebuggerTarget() {
+            Layout = "${longdate}|${level}|${logger}|${message} ${exception:format=tostring}"
+         };
+         Target consoleTarget = new ColoredConsoleTarget() {
+            Layout = "${longdate}|${level}|${logger}|${message} ${exception:format=tostring}"
+         };
 
 #if !DEBUG
          debuggerTarget = new AsyncTargetWrapper(debuggerTarget);
