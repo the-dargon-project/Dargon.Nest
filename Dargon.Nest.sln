@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.22609.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Nest", "Dargon.Nest\Dargon.Nest.csproj", "{FEC88CE6-2D59-41DA-9608-00EF6EC91E76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Nest.Exeggutor.Api", "Dargon.Nest.Eggxecutor.Api\Dargon.Nest.Exeggutor.Api.csproj", "{7D1D757D-531B-49F0-8F63-B4E3563BE606}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Nest.Exeggutor.Impl", "Dargon.Nest.Exeggutor.Impl\Dargon.Nest.Exeggutor.Impl.csproj", "{FD02D2EF-27FA-4C6A-A8D0-9CB4A7FBD5BC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Nest.Egg.Api", "Dargon.Nest.Egg.Api\Dargon.Nest.Egg.Api.csproj", "{52AC94A1-A1C0-43B2-8B1B-001CC11518BE}"
@@ -23,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dev-egg-example", "dev-egg-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dev-egg-runner", "dev-egg-runner\dev-egg-runner.csproj", "{402F5C4E-504A-4B1E-A881-0C4CFFD3D6ED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Nest.Exeggutor.Api", "Dargon.Nest.Exeggutor.Api\Dargon.Nest.Exeggutor.Api.csproj", "{7D1D757D-531B-49F0-8F63-B4E3563BE606}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,10 +33,6 @@ Global
 		{FEC88CE6-2D59-41DA-9608-00EF6EC91E76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEC88CE6-2D59-41DA-9608-00EF6EC91E76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEC88CE6-2D59-41DA-9608-00EF6EC91E76}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7D1D757D-531B-49F0-8F63-B4E3563BE606}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7D1D757D-531B-49F0-8F63-B4E3563BE606}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7D1D757D-531B-49F0-8F63-B4E3563BE606}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7D1D757D-531B-49F0-8F63-B4E3563BE606}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FD02D2EF-27FA-4C6A-A8D0-9CB4A7FBD5BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FD02D2EF-27FA-4C6A-A8D0-9CB4A7FBD5BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD02D2EF-27FA-4C6A-A8D0-9CB4A7FBD5BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -69,6 +65,10 @@ Global
 		{402F5C4E-504A-4B1E-A881-0C4CFFD3D6ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{402F5C4E-504A-4B1E-A881-0C4CFFD3D6ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{402F5C4E-504A-4B1E-A881-0C4CFFD3D6ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D1D757D-531B-49F0-8F63-B4E3563BE606}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D1D757D-531B-49F0-8F63-B4E3563BE606}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D1D757D-531B-49F0-8F63-B4E3563BE606}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D1D757D-531B-49F0-8F63-B4E3563BE606}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

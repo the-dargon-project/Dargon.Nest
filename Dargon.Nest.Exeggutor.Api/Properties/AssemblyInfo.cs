@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Dargon.Nest.Eggxecutor.Api")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Dargon.Nest.Exeggutor.Api")]
+[assembly: AssemblyDescription("Nest Exeggutor Service Api")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Dargon.Nest.Eggxecutor.Api")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCompany("The Dargon Project")]
+[assembly: AssemblyProduct("Dargon.Nest.Exeggutor.Api")]
+[assembly: AssemblyCopyright("Copyright © The Dargon Project 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
