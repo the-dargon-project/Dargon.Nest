@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9C76F6EE-DAC8-436A-8623-A8578353DFB9}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{AA159659-6988-4A37-B849-8F2C090E415C}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dargon.Nest.Exeggutor.Host</RootNamespace>
-    <AssemblyName>Dargon.Nest.Exeggutor.Host.Api</AssemblyName>
+    <RootNamespace>nest_host</RootNamespace>
+    <AssemblyName>nest-host</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -29,15 +31,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="libdpo">
-      <HintPath>..\packages\libdpo.0.0.13\lib\net45\libdpo.dll</HintPath>
+      <HintPath>..\packages\libdpo.0.0.19\lib\net45\libdpo.dll</HintPath>
     </Reference>
     <Reference Include="libwarty">
-      <HintPath>..\packages\libdpo.0.0.13\lib\net45\libwarty.dll</HintPath>
+      <HintPath>..\packages\libdpo.0.0.19\lib\net45\libwarty.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-api">
-      <HintPath>..\packages\libdpo.0.0.13\lib\net45\libwarty.proxies-api.dll</HintPath>
+      <HintPath>..\packages\libdpo.0.0.19\lib\net45\libwarty.proxies-api.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,13 +53,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NestApplication.cs" />
-    <Compile Include="PortableObjects\BootstrapDto.cs" />
-    <Compile Include="PortableObjects\ExeggutorHostPofContext.cs" />
+    <Compile Include="EggHost.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dargon.Nest.Egg.Api\Dargon.Nest.Egg.Api.csproj">
+      <Project>{52AC94A1-A1C0-43B2-8B1B-001CC11518BE}</Project>
+      <Name>Dargon.Nest.Egg.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Nest.Exeggutor.Host.Api\Dargon.Nest.Exeggutor.Host.Api.csproj">
+      <Project>{9C76F6EE-DAC8-436A-8623-A8578353DFB9}</Project>
+      <Name>Dargon.Nest.Exeggutor.Host.Api</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

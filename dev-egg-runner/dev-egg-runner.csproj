@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9C76F6EE-DAC8-436A-8623-A8578353DFB9}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{402F5C4E-504A-4B1E-A881-0C4CFFD3D6ED}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dargon.Nest.Exeggutor.Host</RootNamespace>
-    <AssemblyName>Dargon.Nest.Exeggutor.Host.Api</AssemblyName>
+    <RootNamespace>dev_egg_runner</RootNamespace>
+    <AssemblyName>dev-egg-runner</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -30,14 +32,32 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="libdpo">
-      <HintPath>..\packages\libdpo.0.0.13\lib\net45\libdpo.dll</HintPath>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\libdsp.0.0.4\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty">
-      <HintPath>..\packages\libdpo.0.0.13\lib\net45\libwarty.dll</HintPath>
+    <Reference Include="ImpromptuInterface">
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.14\lib\net45\ImpromptuInterface.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty.proxies-api">
-      <HintPath>..\packages\libdpo.0.0.13\lib\net45\libwarty.proxies-api.dll</HintPath>
+    <Reference Include="libdpo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libdpo.0.0.19\lib\net45\libdpo.dll</HintPath>
+    </Reference>
+    <Reference Include="libdsp">
+      <HintPath>..\packages\libdsp.0.0.4\lib\net45\libdsp.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libdpo.0.0.19\lib\net45\libwarty.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty.proxies-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libdpo.0.0.19\lib\net45\libwarty.proxies-api.dll</HintPath>
+    </Reference>
+    <Reference Include="libwarty.proxies-impl">
+      <HintPath>..\packages\libwarty.proxies-impl.0.0.14\lib\net45\libwarty.proxies-impl.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\libdsp.0.0.4\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,13 +68,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NestApplication.cs" />
-    <Compile Include="PortableObjects\BootstrapDto.cs" />
-    <Compile Include="PortableObjects\ExeggutorHostPofContext.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dargon.Nest.Eggxecutor.Api\Dargon.Nest.Exeggutor.Api.csproj">
+      <Project>{7D1D757D-531B-49F0-8F63-B4E3563BE606}</Project>
+      <Name>Dargon.Nest.Exeggutor.Api</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

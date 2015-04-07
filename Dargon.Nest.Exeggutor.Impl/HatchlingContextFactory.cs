@@ -35,7 +35,7 @@ namespace Dargon.Nest.Exeggutor {
 
          var hostProcess = Process.Start(
             new ProcessStartInfo(
-               configuration.HostExecutablePath,
+               Path.GetFullPath(configuration.HostExecutablePath),
                args.Join(" ")
             ) {
                UseShellExecute = false,
@@ -44,6 +44,7 @@ namespace Dargon.Nest.Exeggutor {
                RedirectStandardInput = true
             }
          );
+         Console.WriteLine("!B");
 
          var reader = new BinaryReaderWrapper(new StreamWrapper(hostProcess?.StandardOutput.BaseStream));
          var writer = new BinaryWriterWrapper(new StreamWrapper(hostProcess?.StandardInput.BaseStream));

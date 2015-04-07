@@ -7,12 +7,12 @@ using Dargon.PortableObjects;
 
 namespace Dargon.Nest.Eggxecutor {
    public class SpawnConfiguration : IPortableObject {
-      public string InstanceName { get; private set; }
-      public byte[] Arguments { get; private set; }
+      public string InstanceName { get; set; }
+      public byte[] Arguments { get; set; }
 
       public void Serialize(IPofWriter writer) {
          writer.WriteString(0, InstanceName);
-         writer.WriteBytes(0, Arguments);
+         writer.WriteBytes(1, Arguments);
       }
 
       public void Deserialize(IPofReader reader) {

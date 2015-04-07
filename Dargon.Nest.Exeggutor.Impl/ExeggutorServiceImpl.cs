@@ -36,6 +36,7 @@ namespace Dargon.Nest.Exeggutor {
       }
 
       public Guid SpawnHatchling(string eggName, SpawnConfiguration configuration) {
+         Console.WriteLine("Spawning hatchling!");
          configuration = configuration ?? new SpawnConfiguration();
 
          IEggContext eggContext;
