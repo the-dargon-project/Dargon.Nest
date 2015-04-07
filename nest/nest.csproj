@@ -33,6 +33,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dargon.Nest, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dargon.Nest.0.0.0\lib\net45\Dargon.Nest.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,10 +56,7 @@
     <Compile Include="UpdateEggCommand.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dargon.Nest\Dargon.Nest.csproj">
-      <Project>{fec88ce6-2d59-41da-9608-00ef6ec91e76}</Project>
-      <Name>Dargon.Nest</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
