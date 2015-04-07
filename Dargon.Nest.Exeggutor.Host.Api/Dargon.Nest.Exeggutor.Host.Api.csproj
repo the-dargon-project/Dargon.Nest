@@ -48,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NestApplication.cs" />
     <Compile Include="PortableObjects\BootstrapDto.cs" />
     <Compile Include="PortableObjects\ExeggutorHostPofContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
