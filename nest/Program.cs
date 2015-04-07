@@ -10,8 +10,19 @@ namespace Dargon.Nest.Repl {
       public static int Main(string[] argsArray) {
          ReplGlobals.NestPath = Environment.CurrentDirectory;
 
-         var tokenQueue = new Queue<string>(string.Join(" ", argsArray).QASS());
+         var tokenQueue = new Queue<string>();
          var freeTokens = new List<string>();
+         foreach (var token in string.Join(" ", argsArray).QASS()) {
+            var equalsIndex = token.IndexOf("=");
+            if (token.StartsWith("--") && equalsIndex != -1) {
+               var property = token.Substring(0, equalsIndex);
+               var value = token.Substring(equalsIndex + 1);
+               tokenQueue.Enqueue(property);
+               tokenQueue.Enqueue(value);
+            } else {
+               tokenQueue.Enqueue(token);
+            }
+         }
 
          Dictionary<char, Action> flagHandlers = new Dictionary<char, Action> {
             { 'i', () => ReplGlobals.InteractiveMode = true }
