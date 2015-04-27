@@ -43,6 +43,7 @@ namespace Dargon.Nest.Exeggutor {
             RedirectStandardInput = true
          };
          var hostProcess = new Process().With(x => { x.StartInfo = processStartInfo; });
+         hostProcess.EnableRaisingEvents = true;
          Console.WriteLine(processStartInfo.FileName);
 
          Console.WriteLine("!B");

@@ -19,6 +19,7 @@ namespace dev_egg_example {
          if (!(args is string)) {
             return NestResult.Failure;
          } else {
+            parameters.Host.Shutdown();
             return Start((string)args);
          }
       }

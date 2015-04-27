@@ -8,8 +8,12 @@ using Castle.DynamicProxy;
 using CommandLine;
 using Dargon.Nest.Eggxecutor;
 using Dargon.PortableObjects;
+using Dargon.PortableObjects.Streams;
+using Dargon.Services;
 using Dargon.Services.Client;
+using Dargon.Services.Clustering.Host;
 using Dargon.Services.PortableObjects;
+using Dargon.Services.Server;
 using ItzWarty;
 using ItzWarty.Collections;
 using ItzWarty.IO;
@@ -29,6 +33,7 @@ namespace dev_egg_runner {
 
    public static class Program {
       public const int kDaemonPort = 21337;
+      public const int kHeartbeatIntervalMilliseconds = 1000;
 
       public static void Main(string[] args) {
          var options = new Options();
@@ -45,6 +50,7 @@ namespace dev_egg_runner {
          ITcpEndPointFactory tcpEndPointFactory = new TcpEndPointFactory(dnsProxy);
          INetworkingInternalFactory networkingInternalFactory = new NetworkingInternalFactory(threadingProxy, streamFactory);
          ISocketFactory socketFactory = new SocketFactory(tcpEndPointFactory, networkingInternalFactory);
+         INetworkingProxy networkingProxy = new NetworkingProxy(socketFactory, tcpEndPointFactory);
 
          IPofContext pofContext = new PofContext().With(x => {
             x.MergeContext(new DspPofContext());               // 0 - 999
@@ -53,13 +59,11 @@ namespace dev_egg_runner {
          IPofSerializer pofSerializer = new PofSerializer(pofContext);
 
          ProxyGenerator proxyGenerator = new ProxyGenerator();
-         IServiceProxyFactory serviceProxyFactory = new ServiceProxyFactory(proxyGenerator);
-         IServiceContextFactory serviceContextFactory = new ServiceContextFactory(collectionFactory);
-         IInvocationStateFactory invocationStateFactory = new InvocationStateFactory(threadingProxy);
-         IConnectorFactory connectorFactory = new ConnectorFactory(collectionFactory, threadingProxy, socketFactory, invocationStateFactory, pofSerializer);
-         IServiceClientFactory serviceClientFactory = new ServiceClientFactory(collectionFactory, serviceProxyFactory, serviceContextFactory, connectorFactory);
-         ITcpEndPoint endpoint = new TcpEndPoint(new IPEndPoint(IPAddress.Loopback, kDaemonPort));
-         var client = serviceClientFactory.Create(endpoint);
+         PofStreamsFactory pofStreamsFactory = new PofStreamsFactoryImpl(threadingProxy, streamFactory, pofSerializer);
+         IHostSessionFactory hostSessionFactory = new HostSessionFactory(threadingProxy, collectionFactory, pofSerializer, pofStreamsFactory);
+         InvokableServiceContextFactory invokableServiceContextFactory = new InvokableServiceContextFactoryImpl(collectionFactory);
+         IServiceClientFactory serviceClientFactory = new ServiceClientFactory(proxyGenerator, collectionFactory, threadingProxy, networkingProxy, pofStreamsFactory, hostSessionFactory, invokableServiceContextFactory);
+         var client = serviceClientFactory.CreateOrJoin(new ClusteringConfiguration(kDaemonPort, kHeartbeatIntervalMilliseconds, ClusteringRoleFlags.GuestOnly));
          var exeggutor = client.GetService<ExeggutorService>();
          var ms = new MemoryStream();
          pofSerializer.Serialize(ms, (object)"test");

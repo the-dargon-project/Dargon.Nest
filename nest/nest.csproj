@@ -35,7 +35,7 @@
   <ItemGroup>
     <Reference Include="Dargon.Nest, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Dargon.Nest.0.0.0\lib\net45\Dargon.Nest.dll</HintPath>
+      <HintPath>..\packages\Dargon.Nest.0.1.0\lib\net45\Dargon.Nest.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

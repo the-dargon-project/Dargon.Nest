@@ -1,16 +1,14 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
+﻿using Castle.DynamicProxy;
 using CommandLine;
 using Dargon.Nest.Eggxecutor;
 using Dargon.Nest.Exeggutor;
 using Dargon.Nest.Exeggutor.Host.PortableObjects;
 using Dargon.PortableObjects;
+using Dargon.PortableObjects.Streams;
 using Dargon.Services;
+using Dargon.Services.Clustering.Host;
 using Dargon.Services.PortableObjects;
 using Dargon.Services.Server;
-using Dargon.Services.Server.Phases;
-using Dargon.Services.Server.Sessions;
 using ItzWarty;
 using ItzWarty.Collections;
 using ItzWarty.IO;
@@ -21,6 +19,7 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using NLog.Targets.Wrappers;
+using System;
 using System.Threading;
 
 namespace Dargon.Nest.Daemon {
@@ -83,6 +82,7 @@ namespace Dargon.Nest.Daemon {
          IPofContext nestContext = new ExeggutorHostPofContext(3500);
          IPofSerializer nestSerializer = new PofSerializer(nestContext);
 
+
          // Common POF Context
          var pofContext = new PofContext().With(x => {
             x.MergeContext(new DspPofContext());               // 0 - 999
@@ -90,23 +90,24 @@ namespace Dargon.Nest.Daemon {
          });
          var pofSerializer = new PofSerializer(pofContext);
 
-         // construct libdsp dependencies
-         IHostSessionFactory hostSessionFactory = new HostSessionFactory(collectionFactory, pofSerializer);
-         IPhaseFactory phaseFactory = new PhaseFactory(collectionFactory, threadingProxy, networkingProxy, hostSessionFactory, pofSerializer);
-         IConnectorFactory connectorFactory = new ConnectorFactory(collectionFactory, threadingProxy, networkingProxy, phaseFactory);
-         IServiceContextFactory serviceContextFactory = new ServiceContextFactory(collectionFactory);
-         IServiceNodeFactory serviceNodeFactory = new ServiceNodeFactory(connectorFactory, serviceContextFactory, collectionFactory);
+         // Pof Streams Dependencies
+         PofStreamsFactory pofStreamsFactory = new PofStreamsFactoryImpl(threadingProxy, streamFactory, pofSerializer);
 
+         // construct libdsp dependencies
+         IHostSessionFactory hostSessionFactory = new HostSessionFactory(threadingProxy, collectionFactory, pofSerializer, pofStreamsFactory);
+
+         ProxyGenerator proxyGenerator = new ProxyGenerator();
+         InvokableServiceContextFactory invokableServiceContextFactory = new InvokableServiceContextFactoryImpl(collectionFactory);
+         IServiceClientFactory serviceClientFactory = new ServiceClientFactory(proxyGenerator, collectionFactory, threadingProxy, networkingProxy, pofStreamsFactory, hostSessionFactory, invokableServiceContextFactory);
          // construct libdsp local service node
-         IServiceConfiguration serviceConfiguration = new ServiceConfiguration(options.DspPort, options.DspHeartBeatInterval);
-         IServiceNode localServiceNode = serviceNodeFactory.CreateOrJoin(serviceConfiguration);
+         IServiceClient localServiceClient = serviceClientFactory.CreateOrJoin(new ClusteringConfiguration(options.DspPort, options.DspHeartBeatInterval));
 
          // Nest-Host Dependencies
          ExecutorHostConfiguration executorHostConfiguration = new ExecutorHostConfigurationImpl(options.HostPath);
          HatchlingContextFactory hatchlingContextFactory = new HatchlingContextFactoryImpl(nestSerializer, executorHostConfiguration);
          EggContextFactory eggContextFactory = new EggContextFactoryImpl(hatchlingContextFactory, processProxy);
          ExeggutorService service = new ExeggutorServiceImpl(options.NestPath, eggContextFactory);
-         localServiceNode.RegisterService(service, typeof(ExeggutorService));
+         localServiceClient.RegisterService(service, typeof(ExeggutorService));
 
          logger.Info("Exposed nestd service.");
          var exitLatch = new CountdownEvent(1);

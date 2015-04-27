@@ -52,6 +52,10 @@ namespace Dargon.Nest.Exeggutor {
                if (hatchlingContext.Name != null) {
                   hatchlingContextsByName.Add(hatchlingContext.Name, hatchlingContext);
                }
+               hatchlingContext.Exited += (s, e) => {
+                  Console.WriteLine("Hatchling " + hatchlingContext.Name + " has exited!");
+                  hatchlingContextsByName.Remove(hatchlingContext.Name.PairValue(hatchlingContext));
+               };
                return hatchlingContext.InstanceId;
             }
          } catch (Exception e) {

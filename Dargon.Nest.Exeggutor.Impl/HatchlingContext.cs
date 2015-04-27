@@ -1,15 +1,16 @@
-﻿using System;
-using System.IO;
-using Dargon.Nest.Exeggutor.Host.PortableObjects;
-using Dargon.PortableObjects;
+﻿using Dargon.PortableObjects;
 using ItzWarty.IO;
 using ItzWarty.Processes;
+using System;
+using Dargon.Nest.Exeggutor.Host.PortableObjects;
 
 namespace Dargon.Nest.Exeggutor {
    public interface HatchlingContext {
       Guid InstanceId { get; }
       string Name { get; }
       void Bootstrap(byte[] arguments);
+
+      event EventHandler Exited;
    }
 
    public class HatchlingContextImpl : HatchlingContext {
@@ -34,14 +35,14 @@ namespace Dargon.Nest.Exeggutor {
       public Guid InstanceId { get { return instanceId; } }
       public string Name { get { return name; } }
 
-      public void Initialize() {
-
-      }
+      public void Initialize() {}
 
       public void Bootstrap(byte[] arguments) {
          nestSerializer.Serialize(writer, new BootstrapDto(name, eggPath, arguments));
          writer.Flush();
          Console.WriteLine("Wrote bootstrap dto");
       }
+
+      public event EventHandler Exited { add { process.Exited += value; } remove { process.Exited -= value; } }
    }
 }

@@ -37,16 +37,16 @@
   <ItemGroup>
     <Reference Include="Dargon.Nest.Egg.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Dargon.Nest.Egg.Api.0.0.0\lib\net45\Dargon.Nest.Egg.Api.dll</HintPath>
+      <HintPath>..\packages\Dargon.Nest.Egg.Api.0.1.0\lib\net45\Dargon.Nest.Egg.Api.dll</HintPath>
     </Reference>
-    <Reference Include="libdpo">
-      <HintPath>..\packages\libdpo.0.0.19\lib\net45\libdpo.dll</HintPath>
+    <Reference Include="Dargon.PortableObjects">
+      <HintPath>..\packages\Dargon.PortableObjects.0.1.0\lib\net45\Dargon.PortableObjects.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty">
-      <HintPath>..\packages\libwarty.proxies-api.0.0.18\lib\net45\libwarty.dll</HintPath>
+    <Reference Include="ItzWarty.Commons">
+      <HintPath>..\packages\ItzWarty.Commons.0.1.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
     </Reference>
-    <Reference Include="libwarty.proxies-api">
-      <HintPath>..\packages\libwarty.proxies-api.0.0.18\lib\net45\libwarty.proxies-api.dll</HintPath>
+    <Reference Include="ItzWarty.Proxies.Api">
+      <HintPath>..\packages\ItzWarty.Proxies.Api.0.1.0\lib\net45\ItzWarty.Proxies.Api.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
