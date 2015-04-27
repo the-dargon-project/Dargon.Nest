@@ -53,17 +53,21 @@
     <Reference Include="ImpromptuInterface">
       <HintPath>..\packages\libwarty.proxies-impl.0.0.14\lib\net45\ImpromptuInterface.dll</HintPath>
     </Reference>
+    <Reference Include="libdpo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\libdpo.0.0.19\lib\net45\libdpo.dll</HintPath>
+    </Reference>
     <Reference Include="libdsp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\libdsp.0.0.5\lib\net45\libdsp.dll</HintPath>
     </Reference>
     <Reference Include="libwarty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdsp.0.0.5\lib\net45\libwarty.dll</HintPath>
+      <HintPath>..\packages\libdpo.0.0.19\lib\net45\libwarty.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\libdsp.0.0.5\lib\net45\libwarty.proxies-api.dll</HintPath>
+      <HintPath>..\packages\libdpo.0.0.19\lib\net45\libwarty.proxies-api.dll</HintPath>
     </Reference>
     <Reference Include="libwarty.proxies-impl">
       <HintPath>..\packages\libwarty.proxies-impl.0.0.14\lib\net45\libwarty.proxies-impl.dll</HintPath>
@@ -85,10 +89,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\libdpo\libdpo.csproj">
-      <Project>{da87b9e0-3584-4448-97b5-9877cac44352}</Project>
-      <Name>libdpo</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dargon.Nest.Exeggutor.Impl\Dargon.Nest.Exeggutor.Impl.csproj">
       <Project>{FD02D2EF-27FA-4C6A-A8D0-9CB4A7FBD5BC}</Project>
       <Name>Dargon.Nest.Exeggutor.Impl</Name>
