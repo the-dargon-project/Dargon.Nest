@@ -75,7 +75,6 @@ namespace dev_egg_runner {
          } catch (PortableException e) {
             Console.WriteLine(e.InnerException);
          }
-         while (true) ;
       }
    }
 }
