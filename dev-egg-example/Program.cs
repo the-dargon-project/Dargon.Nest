@@ -19,13 +19,13 @@ namespace dev_egg_example {
          if (!(args is string)) {
             return NestResult.Failure;
          } else {
-            parameters.Host.Shutdown();
-            return Start((string)args);
+            return Start((string)args, parameters.Host);
          }
       }
 
-      private NestResult Start(string args) {
+      private NestResult Start(string args, IEggHost host) {
          MessageBox.Show(args);
+         host.Shutdown();
          return NestResult.Success;
       }
 
