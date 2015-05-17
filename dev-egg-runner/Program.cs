@@ -1,24 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
 using CommandLine;
 using Dargon.Nest.Eggxecutor;
 using Dargon.PortableObjects;
 using Dargon.PortableObjects.Streams;
 using Dargon.Services;
-using Dargon.Services.Client;
-using Dargon.Services.Clustering.Host;
-using Dargon.Services.PortableObjects;
-using Dargon.Services.Server;
+using Dargon.Services.Messaging;
 using ItzWarty;
 using ItzWarty.Collections;
 using ItzWarty.IO;
 using ItzWarty.Networking;
 using ItzWarty.Threading;
+using System;
+using System.IO;
 
 namespace dev_egg_runner {
    public class Options {
@@ -60,9 +53,7 @@ namespace dev_egg_runner {
 
          ProxyGenerator proxyGenerator = new ProxyGenerator();
          PofStreamsFactory pofStreamsFactory = new PofStreamsFactoryImpl(threadingProxy, streamFactory, pofSerializer);
-         IHostSessionFactory hostSessionFactory = new HostSessionFactory(threadingProxy, collectionFactory, pofSerializer, pofStreamsFactory);
-         InvokableServiceContextFactory invokableServiceContextFactory = new InvokableServiceContextFactoryImpl(collectionFactory);
-         IServiceClientFactory serviceClientFactory = new ServiceClientFactory(proxyGenerator, collectionFactory, threadingProxy, networkingProxy, pofStreamsFactory, hostSessionFactory, invokableServiceContextFactory);
+         IServiceClientFactory serviceClientFactory = new ServiceClientFactory(proxyGenerator, streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
          var client = serviceClientFactory.CreateOrJoin(new ClusteringConfiguration(kDaemonPort, kHeartbeatIntervalMilliseconds, ClusteringRoleFlags.GuestOnly));
          var exeggutor = client.GetService<ExeggutorService>();
          var ms = new MemoryStream();

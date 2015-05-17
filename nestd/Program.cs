@@ -6,9 +6,7 @@ using Dargon.Nest.Exeggutor.Host.PortableObjects;
 using Dargon.PortableObjects;
 using Dargon.PortableObjects.Streams;
 using Dargon.Services;
-using Dargon.Services.Clustering.Host;
-using Dargon.Services.PortableObjects;
-using Dargon.Services.Server;
+using Dargon.Services.Messaging;
 using ItzWarty;
 using ItzWarty.Collections;
 using ItzWarty.IO;
@@ -94,11 +92,8 @@ namespace Dargon.Nest.Daemon {
          PofStreamsFactory pofStreamsFactory = new PofStreamsFactoryImpl(threadingProxy, streamFactory, pofSerializer);
 
          // construct libdsp dependencies
-         IHostSessionFactory hostSessionFactory = new HostSessionFactory(threadingProxy, collectionFactory, pofSerializer, pofStreamsFactory);
-
          ProxyGenerator proxyGenerator = new ProxyGenerator();
-         InvokableServiceContextFactory invokableServiceContextFactory = new InvokableServiceContextFactoryImpl(collectionFactory);
-         IServiceClientFactory serviceClientFactory = new ServiceClientFactory(proxyGenerator, collectionFactory, threadingProxy, networkingProxy, pofStreamsFactory, hostSessionFactory, invokableServiceContextFactory);
+         IServiceClientFactory serviceClientFactory = new ServiceClientFactory(proxyGenerator, streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
          // construct libdsp local service node
          IServiceClient localServiceClient = serviceClientFactory.CreateOrJoin(new ClusteringConfiguration(options.DspPort, options.DspHeartBeatInterval));
 
