@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using ItzWarty;
 
@@ -13,6 +14,7 @@ namespace nest_host {
       public static void Main(string[] args) {
          Console.SetIn(new StreamReader(Stream.Null));
          Console.SetOut(new StreamWriter(Stream.Null));
+         Console.SetError(Console.Out);
 
          var stdin = Console.OpenStandardInput();
          var stdout = Console.OpenStandardOutput();
@@ -28,8 +30,31 @@ namespace nest_host {
             var pofSerializer = new PofSerializer(pofContext);
             var bootstrapDto = pofSerializer.Deserialize<BootstrapDto>(stdin);
 
+            var outputWriter = new StreamWriter(new FileStream("C:/Dargon/logs/" + bootstrapDto.Name + ".log", FileMode.Append, FileAccess.Write, FileShare.Read)) { AutoFlush = true };
+            Console.SetIn(new StreamReader(Stream.Null));
+            Console.SetOut(outputWriter);
+            Console.SetError(outputWriter);
+
+            Console.WriteLine("!");
+
+            Application.ThreadException += HandleThreadException;
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            AppDomain.CurrentDomain.UnhandledException += HandleUnhandledAppDomainException;
+
             new EggHost().Run(bootstrapDto);
+            GC.KeepAlive(stdin);
+            GC.KeepAlive(stdout);
          }
+      }
+
+      private static void HandleThreadException(object sender, ThreadExceptionEventArgs e) {
+         Console.Error.WriteLine("Unhandled Thread Exception");
+         Console.Error.WriteLine(e.Exception);
+      }
+
+      private static void HandleUnhandledAppDomainException(object sender, UnhandledExceptionEventArgs e) {
+         Console.Error.WriteLine("Unhandled Appdomain Exception");
+         Console.Error.WriteLine(e.ExceptionObject);
       }
    }
 }
