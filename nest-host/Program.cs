@@ -30,7 +30,9 @@ namespace nest_host {
             var pofSerializer = new PofSerializer(pofContext);
             var bootstrapDto = pofSerializer.Deserialize<BootstrapDto>(stdin);
 
-            var outputWriter = new StreamWriter(new FileStream("C:/Dargon/logs/" + bootstrapDto.Name + ".log", FileMode.Append, FileAccess.Write, FileShare.Read)) { AutoFlush = true };
+            var logDirectory = "C:/Dargon/logs";
+            Directory.CreateDirectory(logDirectory);
+            var outputWriter = new StreamWriter(new FileStream(Path.Combine(logDirectory, bootstrapDto.Name + ".log"), FileMode.Append, FileAccess.Write, FileShare.Read)) { AutoFlush = true };
             Console.SetIn(new StreamReader(Stream.Null));
             Console.SetOut(outputWriter);
             Console.SetError(outputWriter);
