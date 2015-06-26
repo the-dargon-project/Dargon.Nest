@@ -31,20 +31,6 @@ namespace Dargon.Nest {
          }
       }
 
-      public static string NextToken(string input, out string token) {
-         input = input.Trim();
-         var firstSpaceIndex = input.IndexOf(' ');
-         string remaining;
-         if (firstSpaceIndex < 0) {
-            token = input;
-            remaining = "";
-         } else {
-            token = input.Substring(0, firstSpaceIndex);
-            remaining = input.Substring(firstSpaceIndex + 1);
-         }
-         return remaining;
-      }
-
       public static string CombineUrl(string a, string b) {
          return new Uri(Path.Combine(a, b)).AbsoluteUri;
       }

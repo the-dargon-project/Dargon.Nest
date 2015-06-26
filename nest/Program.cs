@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Policy;
+using Dargon.Repl;
 
 namespace Dargon.Nest.Repl {
    public static class Program {
@@ -81,19 +82,7 @@ namespace Dargon.Nest.Repl {
             Util.PrepareDirectory(ReplGlobals.NestPath);
          }
 
-         while (true) {
-            Console.Write("> ");
-            var input = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(input)) {
-               try {
-                  dispatcher.Eval(input);
-               } catch (Exception e) {
-                  Console.Error.WriteLine(e.Message);
-                  Console.Error.WriteLine(e.StackTrace);
-               }
-               Console.WriteLine();
-            }
-         }
+         return new ReplCore(dispatcher).Run();
       }
    }
 }
