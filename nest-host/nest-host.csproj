@@ -43,8 +43,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dargon.Nest.Exeggutor.Host.Api.0.1.0\lib\net45\Dargon.Nest.Exeggutor.Host.Api.dll</HintPath>
     </Reference>
-    <Reference Include="Dargon.PortableObjects">
-      <HintPath>..\packages\Dargon.PortableObjects.0.1.2\lib\net45\Dargon.PortableObjects.dll</HintPath>
+    <Reference Include="Dargon.PortableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dargon.PortableObjects.0.1.3\lib\net45\Dargon.PortableObjects.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.PortableObjects.Streams">
       <HintPath>..\packages\Dargon.PortableObjects.Streams.0.2.0\lib\net45\Dargon.PortableObjects.Streams.dll</HintPath>
