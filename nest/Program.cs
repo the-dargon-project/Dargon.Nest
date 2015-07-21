@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Policy;
 using Dargon.Repl;
+using ItzWarty;
 
 namespace Dargon.Nest.Repl {
    public static class Program {
@@ -52,6 +53,7 @@ namespace Dargon.Nest.Repl {
          ReplGlobals.NestPath = Path.GetFullPath(ReplGlobals.NestPath);
 
          var dispatcher = new DispatcherCommand("command_root");
+         dispatcher.RegisterCommand(new UpdateNestCommand());
          dispatcher.RegisterCommand(new ListEggsCommand());
          dispatcher.RegisterCommand(new InstallEggCommand());
          dispatcher.RegisterCommand(new CreateEggCommand());
@@ -79,7 +81,7 @@ namespace Dargon.Nest.Repl {
             return -1;
          } else if(!fileInfo.Attributes.HasFlag(FileAttributes.Directory)) {
             Console.WriteLine("Creating Nest at path `{0}`", ReplGlobals.NestPath);
-            Util.PrepareDirectory(ReplGlobals.NestPath);
+            NestUtil.PrepareDirectory(ReplGlobals.NestPath);
          }
 
          return new ReplCore(dispatcher).Run();

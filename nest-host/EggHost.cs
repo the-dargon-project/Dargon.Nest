@@ -11,10 +11,12 @@ using System.Reflection;
 
 namespace nest_host {
    public class EggHost : IEggHost {
+      private readonly PofStreamsFactory pofStreamsFactory;
       private readonly PofStream pofStream;
       private readonly ICancellationTokenSource shutdownCancellationTokenSource;
 
-      public EggHost(PofStream pofStream, ICancellationTokenSource shutdownCancellationTokenSource) {
+      public EggHost(PofStreamsFactory pofStreamsFactory, PofStream pofStream, ICancellationTokenSource shutdownCancellationTokenSource) {
+         this.pofStreamsFactory = pofStreamsFactory;
          this.pofStream = pofStream;
          this.shutdownCancellationTokenSource = shutdownCancellationTokenSource;
       }
@@ -32,7 +34,10 @@ namespace nest_host {
 
             AppDomain.CurrentDomain.AssemblyResolve += CreateCachedAssemblyResolveHandler(assemblyPathsByAssemblySimpleName, assemblyPathsByAssemblyFullName);
             INestApplicationEgg eggInstance = InstantiateNestApplicationEgg(eggAssemblyPath);
+            var dispatcher = pofStreamsFactory.CreateDispatcher(pofStream);
+            dispatcher.RegisterHandler<ShutdownDto>(dto => Console.WriteLine("Egg shutdown result: " + eggInstance.Shutdown() + "!"));
             var startResult = eggInstance.Start(new EggParameters(this, bootstrapArguments.Name, bootstrapArguments.PayloadBytes));
+            dispatcher.Start();
             Console.WriteLine("Egg started with " + startResult);
          }
       }

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Dargon.Nest {
-   public static class Util {
+   public static class NestUtil {
       public static void PrepareDirectory(string path) {
          Directory.CreateDirectory(path);
       }
@@ -32,7 +32,7 @@ namespace Dargon.Nest {
       }
 
       public static string CombineUrl(string a, string b) {
-         return new Uri(Path.Combine(a, b)).AbsoluteUri;
+         return new Uri(Path.Combine(a, b).Replace('\\', '/')).AbsoluteUri;
       }
 
 

@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dargon.Management.Api">
+      <HintPath>..\packages\Dargon.Management.Api.0.1.2\lib\net45\Dargon.Management.Api.dll</HintPath>
+    </Reference>
     <Reference Include="Dargon.Nest, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dargon.Nest.0.1.0\lib\net45\Dargon.Nest.dll</HintPath>
@@ -43,7 +46,7 @@
     </Reference>
     <Reference Include="Dargon.Nest.Exeggutor.Host.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Dargon.Nest.Exeggutor.Host.Api.0.1.0\lib\net45\Dargon.Nest.Exeggutor.Host.Api.dll</HintPath>
+      <HintPath>..\packages\Dargon.Nest.Exeggutor.Host.Api.0.1.2\lib\net45\Dargon.Nest.Exeggutor.Host.Api.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.PortableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -74,6 +77,7 @@
     <Compile Include="EggContext.cs" />
     <Compile Include="EggContextFactory.cs" />
     <Compile Include="ExecutorHostConfiguration.cs" />
+    <Compile Include="ExeggutorMob.cs" />
     <Compile Include="ExeggutorServiceImpl.cs" />
     <Compile Include="HatchlingContext.cs" />
     <Compile Include="IEggContext.cs" />

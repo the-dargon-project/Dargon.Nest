@@ -61,7 +61,7 @@ namespace nest_host {
          AppDomain.CurrentDomain.UnhandledException += HandleUnhandledAppDomainException;
 
          var shutdownCancellationTokenSource = threadingProxy.CreateCancellationTokenSource();
-         new EggHost(pofStream, shutdownCancellationTokenSource).Run(bootstrapDto);
+         new EggHost(pofStreamsFactory, pofStream, shutdownCancellationTokenSource).Run(bootstrapDto);
 
          GC.KeepAlive(standardInput);
          GC.KeepAlive(standardOutput);

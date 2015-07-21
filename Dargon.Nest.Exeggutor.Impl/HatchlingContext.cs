@@ -11,6 +11,7 @@ namespace Dargon.Nest.Exeggutor {
       void Bootstrap(byte[] arguments);
 
       event EventHandler Exited;
+      void Shutdown();
    }
 
    public class HatchlingContextImpl : HatchlingContext {
@@ -41,6 +42,12 @@ namespace Dargon.Nest.Exeggutor {
          nestSerializer.Serialize(writer, new BootstrapDto(name, eggPath, arguments));
          writer.Flush();
          Console.WriteLine("Wrote bootstrap dto");
+      }
+
+      public void Shutdown() {
+         nestSerializer.Serialize(writer, new ShutdownDto());
+         writer.Flush();
+         Console.WriteLine("Wrote shutdown dto!");
       }
 
       public event EventHandler Exited { add { process.Exited += value; } remove { process.Exited -= value; } }

@@ -20,7 +20,7 @@ namespace Dargon.Nest {
             // read the file; it'll point to the real egg.
             var nextHop = webClient.DownloadString(webUrl);
             Console.Write("Hop: " + nextHop);
-            Console.WriteLine(" => " + (nextHop = Util.CombineUrl(webUrl + "/", nextHop)));
+            Console.WriteLine(" => " + (nextHop = NestUtil.CombineUrl(webUrl + "/", nextHop)));
             return FromUrl(nextHop, remoteUrl ?? webUrl);
          } else {
             var match = versionPattern.Match(breadCrumb);
@@ -29,7 +29,7 @@ namespace Dargon.Nest {
          }
 
          // download file list
-         var fileList = EggFileListSerializer.Deserialize(webClient.DownloadString(Util.CombineUrl(webUrl, "filelist")));
+         var fileList = EggFileListSerializer.Deserialize(webClient.DownloadString(NestUtil.CombineUrl(webUrl, "filelist")));
          
          return new RemoteDargonEgg(webUrl, eggName, remoteUrl ?? webUrl, eggVersion, fileList);
       }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Net.Sockets;
@@ -38,10 +39,13 @@ namespace Dargon.Nest.Exeggutor {
          this.hatchlingContextsByName = hatchlingContextsByName;
       }
 
+      public IEnumerable<HatchlingContext> Hatchlings => hatchlingContextsById.Values;
+
       public Guid SpawnHatchling(string eggName, SpawnConfiguration configuration) {
          try {
             Console.WriteLine("Spawning hatchling {0}!", eggName);
             configuration = configuration ?? new SpawnConfiguration();
+            configuration.Arguments = configuration.Arguments ?? new byte[0];
 
             IEggContext eggContext;
             if (!TryCreateEggContext(eggName, out eggContext)) {
@@ -55,6 +59,7 @@ namespace Dargon.Nest.Exeggutor {
                hatchlingContext.Exited += (s, e) => {
                   Console.WriteLine("Hatchling " + hatchlingContext.Name + " has exited!");
                   hatchlingContextsByName.Remove(hatchlingContext.Name.PairValue(hatchlingContext));
+                  hatchlingContextsById.Remove(hatchlingContext.InstanceId.PairValue(hatchlingContext));
                };
                return hatchlingContext.InstanceId;
             }

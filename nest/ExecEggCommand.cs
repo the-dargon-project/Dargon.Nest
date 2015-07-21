@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ItzWarty;
 
 namespace Dargon.Nest.Repl {
    public class ExecEggCommand : ICommand {

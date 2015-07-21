@@ -19,6 +19,8 @@ using NLog.Targets;
 using NLog.Targets.Wrappers;
 using System;
 using System.Threading;
+using Dargon.Management;
+using Dargon.Management.Server;
 
 namespace Dargon.Nest.Daemon {
    public static class Program {
@@ -28,6 +30,10 @@ namespace Dargon.Nest.Daemon {
          [Option('p', "DspPort", DefaultValue = 21337,
                  HelpText = "Dargon Service Protocol Port")]
          public int DspPort { get; set; }
+
+         [Option('m', "ManagementPort", DefaultValue = 21002,
+                 HelpText = "Dargon Management Interface Port")]
+         public int ManagementPort { get; set; }
 
          [Option("DspHeartBeatInterval", DefaultValue = 30000,
                  HelpText = "Dargon Service Protocol Heartbeat Interval")]
@@ -85,6 +91,7 @@ namespace Dargon.Nest.Daemon {
          var pofContext = new PofContext().With(x => {
             x.MergeContext(new DspPofContext());               // 0 - 999
             x.MergeContext(new ExeggutorPofContext(3000));     // 3000 - 3499, must reflect value in nestd
+            x.MergeContext(new ManagementPofContext());
          });
          var pofSerializer = new PofSerializer(pofContext);
 
@@ -97,12 +104,18 @@ namespace Dargon.Nest.Daemon {
          // construct libdsp local service node
          IServiceClient localServiceClient = serviceClientFactory.CreateOrJoin(new ClusteringConfiguration(options.DspPort, options.DspHeartBeatInterval));
 
+         // construct dargon.management dependencies
+         ITcpEndPoint managementServerEndpoint = tcpEndPointFactory.CreateAnyEndPoint(options.ManagementPort);
+         var managementFactory = new ManagementFactoryImpl(collectionFactory, threadingProxy, networkingProxy, pofContext, pofSerializer);
+         var localManagementServer = managementFactory.CreateServer(new ManagementServerConfiguration(managementServerEndpoint));
+
          // Nest-Host Dependencies
          ExecutorHostConfiguration executorHostConfiguration = new ExecutorHostConfigurationImpl(options.HostPath);
          HatchlingContextFactory hatchlingContextFactory = new HatchlingContextFactoryImpl(nestSerializer, executorHostConfiguration);
          EggContextFactory eggContextFactory = new EggContextFactoryImpl(hatchlingContextFactory, processProxy);
-         ExeggutorService service = new ExeggutorServiceImpl(options.NestPath, eggContextFactory);
-         localServiceClient.RegisterService(service, typeof(ExeggutorService));
+         ExeggutorServiceImpl exeggutorService = new ExeggutorServiceImpl(options.NestPath, eggContextFactory);
+         localManagementServer.RegisterInstance(new ExeggutorMob(exeggutorService));
+         localServiceClient.RegisterService(exeggutorService, typeof(ExeggutorService));
 
          logger.Info("Exposed nestd service.");
          var exitLatch = new CountdownEvent(1);

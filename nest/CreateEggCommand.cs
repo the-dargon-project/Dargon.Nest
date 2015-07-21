@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ItzWarty;
 
 namespace Dargon.Nest.Repl {
    public class CreateEggCommand : ICommand {
@@ -33,7 +34,7 @@ namespace Dargon.Nest.Repl {
             this.sourcePath = new FileInfo(sourcePath).FullName.Trim('/', '\\');
             var internalFilePaths = Directory.EnumerateFiles(sourcePath, "*", SearchOption.AllDirectories).Select(GetInternalPath).ToArray();
             foreach (var internalPath in internalFilePaths) {
-               var hash = Util.GetFileHash(GetAbsolutePath(internalPath));
+               var hash = NestUtil.GetFileHash(GetAbsolutePath(internalPath));
                var entry = new EggFileListEntry(hash, internalPath);
                entriesByInternalPath.Add(internalPath, entry);
             }

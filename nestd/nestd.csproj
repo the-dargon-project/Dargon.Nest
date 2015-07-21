@@ -43,13 +43,19 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
     </Reference>
+    <Reference Include="Dargon.Management.Api">
+      <HintPath>..\packages\Dargon.Management.Api.0.1.2\lib\net45\Dargon.Management.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Dargon.Management.Impl">
+      <HintPath>..\packages\Dargon.Management.Impl.0.1.3\lib\net45\Dargon.Management.Impl.dll</HintPath>
+    </Reference>
     <Reference Include="Dargon.Nest.Eggxecutor.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dargon.Nest.Exeggutor.Api.0.1.1\lib\net45\Dargon.Nest.Eggxecutor.Api.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.Nest.Exeggutor.Host.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Dargon.Nest.Exeggutor.Host.Api.0.1.0\lib\net45\Dargon.Nest.Exeggutor.Host.Api.dll</HintPath>
+      <HintPath>..\packages\Dargon.Nest.Exeggutor.Host.Api.0.1.2\lib\net45\Dargon.Nest.Exeggutor.Host.Api.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.PortableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
