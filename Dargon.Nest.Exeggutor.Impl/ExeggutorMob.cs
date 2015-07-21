@@ -34,5 +34,11 @@ namespace Dargon.Nest.Exeggutor {
             return $"Sent shutdown command to hatchling of name \"{name}\"!";
          }
       }
+
+      [ManagedOperation]
+      public string KillAllHatchlingsAndUpdateAllPackages() {
+         exeggutorService.KillAllHatchlingsAndUpdateAllPackages();
+         return "Success!";
+      }
    }
 }
