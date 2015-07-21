@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="PortableObjects\BootstrapDto.cs" />
     <Compile Include="PortableObjects\ExeggutorHostPofContext.cs" />
+    <Compile Include="PortableObjects\ShutdownDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
