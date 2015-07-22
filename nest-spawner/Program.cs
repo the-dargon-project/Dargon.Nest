@@ -13,6 +13,7 @@ using System.Windows.Threading;
 namespace nest_spawner {
    class Program {
       private const string kNestSpawnerDirectoryName = "nest-spawner";
+      private const string kNestSpawnerExecutableName = "nest-spawner.exe";
 
       public static void Main(string[] args) {
          var nestSpawnerExecutablePath = Assembly.GetEntryAssembly().Location;
@@ -75,15 +76,15 @@ namespace nest_spawner {
             Directory.CreateDirectory(spawnerPath);
 
             var entryAssembly = Assembly.GetEntryAssembly();
-            var clonedSpawnerPath = Path.Combine(spawnerPath, new FileInfo(entryAssembly.Location).Name);
-            File.Copy(entryAssembly.Location, clonedSpawnerPath);
+            var clonedSpawnerPath = Path.Combine(spawnerPath, kNestSpawnerExecutableName);
+            File.Copy(entryAssembly.Location, clonedSpawnerPath, true);
 
             var referencedAssemblies = entryAssembly.GetReferencedAssemblies();
             foreach (var referencedAssembly in referencedAssemblies) {
                var assemblyLocation = Assembly.Load(referencedAssembly.FullName).Location;
                var excludeRegex = new Regex("microsoft|windows|\\.net", RegexOptions.IgnoreCase);
                if (!excludeRegex.IsMatch(assemblyLocation)) {
-                  File.Copy(assemblyLocation, Path.Combine(spawnerPath, new FileInfo(assemblyLocation).Name));
+                  File.Copy(assemblyLocation, Path.Combine(spawnerPath, new FileInfo(assemblyLocation).Name), true);
                }
             }
 
