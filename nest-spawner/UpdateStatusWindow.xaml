@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:nest_spawner"
         mc:Ignorable="d"
         Title="Dargon Update Status" SizeToContent="WidthAndHeight"
-        WindowStyle="ToolWindow" SnapsToDevicePixels="True" >
+        WindowStyle="ToolWindow" SnapsToDevicePixels="True">
    <Grid Margin="12,12">
       <Grid.RowDefinitions>
          <RowDefinition />
