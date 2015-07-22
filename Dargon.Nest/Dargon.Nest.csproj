@@ -50,6 +50,7 @@
     <Compile Include="LocalNestLock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NestUtil.cs" />
+    <Compile Include="UpdateNestOptions.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

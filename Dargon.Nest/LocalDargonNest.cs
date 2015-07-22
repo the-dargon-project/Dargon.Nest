@@ -20,29 +20,44 @@ namespace Dargon.Nest {
       public string Channel { get { return GetSetting(kChannelSettingName); } set { SetSetting(kChannelSettingName, value); } }
       public string Remote { get { return GetSetting(kRemoteSettingName); } set { SetSetting(kRemoteSettingName, value); } }
 
-      public void UpdateNest() {
+      public void UpdateNest() => UpdateNest(new UpdateNestOptions());
+
+      public void UpdateNest(UpdateNestOptions updateNestOptions) {
+         var excludedEggs = updateNestOptions.ExcludedEggs;
+         var updateState = updateNestOptions.UpdateState;
+
          var remote = Remote;
          var wc = new WebClient();
          var latestPackageRedirectorUrl = NestUtil.CombineUrl(remote, Channel);
          var latestPackageRelativeUrl = wc.DownloadString(latestPackageRedirectorUrl);
          var latestPackageUrl = NestUtil.CombineUrl(latestPackageRedirectorUrl, latestPackageRelativeUrl);
          var packageListUrl = NestUtil.CombineUrl(latestPackageUrl, "PACKAGES");
+         updateState.SetState($"Downloading Package List for Channel {Channel}.", 0);
          var packageList = wc.DownloadString(packageListUrl);
-         var eggsAndVersions = from line in packageList.Split('\n').Select(x => x.Trim())
-                               let firstSpaceIndex = line.IndexOf(' ')
-                               let eggName = line.Substring(0, firstSpaceIndex)
-                               let version = line.Substring(firstSpaceIndex + 1)
-                               select new { EggName = eggName, Version = version };
-         foreach (var eggAndVersion in eggsAndVersions) {
+         var eggsAndVersions = (from line in packageList.Split('\n').Select(x => x.Trim())
+                                let firstSpaceIndex = line.IndexOf(' ')
+                                let eggName = line.Substring(0, firstSpaceIndex)
+                                let version = line.Substring(firstSpaceIndex + 1)
+                                select new { EggName = eggName, Version = version }).ToArray();
+         for (var eggIndex = 0; eggIndex < eggsAndVersions.Length; eggIndex++) {
+            var eggAndVersion = eggsAndVersions[eggIndex];
             var name = eggAndVersion.EggName;
+
+            if (excludedEggs.Any(excludedEggName => excludedEggName.Equals(name, StringComparison.OrdinalIgnoreCase))) {
+               continue;
+            }
+
             var version = eggAndVersion.Version;
             var remoteEgg = RemoteDargonEgg.FromUrl($"{remote}/{name}-{version}", $"{remote}/{name}");
+
+            updateState.SetState($"Updating Dargon Egg `{name}`!", (double)eggIndex / eggsAndVersions.Length);
             if (!IsExistsEgg(name)) {
-               InstallEgg(remoteEgg);
+               InstallEgg(remoteEgg, updateState);
             } else {
-               UpdateEggHelper(new LocalDargonEgg(GetEggPath(name)), remoteEgg);
+               UpdateEggHelper(new LocalDargonEgg(GetEggPath(name)), remoteEgg, updateState);
             }
          }
+         updateState.SetState($"Update Complete!", 1);
       }
 
       public IEnumerable<IDargonEgg> EnumerateEggs() {
@@ -59,7 +74,9 @@ namespace Dargon.Nest {
          }
       }
 
-      public void InstallEgg(IDargonEgg egg) {
+      public void InstallEgg(IDargonEgg egg) => InstallEgg(egg, new UpdateState());
+
+      public void InstallEgg(IDargonEgg egg, UpdateState updateState) {
          using (var nestLock = LocalNestLock.TakeLock(nestPath)) {
             var localEggPath = Path.Combine(nestPath, egg.Name);
             NestUtil.PrepareDirectory(localEggPath);
@@ -67,8 +84,10 @@ namespace Dargon.Nest {
 
             // copy file-list files
             var fileList = egg.Files;
-            foreach (var file in fileList) {
-               Console.WriteLine("Adding file " + file.InternalPath);
+            for (var fileIndex = 0; fileIndex < fileList.Count; fileIndex++) {
+               var file = fileList[fileIndex];
+               updateState.SetSubState("Adding file " + file.InternalPath, (double)fileIndex / fileList.Count);
+
                var filePath = Path.Combine(localEggPath, file.InternalPath);
                NestUtil.PrepareParentDirectory(filePath);
 
@@ -79,14 +98,14 @@ namespace Dargon.Nest {
             }
 
             // create version and filelist files
-            Console.WriteLine("Copy version and filelist files.");
+            updateState.SetSubState("Copy version and filelist files.", 1);
             File.WriteAllText(Path.Combine(localEggPath, NestConstants.kVersionFileName), egg.Version);
             File.WriteAllText(Path.Combine(localEggPath, NestConstants.kFileListFileName), EggFileListSerializer.Serialize(fileList));
 
-            Console.WriteLine("Setting remote to " + egg.Remote);
+            updateState.SetSubState("Setting remote to " + egg.Remote, 1);
             File.WriteAllText(Path.Combine(localEggPath, NestConstants.kRemoteFileName), egg.Remote);
 
-            Console.WriteLine("Installed egg " + egg.Name + " version " + egg.Version + " to " + localEggPath);
+            updateState.SetSubState("Installed egg " + egg.Name + " version!", 1);
          }
       }
 
@@ -109,11 +128,11 @@ namespace Dargon.Nest {
 
             var remoteEgg = EggFactory.CreateEggFromRemote(remote);
 
-            UpdateEggHelper(egg, remoteEgg);
+            UpdateEggHelper(egg, remoteEgg, new UpdateState());
          }
       }
 
-      private void UpdateEggHelper(LocalDargonEgg localEgg, IDargonEgg remoteEgg) {
+      private void UpdateEggHelper(LocalDargonEgg localEgg, IDargonEgg remoteEgg, UpdateState updateState) {
          var oldVersion = localEgg.Version;
          var oldFiles = localEgg.Files;
          var oldFilesByPath = oldFiles.ToDictionary(x => x.InternalPath);
@@ -123,35 +142,39 @@ namespace Dargon.Nest {
          var remoteFilesByPath = remoteFiles.ToDictionary(x => x.InternalPath);
 
          if (oldVersion != remoteVersion) {
-            Console.WriteLine("Update available: " + oldVersion + " => " + remoteVersion + ".");
+            updateState.Status = "Updating Dargon Egg `{localEgg.Name}` {oldVersion} => {remoteVersion}!";
          } else {
-            Console.WriteLine("No update available. Already have version " + remoteVersion + ".");
+            updateState.SetSubState($"No update available. Already have version {remoteVersion}.", 0);
             return;
          }
 
          var oldFilePaths = new HashSet<string>(oldFiles.Select(x => x.InternalPath));
          var remoteFilePaths = new HashSet<string>(remoteFiles.Select(x => x.InternalPath));
-         var allFilePaths = new SortedSet<string>(oldFilePaths.Concat(remoteFilePaths));
+         var allFilePaths = new SortedSet<string>(oldFilePaths.Concat(remoteFilePaths)).ToArray();
 
-         foreach (var internalPath in allFilePaths) {
+//         foreach (var internalPath in allFilePaths) {
+         for (var fileIndex = 0; fileIndex < allFilePaths.Length; fileIndex++) {
+            var internalPath = allFilePaths[fileIndex];
+            var percentage = (double)fileIndex / allFilePaths.Length;
+
             var oldExists = oldFilePaths.Contains(internalPath);
             var remoteExists = remoteFilePaths.Contains(internalPath);
             var localFilePath = Path.Combine(localEgg.RootPath, internalPath);
             if (oldExists && remoteExists) {
                if (oldFilesByPath[internalPath].Guid != remoteFilesByPath[internalPath].Guid) {
-                  Console.WriteLine("Updating file " + internalPath);
+                  updateState.SetSubState($"Updating file {internalPath}.", percentage);
                   using (var sourceStream = remoteEgg.GetStream(internalPath))
                   using (var destStream = File.Open(localFilePath, FileMode.Create, FileAccess.Write, FileShare.None)) {
                      sourceStream.CopyTo(destStream);
                   }
                } else {
-                  Console.WriteLine("Keeping file " + internalPath);
+                  updateState.SetSubState($"Keeping file {internalPath}.", percentage);
                }
             } else if (oldExists && !remoteExists) {
-               Console.WriteLine("Deleting file " + internalPath);
+               updateState.SetSubState($"Deleting file {internalPath}.", percentage);
                File.Delete(localFilePath);
             } else if (!oldExists && remoteExists) {
-               Console.WriteLine("Adding file " + internalPath);
+               updateState.SetSubState($"Adding file {internalPath}.", percentage);
                using (var sourceStream = remoteEgg.GetStream(internalPath))
                using (var destStream = File.Open(localFilePath, FileMode.Create, FileAccess.Write, FileShare.None)) {
                   sourceStream.CopyTo(destStream);
@@ -159,11 +182,11 @@ namespace Dargon.Nest {
             }
          }
 
-         Console.WriteLine("Update version and filelist files.");
+         updateState.SetSubState("Update version and filelist files.", 1);
          File.WriteAllText(Path.Combine(localEgg.RootPath, NestConstants.kVersionFileName), remoteVersion);
          File.WriteAllText(Path.Combine(localEgg.RootPath, NestConstants.kFileListFileName), EggFileListSerializer.Serialize(remoteFiles));
 
-         Console.WriteLine("Installed egg " + localEgg.Name + " version " + localEgg.Version + " to " + localEgg.RootPath);
+         updateState.SetSubState($"Installed egg `{localEgg.Name}` version {localEgg.Version}!", 1);
       }
 
       public int ExecuteEgg(string eggName, string args) {
