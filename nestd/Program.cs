@@ -18,6 +18,8 @@ using NLog.Config;
 using NLog.Targets;
 using NLog.Targets.Wrappers;
 using System;
+using System.IO;
+using System.Reflection;
 using System.Threading;
 using Dargon.Management;
 using Dargon.Management.Server;
@@ -123,6 +125,14 @@ namespace Dargon.Nest.Daemon {
       }
 
       private static void InitializeLogging() {
+         var nestDaemonDirectory = new FileInfo(Assembly.GetEntryAssembly().Location).Directory;
+         var nestDirectory = nestDaemonDirectory.Parent;
+         var nestLogsDirectory = new DirectoryInfo(Path.Combine(nestDirectory.FullName, "logs"));
+         if (!nestLogsDirectory.Exists) {
+            nestLogsDirectory.Create();
+         }
+         var nestLogFile = Path.Combine(nestLogsDirectory.FullName, "nestd.log");
+
          var config = new LoggingConfiguration();
          Target debuggerTarget = new DebuggerTarget() {
             Layout = "${longdate}|${level}|${logger}|${message} ${exception:format=tostring}"
@@ -130,6 +140,7 @@ namespace Dargon.Nest.Daemon {
          Target consoleTarget = new ColoredConsoleTarget() {
             Layout = "${longdate}|${level}|${logger}|${message} ${exception:format=tostring}"
          };
+         Target fileTarget = new FileTarget { FileName = nestLogFile };
 
 #if !DEBUG
          debuggerTarget = new AsyncTargetWrapper(debuggerTarget);
@@ -140,12 +151,16 @@ namespace Dargon.Nest.Daemon {
 
          config.AddTarget("debugger", debuggerTarget);
          config.AddTarget("console", consoleTarget);
+         config.AddTarget("logfile", fileTarget);
 
          var debuggerRule = new LoggingRule("*", LogLevel.Trace, debuggerTarget);
          config.LoggingRules.Add(debuggerRule);
 
          var consoleRule = new LoggingRule("*", LogLevel.Trace, consoleTarget);
          config.LoggingRules.Add(consoleRule);
+
+         var fileLogRule = new LoggingRule("*", LogLevel.Trace, fileTarget);
+         config.LoggingRules.Add(fileLogRule);
 
          LogManager.Configuration = config;
       }

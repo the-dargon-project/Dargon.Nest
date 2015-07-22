@@ -3,6 +3,7 @@ using ItzWarty.IO;
 using ItzWarty.Processes;
 using System;
 using Dargon.Nest.Exeggutor.Host.PortableObjects;
+using NLog;
 
 namespace Dargon.Nest.Exeggutor {
    public interface HatchlingContext {
@@ -15,6 +16,8 @@ namespace Dargon.Nest.Exeggutor {
    }
 
    public class HatchlingContextImpl : HatchlingContext {
+      private static Logger logger = LogManager.GetCurrentClassLogger();
+
       private readonly IPofSerializer nestSerializer;
       private readonly Guid instanceId;
       private readonly string name;
@@ -41,13 +44,13 @@ namespace Dargon.Nest.Exeggutor {
       public void Bootstrap(byte[] arguments) {
          nestSerializer.Serialize(writer, new BootstrapDto(name, eggPath, arguments));
          writer.Flush();
-         Console.WriteLine("Wrote bootstrap dto");
+         logger.Info("Wrote bootstrap dto");
       }
 
       public void Shutdown() {
          nestSerializer.Serialize(writer, new ShutdownDto());
          writer.Flush();
-         Console.WriteLine("Wrote shutdown dto!");
+         logger.Info("Wrote shutdown dto!");
       }
 
       public event EventHandler Exited { add { process.Exited += value; } remove { process.Exited -= value; } }

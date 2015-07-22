@@ -8,6 +8,7 @@ using ImpromptuInterface;
 using ItzWarty;
 using ItzWarty.IO;
 using ItzWarty.Processes;
+using NLog;
 
 namespace Dargon.Nest.Exeggutor {
    public interface HatchlingContextFactory {
@@ -15,6 +16,8 @@ namespace Dargon.Nest.Exeggutor {
    }
 
    public class HatchlingContextFactoryImpl : HatchlingContextFactory {
+      private static Logger logger = LogManager.GetCurrentClassLogger();
+
       private readonly IPofSerializer nestSerializer;
       private readonly ExecutorHostConfiguration configuration;
 
@@ -24,6 +27,9 @@ namespace Dargon.Nest.Exeggutor {
       }
 
       public HatchlingContext Create(string name, string eggPath) {
+         logger.Info($"Spawning hatchling of name {name} and path {eggPath}!");
+         logger.Info("nest-host is located at: " + configuration.HostExecutablePath);
+
          Guid instanceId = Guid.NewGuid();
 
          // command line arguments are solely for process list debugging.
@@ -33,7 +39,6 @@ namespace Dargon.Nest.Exeggutor {
          }
          args.Add("\"" + eggPath + "\"");
 
-         Console.WriteLine("!A");
          var processStartInfo = new ProcessStartInfo() {
             FileName = Path.GetFullPath(configuration.HostExecutablePath),
             Arguments = args.Join(" "),
@@ -44,15 +49,13 @@ namespace Dargon.Nest.Exeggutor {
          };
          var hostProcess = new Process().With(x => { x.StartInfo = processStartInfo; });
          hostProcess.EnableRaisingEvents = true;
-         Console.WriteLine(processStartInfo.FileName);
 
-         Console.WriteLine("!B");
+         logger.Info("Starting nest-host process...");
          hostProcess.Start();
-         Console.WriteLine("!C");
+         logger.Info("nest-host process has started!");
 
          var reader = new BinaryReaderWrapper(new StreamWrapper(hostProcess.StandardOutput.BaseStream));
          var writer = new BinaryWriterWrapper(new StreamWrapper(hostProcess.StandardInput.BaseStream));
-//         writer = new BinaryWriterWrapper(new FileStreamWrapper(File.Open("C:/Dargon/out2.txt", FileMode.Create, FileAccess.Write, FileShare.None)));
 
          writer.Write(0x5453454e);
 

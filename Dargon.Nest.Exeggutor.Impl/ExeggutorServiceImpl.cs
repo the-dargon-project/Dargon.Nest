@@ -46,7 +46,7 @@ namespace Dargon.Nest.Exeggutor {
 
       public Guid SpawnHatchling(string eggName, SpawnConfiguration configuration) {
          try {
-            Console.WriteLine("Spawning hatchling {0}!", eggName);
+            logger.Info("Spawning hatchling {0}!", eggName);
             configuration = configuration ?? new SpawnConfiguration();
             configuration.Arguments = configuration.Arguments ?? new byte[0];
 
@@ -61,7 +61,7 @@ namespace Dargon.Nest.Exeggutor {
                      hatchlingContextsByName.Add(hatchlingContext.Name, hatchlingContext);
                   }
                   hatchlingContext.Exited += (s, e) => {
-                     Console.WriteLine("Hatchling " + hatchlingContext.Name + " has exited!");
+                     logger.Info("Hatchling " + hatchlingContext.Name + " has exited!");
                      hatchlingContextsByName.Remove(hatchlingContext.Name.PairValue(hatchlingContext));
                      hatchlingContextsById.Remove(hatchlingContext.InstanceId.PairValue(hatchlingContext));
                   };
