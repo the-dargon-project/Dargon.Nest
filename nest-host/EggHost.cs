@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using System.Reflection;
 
 namespace nest_host {
@@ -36,6 +37,7 @@ namespace nest_host {
             INestApplicationEgg eggInstance = InstantiateNestApplicationEgg(eggAssemblyPath);
             var dispatcher = pofStreamsFactory.CreateDispatcher(pofStream);
             dispatcher.RegisterHandler<ShutdownDto>(dto => Console.WriteLine("Egg shutdown result: " + eggInstance.Shutdown() + "!"));
+            dispatcher.RegisterShutdownHandler(() => eggInstance.Shutdown());
             var startResult = eggInstance.Start(new EggParameters(this, bootstrapArguments.Name, bootstrapArguments.PayloadBytes));
             dispatcher.Start();
             Console.WriteLine("Egg started with " + startResult);
