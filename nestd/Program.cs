@@ -119,6 +119,8 @@ namespace Dargon.Nest.Daemon {
          localManagementServer.RegisterInstance(new ExeggutorMob(exeggutorService));
          localServiceClient.RegisterService(exeggutorService, typeof(ExeggutorService));
 
+         AppDomain.CurrentDomain.ProcessExit += (s, e) => exeggutorService.KillAllHatchlings();
+
          logger.Info("Exposed nestd service.");
          var exitLatch = new CountdownEvent(1);
          exitLatch.Wait();

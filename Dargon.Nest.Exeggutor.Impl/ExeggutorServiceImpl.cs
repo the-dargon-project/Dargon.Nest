@@ -74,15 +74,21 @@ namespace Dargon.Nest.Exeggutor {
          }
       }
 
-      public void KillAllHatchlingsAndUpdateAllPackages() {
+      public void KillAllHatchlings() {
          lock (synchronization) {
             var hatchlings = Hatchlings.ToArray();
             var exitCountdown = new CountdownEvent(hatchlings.Length);
-            foreach(var hatchling in hatchlings) {
+            foreach (var hatchling in hatchlings) {
                hatchling.Exited += (s, e) => exitCountdown.Signal();
                hatchling.Shutdown();
             }
             exitCountdown.Wait();
+         }
+      }
+
+      public void KillAllHatchlingsAndUpdateAllPackages() {
+         lock (synchronization) {
+            KillAllHatchlings();
             var nest = new LocalDargonNest(nestPath);
             nest.UpdateNest();
          }
