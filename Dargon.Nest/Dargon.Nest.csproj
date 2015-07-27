@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EggFactory.cs" />
+    <Compile Include="InMemoryEgg.cs" />
     <Compile Include="RemoteDargonEgg.cs" />
     <Compile Include="EggFileListEntry.cs" />
     <Compile Include="EggFileListSerializer.cs" />
