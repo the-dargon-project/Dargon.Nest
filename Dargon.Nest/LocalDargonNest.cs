@@ -17,6 +17,7 @@ namespace Dargon.Nest {
          this.nestPath = nestPath;
       }
 
+      public string CachePath => Path.Combine(nestPath, ".cache");
       public string Channel { get { return GetSetting(kChannelSettingName); } set { SetSetting(kChannelSettingName, value); } }
       public string Remote { get { return GetSetting(kRemoteSettingName); } set { SetSetting(kRemoteSettingName, value); } }
 
@@ -91,9 +92,19 @@ namespace Dargon.Nest {
                var filePath = Path.Combine(localEggPath, file.InternalPath);
                NestUtil.PrepareParentDirectory(filePath);
 
-               using (var sourceStream = egg.GetStream(file.InternalPath))
-               using (var destStream = File.Open(filePath, FileMode.Create, FileAccess.Write, FileShare.None)) {
-                  sourceStream.CopyTo(destStream);
+               var cacheFilePath = Path.Combine(CachePath, file.Guid.ToString("n"));
+               var cacheFileExists = File.Exists(cacheFilePath);
+               if (cacheFileExists) {
+                  NestUtil.PrepareParentDirectory(filePath);
+                  File.Copy(cacheFilePath, filePath, true);
+               } else {
+                  using (var destStream = File.Open(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                  using (var sourceStream = egg.GetStream(file.InternalPath)) {
+                     sourceStream.CopyTo(destStream);
+                  }
+                  Directory.CreateDirectory(CachePath);
+                  File.SetAttributes(CachePath, File.GetAttributes(CachePath) | FileAttributes.Hidden);
+                  File.Copy(filePath, cacheFilePath);
                }
             }
 
@@ -160,13 +171,31 @@ namespace Dargon.Nest {
             var oldExists = oldFilePaths.Contains(internalPath);
             var remoteExists = remoteFilePaths.Contains(internalPath);
             var localFilePath = Path.Combine(localEgg.RootPath, internalPath);
+
+            Action addOrUpdate = () => {
+               var remoteFile = remoteEgg.Files.First(file => file.InternalPath.Equals(internalPath));
+
+               var cacheFilePath = Path.Combine(CachePath, remoteFile.Guid.ToString("n"));
+               var cacheFileExists = File.Exists(cacheFilePath);
+
+               if (cacheFileExists) {
+                  NestUtil.PrepareParentDirectory(localFilePath);
+                  File.Copy(cacheFilePath, localFilePath, true);
+               } else {
+                  using (var destStream = File.Open(localFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                  using (var sourceStream = remoteEgg.GetStream(remoteFile.InternalPath)) {
+                     sourceStream.CopyTo(destStream);
+                  }
+                  Directory.CreateDirectory(CachePath);
+                  File.SetAttributes(CachePath, File.GetAttributes(CachePath) | FileAttributes.Hidden);
+                  File.Copy(localFilePath, cacheFilePath);
+               }
+            };
+
             if (oldExists && remoteExists) {
                if (oldFilesByPath[internalPath].Guid != remoteFilesByPath[internalPath].Guid) {
                   updateState.SetSubState($"Updating file {internalPath}.", percentage);
-                  using (var sourceStream = remoteEgg.GetStream(internalPath))
-                  using (var destStream = File.Open(localFilePath, FileMode.Create, FileAccess.Write, FileShare.None)) {
-                     sourceStream.CopyTo(destStream);
-                  }
+                  addOrUpdate();
                } else {
                   updateState.SetSubState($"Keeping file {internalPath}.", percentage);
                }
@@ -175,10 +204,7 @@ namespace Dargon.Nest {
                File.Delete(localFilePath);
             } else if (!oldExists && remoteExists) {
                updateState.SetSubState($"Adding file {internalPath}.", percentage);
-               using (var sourceStream = remoteEgg.GetStream(internalPath))
-               using (var destStream = File.Open(localFilePath, FileMode.Create, FileAccess.Write, FileShare.None)) {
-                  sourceStream.CopyTo(destStream);
-               }
+               addOrUpdate();
             }
          }
 
