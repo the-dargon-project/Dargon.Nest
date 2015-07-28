@@ -11,6 +11,7 @@ using NLog.Targets.Wrappers;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -46,7 +47,9 @@ namespace nest_host {
          var bootstrapDto = pofStream.Read<BootstrapDto>();
 
          // Redirect nest-host (and thus hatchling) output to a log file.
-         var logDirectory = "C:/Dargon/logs";
+         var nestHostDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
+         var nestDirectory = nestHostDirectory.Parent;
+         var logDirectory = Path.Combine(nestDirectory.FullName, "logs");
          Directory.CreateDirectory(logDirectory);
          var outputWriter = new StreamWriter(new FileStream(Path.Combine(logDirectory, bootstrapDto.Name + ".log"), FileMode.Append, FileAccess.Write, FileShare.Read)) { AutoFlush = true };
          Console.SetIn(new StreamReader(Stream.Null));

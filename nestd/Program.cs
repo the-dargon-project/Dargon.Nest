@@ -45,7 +45,7 @@ namespace Dargon.Nest.Daemon {
                  HelpText = "Path to nest host executable")]
          public string HostPath { get; set; }
 
-         [Option('n', "NestPath", DefaultValue = "C:/Dargon",
+         [Option('n', "NestPath", DefaultValue = null,
                  HelpText = "Path to dargon nest.")]
          public string NestPath { get; set; }
 
@@ -55,7 +55,7 @@ namespace Dargon.Nest.Daemon {
       }
 
       public static void Main(string[] args) {
-         Environment.CurrentDirectory = "C:/Dargon/nestd";// new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName;
+         Environment.CurrentDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName;
          InitializeLogging();
 
          logger.Info("Logging Initialized.");
@@ -67,7 +67,12 @@ namespace Dargon.Nest.Daemon {
          }
       }
 
-      public static void Run(Options options) {  
+      public static void Run(Options options) {
+         if (options.NestPath == null) {
+            var nestDaemonDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
+            options.NestPath = nestDaemonDirectory.Parent.FullName;
+         }
+
          // construct libwarty dependencies
          ICollectionFactory collectionFactory = new CollectionFactory();
 
@@ -142,7 +147,10 @@ namespace Dargon.Nest.Daemon {
          Target consoleTarget = new ColoredConsoleTarget() {
             Layout = "${longdate}|${level}|${logger}|${message} ${exception:format=tostring}"
          };
-         Target fileTarget = new FileTarget { FileName = nestLogFile };
+         Target fileTarget = new FileTarget {
+            FileName = nestLogFile,
+            Layout = "${longdate}|${level}|${logger}|${message} ${exception:format=tostring}"
+         };
 
 #if !DEBUG
          debuggerTarget = new AsyncTargetWrapper(debuggerTarget);
