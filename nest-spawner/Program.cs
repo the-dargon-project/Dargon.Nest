@@ -73,6 +73,15 @@ namespace nest_spawner {
             var nestPath = dargonDirectoryDialog.SelectedPath;
             Directory.CreateDirectory(nestPath);
 
+            var nestDirectoryInfo = new DirectoryInfo(nestPath);
+            if (nestDirectoryInfo.Exists &&
+                !nestDirectoryInfo.Name.Equals("Dargon", StringComparison.OrdinalIgnoreCase) &&
+                nestDirectoryInfo.EnumerateFileSystemInfos().Any() &&
+                !File.Exists(Path.Combine(nestPath, "LOCK"))) {
+               nestPath = Path.Combine(nestPath, "Dargon");
+               Directory.CreateDirectory(nestPath);
+            }
+
             var spawnerPath = Path.Combine(nestPath, kNestSpawnerDirectoryName);
             Directory.CreateDirectory(spawnerPath);
 
