@@ -41,7 +41,7 @@
   <ItemGroup>
     <Reference Include="Dargon.Nest, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Dargon.Nest.0.3.0\lib\net45\Dargon.Nest.dll</HintPath>
+      <HintPath>..\packages\Dargon.Nest.0.4.1\lib\net45\Dargon.Nest.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -75,7 +75,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="UpdateStatusView.xaml">
@@ -94,6 +93,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="resources\installer_icon.ico" />
   </ItemGroup>
   <ItemGroup>
