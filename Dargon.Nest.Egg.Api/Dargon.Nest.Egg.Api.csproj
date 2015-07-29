@@ -42,6 +42,7 @@
     <Compile Include="EggParameters.cs" />
     <Compile Include="IEggParameters.cs" />
     <Compile Include="INestApplicationEgg.cs" />
+    <Compile Include="NestResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,9 +3,4 @@
       NestResult Start(IEggParameters parameters);
       NestResult Shutdown();
    }
-
-   public enum NestResult {
-      Success,
-      Failure
-   }
 }
