@@ -8,6 +8,7 @@ namespace Dargon.Nest.Eggxecutor {
    public class ExeggutorPofContext : PofContext {
       public ExeggutorPofContext(int basePofId) {
          RegisterPortableObjectType(basePofId + 0, typeof(SpawnConfiguration));
+         RegisterPortableObjectType(basePofId + 1, typeof(SpawnHatchlingResult));
       }
    }
 }
