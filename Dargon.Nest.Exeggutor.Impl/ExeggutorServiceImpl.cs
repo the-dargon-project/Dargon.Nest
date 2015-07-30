@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
+using Dargon.Nest.Egg;
 using Dargon.Nest.Eggxecutor;
 using ItzWarty;
 using ItzWarty.Collections;
@@ -44,7 +45,7 @@ namespace Dargon.Nest.Exeggutor {
 
       public IEnumerable<HatchlingContext> Hatchlings => hatchlingContextsById.Values;
 
-      public Guid SpawnHatchling(string eggName, SpawnConfiguration configuration) {
+      public SpawnHatchlingResult SpawnHatchling(string eggName, SpawnConfiguration configuration) {
          try {
             logger.Info("Spawning hatchling {0}!", eggName);
             configuration = configuration ?? new SpawnConfiguration();
@@ -65,12 +66,25 @@ namespace Dargon.Nest.Exeggutor {
                      hatchlingContextsByName.Remove(hatchlingContext.Name.PairValue(hatchlingContext));
                      hatchlingContextsById.Remove(hatchlingContext.InstanceId.PairValue(hatchlingContext));
                   };
-                  return hatchlingContext.InstanceId;
+
+                  NestResult startResult = NestResult.Unknown;
+                  if (!configuration.StartFlags.HasFlag(HatchlingStartFlags.StartAsynchronously)) {
+                     logger.Info("Getting start result");
+                     startResult = hatchlingContext.StartResult;
+                     logger.Info("got start result");
+                  }
+
+                  logger.Info("Returning from SpawnHatchling");
+
+                  return new SpawnHatchlingResult {
+                     HatchlingId = hatchlingContext.InstanceId,
+                     StartResult = startResult
+                  };
                }
             }
          } catch (Exception e) {
             logger.Error("SpawnHatchling threw", e);
-            return Guid.Empty;
+            throw;
          }
       }
 

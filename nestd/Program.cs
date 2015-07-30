@@ -89,15 +89,11 @@ namespace Dargon.Nest.Daemon {
          INetworkingProxy networkingProxy = new NetworkingProxy(socketFactory, tcpEndPointFactory);
          IProcessProxy processProxy = new ProcessProxy();
 
-         // POF Dependencies
-         IPofContext nestContext = new ExeggutorHostPofContext(3500);
-         IPofSerializer nestSerializer = new PofSerializer(nestContext);
-
-
          // Common POF Context
          var pofContext = new PofContext().With(x => {
             x.MergeContext(new DspPofContext());               // 0 - 999
             x.MergeContext(new ExeggutorPofContext(3000));     // 3000 - 3499, must reflect value in nestd
+            x.MergeContext(new ExeggutorHostPofContext(3500));
             x.MergeContext(new ManagementPofContext());
          });
          var pofSerializer = new PofSerializer(pofContext);
@@ -118,7 +114,7 @@ namespace Dargon.Nest.Daemon {
 
          // Nest-Host Dependencies
          ExecutorHostConfiguration executorHostConfiguration = new ExecutorHostConfigurationImpl(options.HostPath);
-         HatchlingContextFactory hatchlingContextFactory = new HatchlingContextFactoryImpl(nestSerializer, executorHostConfiguration);
+         HatchlingContextFactory hatchlingContextFactory = new HatchlingContextFactoryImpl(pofSerializer, pofStreamsFactory, executorHostConfiguration);
          EggContextFactory eggContextFactory = new EggContextFactoryImpl(hatchlingContextFactory, processProxy);
          ExeggutorServiceImpl exeggutorService = new ExeggutorServiceImpl(options.NestPath, eggContextFactory);
          localManagementServer.RegisterInstance(new ExeggutorMob(exeggutorService));

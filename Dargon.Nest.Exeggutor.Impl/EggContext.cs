@@ -15,7 +15,7 @@ namespace Dargon.Nest.Exeggutor {
 
       public HatchlingContext Spawn(SpawnConfiguration configuration) {
          var context = hatchlingContextFactory.Create(configuration.InstanceName, egg.Location);
-         context.Bootstrap(configuration.Arguments);
+         context.StartBootstrap(configuration.Arguments);
          return context;
       }
    }

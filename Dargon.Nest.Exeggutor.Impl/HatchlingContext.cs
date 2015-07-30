@@ -2,57 +2,84 @@
 using ItzWarty.IO;
 using ItzWarty.Processes;
 using System;
+using System.Threading;
+using Dargon.Nest.Egg;
 using Dargon.Nest.Exeggutor.Host.PortableObjects;
+using Dargon.PortableObjects.Streams;
 using NLog;
 
 namespace Dargon.Nest.Exeggutor {
    public interface HatchlingContext {
       Guid InstanceId { get; }
       string Name { get; }
-      void Bootstrap(byte[] arguments);
+      string Path { get; }
+      NestResult StartResult { get; }
 
       event EventHandler Exited;
+
+      void StartBootstrap(byte[] arguments);
       void Shutdown();
    }
 
    public class HatchlingContextImpl : HatchlingContext {
       private static Logger logger = LogManager.GetCurrentClassLogger();
 
-      private readonly IPofSerializer nestSerializer;
+      private readonly ManualResetEvent startResultLatch = new ManualResetEvent(false);
+
       private readonly Guid instanceId;
       private readonly string name;
       private readonly string eggPath;
-      private readonly IProcess process;
+      private readonly IProcess hatchlingProcess;
+      private readonly PofStream pofStream;
+      private readonly PofDispatcher pofDispatcher;
       private readonly IBinaryReader reader;
       private readonly IBinaryWriter writer;
+      private NestResult startResult;
 
-      public HatchlingContextImpl(IPofSerializer nestSerializer, Guid instanceId, string name, string eggPath, IProcess process, IBinaryReader reader, IBinaryWriter writer) {
+      public HatchlingContextImpl(Guid instanceId, string name, string eggPath, IProcess hatchlingProcess, PofStream pofStream, PofDispatcher pofDispatcher, IBinaryReader reader, IBinaryWriter writer) {
+         this.instanceId = instanceId;
          this.name = name;
          this.eggPath = eggPath;
-         this.process = process;
+         this.hatchlingProcess = hatchlingProcess;
+         this.pofStream = pofStream;
+         this.pofDispatcher = pofDispatcher;
          this.reader = reader;
          this.writer = writer;
-         this.nestSerializer = nestSerializer;
-         this.instanceId = instanceId;
       }
 
-      public Guid InstanceId { get { return instanceId; } }
-      public string Name { get { return name; } }
+      public Guid InstanceId => instanceId;
+      public string Name => name;
+      public string Path => eggPath;
+      public NestResult StartResult => GetStartResult();
 
-      public void Initialize() {}
+      public void Initialize() {
+         pofDispatcher.RegisterHandler<BootstrapResultDto>(HandleBootstrapResultDto);
+         pofDispatcher.Start();
+      }
 
-      public void Bootstrap(byte[] arguments) {
-         nestSerializer.Serialize(writer, new BootstrapDto(name, eggPath, arguments));
+      public void StartBootstrap(byte[] arguments) {
+         logger.Info("Writing bootstrap dto!");
+         pofStream.Write(new BootstrapDto(name, eggPath, arguments));
          writer.Flush();
          logger.Info("Wrote bootstrap dto");
       }
 
       public void Shutdown() {
-         nestSerializer.Serialize(writer, new ShutdownDto());
+         pofStream.Write(new ShutdownDto());
          writer.Flush();
          logger.Info("Wrote shutdown dto!");
       }
 
-      public event EventHandler Exited { add { process.Exited += value; } remove { process.Exited -= value; } }
+      private NestResult GetStartResult() {
+         startResultLatch.WaitOne();
+         return startResult; 
+      }
+
+      private void HandleBootstrapResultDto(BootstrapResultDto x) {
+         startResult = x.StartResult;
+         startResultLatch.Set();
+      }
+
+      public event EventHandler Exited { add { hatchlingProcess.Exited += value; } remove { hatchlingProcess.Exited -= value; } }
    }
 }

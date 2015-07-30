@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using Dargon.Nest.Exeggutor.Host.PortableObjects;
 using Dargon.PortableObjects;
+using Dargon.PortableObjects.Streams;
 using ImpromptuInterface;
 using ItzWarty;
 using ItzWarty.IO;
@@ -19,10 +21,12 @@ namespace Dargon.Nest.Exeggutor {
       private static Logger logger = LogManager.GetCurrentClassLogger();
 
       private readonly IPofSerializer nestSerializer;
+      private readonly PofStreamsFactory pofStreamsFactory;
       private readonly ExecutorHostConfiguration configuration;
 
-      public HatchlingContextFactoryImpl(IPofSerializer nestSerializer, ExecutorHostConfiguration configuration) {
+      public HatchlingContextFactoryImpl(IPofSerializer nestSerializer, PofStreamsFactory pofStreamsFactory, ExecutorHostConfiguration configuration) {
          this.nestSerializer = nestSerializer;
+         this.pofStreamsFactory = pofStreamsFactory;
          this.configuration = configuration;
       }
 
@@ -58,8 +62,12 @@ namespace Dargon.Nest.Exeggutor {
          var writer = new BinaryWriterWrapper(new StreamWrapper(hostProcess.StandardInput.BaseStream));
 
          writer.Write(0x5453454e);
+         writer.Flush();
 
-         var context = new HatchlingContextImpl(nestSerializer, instanceId, name, eggPath, hostProcess.ActLike<IProcess>(), reader, writer);
+         var pofStream = pofStreamsFactory.CreatePofStream(reader, writer);
+         var pofDispatcher = pofStreamsFactory.CreateDispatcher(pofStream);
+
+         var context = new HatchlingContextImpl(instanceId, name, eggPath, hostProcess.ActLike<IProcess>(), pofStream, pofDispatcher, reader, writer);
          context.Initialize();
          return context;
       }

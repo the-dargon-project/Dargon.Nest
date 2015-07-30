@@ -40,6 +40,7 @@ namespace nest_host {
             dispatcher.RegisterShutdownHandler(() => eggInstance.Shutdown());
             var startResult = eggInstance.Start(new EggParameters(this, bootstrapArguments.Name, bootstrapArguments.PayloadBytes));
             dispatcher.Start();
+            pofStream.Write(new BootstrapResultDto(startResult));
             Console.WriteLine("Egg started with " + startResult);
          }
       }
