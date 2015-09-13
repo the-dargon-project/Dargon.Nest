@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using Dargon.Nest.Exeggutor.Host.PortableObjects;
 using Dargon.PortableObjects;
@@ -14,23 +16,27 @@ using NLog;
 
 namespace Dargon.Nest.Exeggutor {
    public interface HatchlingContextFactory {
-      HatchlingContext Create(string name, string eggPath);
+      HatchlingContext Create(string name, IDargonEgg egg);
    }
 
    public class HatchlingContextFactoryImpl : HatchlingContextFactory {
       private static Logger logger = LogManager.GetCurrentClassLogger();
 
+      private readonly IFileSystemProxy fileSystemProxy;
       private readonly IPofSerializer nestSerializer;
       private readonly PofStreamsFactory pofStreamsFactory;
       private readonly ExecutorHostConfiguration configuration;
 
-      public HatchlingContextFactoryImpl(IPofSerializer nestSerializer, PofStreamsFactory pofStreamsFactory, ExecutorHostConfiguration configuration) {
+      public HatchlingContextFactoryImpl(IFileSystemProxy fileSystemProxy, IPofSerializer nestSerializer, PofStreamsFactory pofStreamsFactory, ExecutorHostConfiguration configuration) {
+         this.fileSystemProxy = fileSystemProxy;
          this.nestSerializer = nestSerializer;
          this.pofStreamsFactory = pofStreamsFactory;
          this.configuration = configuration;
       }
 
-      public HatchlingContext Create(string name, string eggPath) {
+      public HatchlingContext Create(string name, IDargonEgg egg) {
+         var eggPath = egg.Location;
+
          logger.Info($"Spawning hatchling of name {name} and path {eggPath}!");
          logger.Info("nest-host is located at: " + configuration.HostExecutablePath);
 
@@ -43,8 +49,30 @@ namespace Dargon.Nest.Exeggutor {
          }
          args.Add("\"" + eggPath + "\"");
 
+         var nestHostFileInfo = new FileInfo(configuration.HostExecutablePath);
+         var nestHostEggDirectory = nestHostFileInfo.Directory;
+         var nestHostNeighboringAssemblies = from filePath in nestHostEggDirectory.EnumerateFiles("*", SearchOption.AllDirectories)
+                                             let extension = filePath.Extension
+                                             where extension.EndsWithAny(new[] { ".exe", ".dll" }, StringComparison.OrdinalIgnoreCase)
+                                             select filePath;
+         
+         foreach (var neighboringAssemblyInfo in nestHostNeighboringAssemblies) {
+            try {
+               var relativePath = neighboringAssemblyInfo.FullName.Substring(nestHostEggDirectory.FullName.Length + 1);
+               var eggAssemblyPath = Path.Combine(eggPath, relativePath);
+
+               if (egg.Files.None(x => x.InternalPath.Equals(relativePath, StringComparison.OrdinalIgnoreCase))) {
+                  File.Copy(neighboringAssemblyInfo.FullName, eggAssemblyPath, true);
+               }
+            } catch (IOException) {
+               // An instance of the egg is probably already running.
+            }
+         }
+
+         var eggNestHostPath = Path.Combine(eggPath, nestHostFileInfo.Name);
+         logger.Info("Copied nest-host to " + eggNestHostPath);
          var processStartInfo = new ProcessStartInfo() {
-            FileName = Path.GetFullPath(configuration.HostExecutablePath),
+            FileName = eggNestHostPath,
             Arguments = args.Join(" "),
             UseShellExecute = false,
             RedirectStandardError = true,

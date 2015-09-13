@@ -13,8 +13,10 @@ namespace Dargon.Nest.Exeggutor {
          this.egg = egg;
       }
 
+      public IDargonEgg Egg => egg;
+
       public HatchlingContext Spawn(SpawnConfiguration configuration) {
-         var context = hatchlingContextFactory.Create(configuration.InstanceName, egg.Location);
+         var context = hatchlingContextFactory.Create(configuration.InstanceName, egg);
          context.StartBootstrap(configuration.Arguments);
          return context;
       }

@@ -114,7 +114,7 @@ namespace Dargon.Nest.Daemon {
 
          // Nest-Host Dependencies
          ExecutorHostConfiguration executorHostConfiguration = new ExecutorHostConfigurationImpl(options.HostPath);
-         HatchlingContextFactory hatchlingContextFactory = new HatchlingContextFactoryImpl(pofSerializer, pofStreamsFactory, executorHostConfiguration);
+         HatchlingContextFactory hatchlingContextFactory = new HatchlingContextFactoryImpl(fileSystemProxy, pofSerializer, pofStreamsFactory, executorHostConfiguration);
          EggContextFactory eggContextFactory = new EggContextFactoryImpl(hatchlingContextFactory, processProxy);
          ExeggutorServiceImpl exeggutorService = new ExeggutorServiceImpl(options.NestPath, eggContextFactory);
          localManagementServer.RegisterInstance(new ExeggutorMob(exeggutorService));
