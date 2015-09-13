@@ -9,17 +9,17 @@ using System.IO;
 using System.Linq;
 using System.Net.Mime;
 using System.Reflection;
+using System.Threading;
 
 namespace nest_host {
    public class EggHost : IEggHost {
       private readonly PofStreamsFactory pofStreamsFactory;
       private readonly PofStream pofStream;
-      private readonly ICancellationTokenSource shutdownCancellationTokenSource;
+      private readonly ICountdownEvent shutdownLatch = new CountdownEventProxy(1);
 
-      public EggHost(PofStreamsFactory pofStreamsFactory, PofStream pofStream, ICancellationTokenSource shutdownCancellationTokenSource) {
+      public EggHost(PofStreamsFactory pofStreamsFactory, PofStream pofStream) {
          this.pofStreamsFactory = pofStreamsFactory;
          this.pofStream = pofStream;
-         this.shutdownCancellationTokenSource = shutdownCancellationTokenSource;
       }
 
       public void Run(BootstrapDto bootstrapArguments) {
@@ -42,6 +42,9 @@ namespace nest_host {
             dispatcher.Start();
             pofStream.Write(new BootstrapResultDto(startResult));
             Console.WriteLine("Egg started with " + startResult);
+
+            shutdownLatch.Wait();
+            Console.WriteLine("Main thread received shutdown signal.");
          }
       }
 
@@ -103,7 +106,7 @@ namespace nest_host {
       }
 
       public void Shutdown() {
-         shutdownCancellationTokenSource.Cancel();
+         shutdownLatch.Signal();
       }
 
       private bool FilterNestApplicationEggs(Type type) {
