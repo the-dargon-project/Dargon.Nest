@@ -22,15 +22,18 @@ namespace dev_egg_runner {
       [Option('n', "name", DefaultValue = null,
               HelpText = "Name of the instance to run.")]
       public string InstanceName { get; set; }
+
+      [Option('p', "port", DefaultValue = 21337,
+              HelpText = "Port of the nest cluster.")]
+      public int NestPort { get; set; }
    }
 
    public static class Program {
-      public const int kDaemonPort = 21337;
       public const int kHeartbeatIntervalMilliseconds = 1000;
 
       public static void Main(string[] args) {
          var options = new Options();
-         if (!CommandLine.Parser.Default.ParseArguments(args, options)) {
+         if (!Parser.Default.ParseArguments(args, options)) {
             return;
          }
 
@@ -54,7 +57,7 @@ namespace dev_egg_runner {
          ProxyGenerator proxyGenerator = new ProxyGenerator();
          PofStreamsFactory pofStreamsFactory = new PofStreamsFactoryImpl(threadingProxy, streamFactory, pofSerializer);
          IServiceClientFactory serviceClientFactory = new ServiceClientFactory(proxyGenerator, streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
-         var client = serviceClientFactory.CreateOrJoin(new ClusteringConfiguration(kDaemonPort, kHeartbeatIntervalMilliseconds, ClusteringRoleFlags.GuestOnly));
+         var client = serviceClientFactory.CreateOrJoin(new ClusteringConfiguration(options.NestPort, kHeartbeatIntervalMilliseconds, ClusteringRoleFlags.GuestOnly));
          var exeggutor = client.GetService<ExeggutorService>();
          var ms = new MemoryStream();
          pofSerializer.Serialize(ms, (object)"test");
