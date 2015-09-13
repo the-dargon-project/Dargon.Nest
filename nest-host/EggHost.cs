@@ -92,10 +92,20 @@ namespace nest_host {
          //         var additionalAssemblyPathsByAssemblyName = new Dictionary<string, string>();
          assemblyPathsBySimpleName = new Dictionary<string, string>();
          assemblyPathsByFullName = new Dictionary<string, string>();
+         var bannedSimpleNames = new HashSet<string>();
          foreach (var assemblyPath in loadableAssemblyPaths) {
             try {
                var assemblyName = AssemblyName.GetAssemblyName(assemblyPath);
-               assemblyPathsBySimpleName.Add(assemblyName.Name, assemblyPath);
+               var simpleName = assemblyName.Name;
+               if (!bannedSimpleNames.Contains(simpleName)) {
+                  if (assemblyPathsBySimpleName.ContainsKey(simpleName)) {
+                     assemblyPathsBySimpleName.Remove(simpleName);
+                     bannedSimpleNames.Add(simpleName);
+                  } else {
+                     assemblyPathsBySimpleName.Add(simpleName, assemblyPath);
+                  }
+               }
+
                assemblyPathsByFullName.Add(assemblyName.FullName, assemblyPath);
             } catch (BadImageFormatException) {}
          }
