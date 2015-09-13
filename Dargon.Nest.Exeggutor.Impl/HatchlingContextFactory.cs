@@ -69,6 +69,13 @@ namespace Dargon.Nest.Exeggutor {
             }
          }
 
+         // Copy app.config
+         string nestMainAppConfigPath = Path.Combine(eggPath, "nest-main.dll.config");
+         string nestHostAppConfigPath = Path.Combine(eggPath, nestHostFileInfo.Name + ".config");
+         if (File.Exists(nestMainAppConfigPath)) {
+            File.Copy(nestMainAppConfigPath, nestHostAppConfigPath, true);
+         }
+
          var eggNestHostPath = Path.Combine(eggPath, nestHostFileInfo.Name);
          logger.Info("Copied nest-host to " + eggNestHostPath);
          var processStartInfo = new ProcessStartInfo() {
