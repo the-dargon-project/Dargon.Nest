@@ -127,6 +127,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dargon.Nest.Daemon.Api\Dargon.Nest.Daemon.Api.csproj">
+      <Project>{8EA47E3B-F3FF-4B2A-8A0F-DE735D3513D7}</Project>
+      <Name>Dargon.Nest.Daemon.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Nest.Daemon.Impl\Dargon.Nest.Daemon.Impl.csproj">
+      <Project>{2D1B7A75-90E1-432C-9D87-9A9B00A2B151}</Project>
+      <Name>Dargon.Nest.Daemon.Impl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dargon.Nest.Exeggutor.Impl\Dargon.Nest.Exeggutor.Impl.csproj">
       <Project>{FD02D2EF-27FA-4C6A-A8D0-9CB4A7FBD5BC}</Project>
       <Name>Dargon.Nest.Exeggutor.Impl</Name>

@@ -121,11 +121,15 @@ namespace Dargon.Nest.Daemon {
          localManagementServer.RegisterInstance(new ExeggutorMob(exeggutorService));
          localServiceClient.RegisterService(exeggutorService, typeof(ExeggutorService));
 
-         AppDomain.CurrentDomain.ProcessExit += (s, e) => exeggutorService.KillAllHatchlings();
-
+         // Nest-Daemon Dependencies
+         var nestDaemonService = new NestDaemonServiceImpl(exeggutorService);
+         localServiceClient.RegisterService(nestDaemonService, typeof(NestDaemonService));
          logger.Info("Exposed nestd service.");
-         var exitLatch = new CountdownEvent(1);
-         exitLatch.Wait();
+
+         AppDomain.CurrentDomain.ProcessExit += (s, e) => nestDaemonService.KillHatchlingsAndNest();
+
+         nestDaemonService.Run();
+         logger.Info("Shutting down nestd.");
       }
 
       private static void InitializeLogging() {

@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>dev_egg_runner</RootNamespace>
-    <AssemblyName>dev-egg-runner</AssemblyName>
+    <AssemblyName>dev-nest-commander</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -111,6 +111,12 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dargon.Nest.Daemon.Api\Dargon.Nest.Daemon.Api.csproj">
+      <Project>{8EA47E3B-F3FF-4B2A-8A0F-DE735D3513D7}</Project>
+      <Name>Dargon.Nest.Daemon.Api</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

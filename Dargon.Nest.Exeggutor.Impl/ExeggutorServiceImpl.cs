@@ -20,6 +20,7 @@ namespace Dargon.Nest.Exeggutor {
       private readonly EggContextFactory eggContextFactory;
       private readonly IConcurrentDictionary<Guid, HatchlingContext> hatchlingContextsById;
       private readonly IConcurrentDictionary<string, HatchlingContext> hatchlingContextsByName;
+      private bool isShuttingDown = false;
 
       public ExeggutorServiceImpl(
          string nestPath,
@@ -53,6 +54,10 @@ namespace Dargon.Nest.Exeggutor {
             configuration.InstanceName = configuration.InstanceName ?? eggName;
 
             lock (synchronization) {
+               if (isShuttingDown) {
+                  return new SpawnHatchlingResult { StartResult = NestResult.Failure };
+               }
+
                IEggContext eggContext;
                if (!TryCreateEggContext(eggName, out eggContext)) {
                   throw new EggNotFoundException(eggName);
@@ -106,6 +111,13 @@ namespace Dargon.Nest.Exeggutor {
             KillAllHatchlings();
             var nest = new LocalDargonNest(nestPath);
             nest.UpdateNest();
+         }
+      }
+
+      public void KillAllHatchlingsAndPrepareForShutdown() {
+         lock (synchronization) {
+            KillAllHatchlings();
+            isShuttingDown = true;
          }
       }
 

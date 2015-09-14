@@ -12,21 +12,25 @@ using ItzWarty.Networking;
 using ItzWarty.Threading;
 using System;
 using System.IO;
+using Dargon.Nest.Daemon;
 using Dargon.Services.Clustering;
 
 namespace dev_egg_runner {
    public class Options {
-      [Option('e', "egg", DefaultValue = "dev-egg-example",
+      [Option('p', "port", DefaultValue = 21337,
+              HelpText = "Port of the nest cluster.")]
+      public int NestPort { get; set; }
+
+      [Option('c', "command", HelpText = "spawn-egg|kill-nest")]
+      public string Command { get; set; }
+
+      [Option('e', "egg", DefaultValue = null,
               HelpText = "Name of the Dargon Egg to run.")]
       public string EggName { get; set; }
 
       [Option('n', "name", DefaultValue = null,
               HelpText = "Name of the instance to run.")]
       public string InstanceName { get; set; }
-
-      [Option('p', "port", DefaultValue = 21337,
-              HelpText = "Port of the nest cluster.")]
-      public int NestPort { get; set; }
    }
 
    public static class Program {
@@ -60,6 +64,19 @@ namespace dev_egg_runner {
          ServiceClientFactory serviceClientFactory = new ServiceClientFactoryImpl(proxyGenerator, streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
          var client = serviceClientFactory.Local(options.NestPort, ClusteringRole.GuestOnly);
          var exeggutor = client.GetService<ExeggutorService>();
+         var nestDaemon = client.GetService<NestDaemonService>();
+
+         switch (options.Command) {
+            case "spawn-egg":
+               SpawnEgg(pofSerializer, exeggutor, options);
+               break;
+            case "kill-nest": 
+               nestDaemon.KillHatchlingsAndNest();
+               break;
+         }
+      }
+
+      private static void SpawnEgg(IPofSerializer pofSerializer, ExeggutorService exeggutor, Options options) {
          var ms = new MemoryStream();
          pofSerializer.Serialize(ms, (object)null);
          try {
