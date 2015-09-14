@@ -50,6 +50,7 @@ namespace Dargon.Nest.Exeggutor {
             logger.Info("Spawning hatchling {0}!", eggName);
             configuration = configuration ?? new SpawnConfiguration();
             configuration.Arguments = configuration.Arguments ?? new byte[0];
+            configuration.InstanceName = configuration.InstanceName ?? eggName;
 
             lock (synchronization) {
                IEggContext eggContext;
