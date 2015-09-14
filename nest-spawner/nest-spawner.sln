@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nest-spawner", "nest-spawner\nest-spawner.csproj", "{24793F93-0FD8-4EC9-B1D2-028DB489B10D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nest-spawner", "nest-spawner.csproj", "{24793F93-0FD8-4EC9-B1D2-028DB489B10D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
