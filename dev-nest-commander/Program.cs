@@ -1,5 +1,6 @@
 ﻿using Castle.DynamicProxy;
 using CommandLine;
+using Dargon.Nest.Daemon;
 using Dargon.Nest.Eggxecutor;
 using Dargon.PortableObjects;
 using Dargon.PortableObjects.Streams;
@@ -12,8 +13,7 @@ using ItzWarty.Networking;
 using ItzWarty.Threading;
 using System;
 using System.IO;
-using Dargon.Nest.Daemon;
-using Dargon.Services.Clustering;
+using System.Threading;
 
 namespace dev_egg_runner {
    public class Options {
@@ -31,6 +31,10 @@ namespace dev_egg_runner {
       [Option('n', "name", DefaultValue = null,
               HelpText = "Name of the instance to run.")]
       public string InstanceName { get; set; }
+
+      [Option('t', "Timeout", DefaultValue = 5000,
+              HelpText = "Timeout in milliseconds for the executed command.")]
+      public int TimeoutMillis { get; set; }
    }
 
    public static class Program {
@@ -41,6 +45,12 @@ namespace dev_egg_runner {
          if (!Parser.Default.ParseArguments(args, options)) {
             return;
          }
+
+         new Thread(() => {
+            Thread.Sleep(options.TimeoutMillis);
+            Console.WriteLine($"Nest command {options.Command} timed out - is nestd running?");
+            Environment.Exit(1);
+         }) { IsBackground = true }.Start();
 
          IStreamFactory streamFactory = new StreamFactory();
          ICollectionFactory collectionFactory = new CollectionFactory();
