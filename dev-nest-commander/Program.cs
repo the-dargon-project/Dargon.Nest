@@ -92,7 +92,8 @@ namespace dev_egg_runner {
          try {
             exeggutor.SpawnHatchling(options.EggName, new SpawnConfiguration {
                Arguments = ms.ToArray(),
-               InstanceName = options.InstanceName
+               InstanceName = options.InstanceName,
+               StartFlags = HatchlingStartFlags.StartAsynchronously
             });
          } catch (PortableException e) {
             Console.WriteLine(e.InnerException);
