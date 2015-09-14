@@ -12,6 +12,7 @@ using ItzWarty.Networking;
 using ItzWarty.Threading;
 using System;
 using System.IO;
+using Dargon.Services.Clustering;
 
 namespace dev_egg_runner {
    public class Options {
@@ -56,11 +57,11 @@ namespace dev_egg_runner {
 
          ProxyGenerator proxyGenerator = new ProxyGenerator();
          PofStreamsFactory pofStreamsFactory = new PofStreamsFactoryImpl(threadingProxy, streamFactory, pofSerializer);
-         IServiceClientFactory serviceClientFactory = new ServiceClientFactory(proxyGenerator, streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
-         var client = serviceClientFactory.CreateOrJoin(new ClusteringConfiguration(options.NestPort, kHeartbeatIntervalMilliseconds, ClusteringRoleFlags.GuestOnly));
+         ServiceClientFactory serviceClientFactory = new ServiceClientFactoryImpl(proxyGenerator, streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
+         var client = serviceClientFactory.Local(options.NestPort, ClusteringRole.GuestOnly);
          var exeggutor = client.GetService<ExeggutorService>();
          var ms = new MemoryStream();
-         pofSerializer.Serialize(ms, (object)"test");
+         pofSerializer.Serialize(ms, (object)null);
          try {
             exeggutor.SpawnHatchling(options.EggName, new SpawnConfiguration {
                Arguments = ms.ToArray(),

@@ -23,6 +23,7 @@ using System.Reflection;
 using System.Threading;
 using Dargon.Management;
 using Dargon.Management.Server;
+using Dargon.Services.Clustering;
 
 namespace Dargon.Nest.Daemon {
    public static class Program {
@@ -103,9 +104,9 @@ namespace Dargon.Nest.Daemon {
 
          // construct libdsp dependencies
          ProxyGenerator proxyGenerator = new ProxyGenerator();
-         IServiceClientFactory serviceClientFactory = new ServiceClientFactory(proxyGenerator, streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
+         var serviceClientFactory = new ServiceClientFactoryImpl(proxyGenerator, streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
          // construct libdsp local service node
-         IServiceClient localServiceClient = serviceClientFactory.CreateOrJoin(new ClusteringConfiguration(options.DspPort, options.DspHeartBeatInterval));
+         ServiceClient localServiceClient = serviceClientFactory.Local(options.DspPort, ClusteringRole.HostOnly);
 
          // construct dargon.management dependencies
          ITcpEndPoint managementServerEndpoint = tcpEndPointFactory.CreateAnyEndPoint(options.ManagementPort);
