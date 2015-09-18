@@ -52,7 +52,7 @@ namespace nest_spawner {
                uiThreadDispatcher.Thread.Join();
             }
 
-            // Pull NestD
+            // Start NestD
             nest.ExecuteEgg("nestd", "");
 
             // Start CoreD
