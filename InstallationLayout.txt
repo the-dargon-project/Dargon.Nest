@@ -1,20 +1,34 @@
-Dargon
+root
 :- init.exe
-:- init.json
 :- cache
 :  :- 3d72a9ce
 :  '- b45a81f1
+:- config
+:  :- client
+:  :  '- system-state.json
+:  '- nest
+:     '- system-state.json
 :- logs
-:  :- cored.log
-:  '- nestd.log
-'- nests
-   :- client
-   :  :- cored
-   :  :- dargon-cli
-   :  '- dargon-client
-   '- nest  
-      :- nest
-      :- nestd
-      :  '- nestd.exe
-      '- nest-host
-         '- nest-host.exe
+:  :- client
+:  :  '- cored.log
+:  '- nest
+:     '- nestd.log
+:- nests
+:  :- client
+:  :  :- cored
+:  :  :- dargon-cli
+:  :  '- dargon-client
+:  '- nest  
+:     :- nest
+:     :- nestd
+:     :  :- nestd.exe
+:     :  '- NEST_INIT
+:     '- nest-host
+:        '- nest-host.exe
+:- stage
+:  '- client
+:     '- cored
+:        '- NEST_READY
+'- temp
+   '- a9fe3452
+      '- cored

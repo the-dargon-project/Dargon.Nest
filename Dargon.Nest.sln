@@ -34,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		InstallationLayout.txt = InstallationLayout.txt
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "init", "init\init.csproj", "{45029D9F-C2A1-45E6-B461-90FB89196063}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +94,10 @@ Global
 		{402F5C4E-504A-4B1E-A881-0C4CFFD3D6ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{402F5C4E-504A-4B1E-A881-0C4CFFD3D6ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{402F5C4E-504A-4B1E-A881-0C4CFFD3D6ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45029D9F-C2A1-45E6-B461-90FB89196063}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45029D9F-C2A1-45E6-B461-90FB89196063}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45029D9F-C2A1-45E6-B461-90FB89196063}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45029D9F-C2A1-45E6-B461-90FB89196063}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
