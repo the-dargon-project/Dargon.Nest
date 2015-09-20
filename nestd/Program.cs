@@ -126,7 +126,7 @@ namespace Dargon.Nest.Daemon {
          localServiceClient.RegisterService(nestDaemonService, typeof(NestDaemonService));
          logger.Info("Exposed nestd service.");
 
-         AppDomain.CurrentDomain.ProcessExit += (s, e) => nestDaemonService.KillHatchlingsAndNest();
+         AppDomain.CurrentDomain.ProcessExit += (s, e) => nestDaemonService.KillHatchlingsAndDaemon();
 
          nestDaemonService.Run();
          logger.Info("Shutting down nestd.");

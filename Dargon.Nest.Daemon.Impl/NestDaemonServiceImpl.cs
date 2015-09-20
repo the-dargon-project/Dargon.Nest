@@ -13,7 +13,7 @@ namespace Dargon.Nest.Daemon {
 
       public void Run() => shutdownLatch.Wait();
 
-      public void KillHatchlingsAndNest() {
+      public void KillHatchlingsAndDaemon() {
          exeggutorService.KillAllHatchlingsAndPrepareForShutdown();
          shutdownLatch.Signal();
       }

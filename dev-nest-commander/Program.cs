@@ -81,7 +81,7 @@ namespace dev_egg_runner {
                SpawnEgg(pofSerializer, exeggutor, options);
                break;
             case "kill-nest": 
-               nestDaemon.KillHatchlingsAndNest();
+               nestDaemon.KillHatchlingsAndDaemon();
                break;
          }
       }
