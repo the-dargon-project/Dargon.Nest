@@ -15,10 +15,14 @@ root
 :     '- nestd.log
 :- nests
 :  :- client
+:  :  :- REMOTE
+:  :  :- VERSION
 :  :  :- cored
 :  :  :- dargon-cli
 :  :  '- dargon-client
 :  '- nest  
+:     :- REMOTE
+:     :- VERSION
 :     :- nest
 :     :- nestd
 :     :  :- nestd.exe

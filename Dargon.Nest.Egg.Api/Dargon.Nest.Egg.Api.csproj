@@ -40,10 +40,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EggParameters.cs" />
+    <Compile Include="IEggHost.cs" />
     <Compile Include="IEggParameters.cs" />
     <Compile Include="INestApplicationEgg.cs" />
     <Compile Include="NestResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShutdownReason.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

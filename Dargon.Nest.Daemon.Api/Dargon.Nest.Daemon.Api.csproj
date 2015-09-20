@@ -44,6 +44,12 @@
     <Compile Include="NestDaemonService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dargon.Nest.Exeggutor.Api\Dargon.Nest.Exeggutor.Api.csproj">
+      <Project>{7D1D757D-531B-49F0-8F63-B4E3563BE606}</Project>
+      <Name>Dargon.Nest.Exeggutor.Api</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

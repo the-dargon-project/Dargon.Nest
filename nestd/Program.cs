@@ -115,20 +115,20 @@ namespace Dargon.Nest.Daemon {
 
          // Nest-Host Dependencies
          ExecutorHostConfiguration executorHostConfiguration = new ExecutorHostConfigurationImpl(options.HostPath);
-         HatchlingContextFactory hatchlingContextFactory = new HatchlingContextFactoryImpl(fileSystemProxy, pofSerializer, pofStreamsFactory, executorHostConfiguration);
-         EggContextFactory eggContextFactory = new EggContextFactoryImpl(hatchlingContextFactory, processProxy);
+         HatchlingContextInitializer hatchlingContextInitializer = new HatchlingContextInitializerImpl(fileSystemProxy, pofSerializer, pofStreamsFactory, executorHostConfiguration);
+         EggContextFactory eggContextFactory = new EggContextFactoryImpl(hatchlingContextInitializer, processProxy);
          ExeggutorServiceImpl exeggutorService = new ExeggutorServiceImpl(options.NestPath, eggContextFactory);
          localManagementServer.RegisterInstance(new ExeggutorMob(exeggutorService));
          localServiceClient.RegisterService(exeggutorService, typeof(ExeggutorService));
 
          // Nest-Daemon Dependencies
-         var nestDaemonService = new NestDaemonServiceImpl(exeggutorService);
-         localServiceClient.RegisterService(nestDaemonService, typeof(NestDaemonService));
-         logger.Info("Exposed nestd service.");
+//         var nestDaemonService = new NestDaemonServiceProxyImpl(exeggutorService);
+//         localServiceClient.RegisterService(nestDaemonService, typeof(NestDaemonService));
+//         logger.Info("Exposed nestd service.");
 
-         AppDomain.CurrentDomain.ProcessExit += (s, e) => nestDaemonService.KillHatchlingsAndDaemon();
+//         AppDomain.CurrentDomain.ProcessExit += (s, e) => nestDaemonService.KillHatchlingsAndDaemon();
 
-         nestDaemonService.Run();
+//         nestDaemonService.Run();
          logger.Info("Shutting down nestd.");
       }
 

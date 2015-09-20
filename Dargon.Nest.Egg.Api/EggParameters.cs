@@ -10,8 +10,4 @@
       public string InstanceName { get; private set; }
       public byte[] Arguments { get; private set; }
    }
-
-   public interface IEggHost {
-      void Shutdown();
-   }
 }

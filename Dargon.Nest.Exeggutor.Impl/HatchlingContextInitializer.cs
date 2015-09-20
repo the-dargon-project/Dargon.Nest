@@ -12,11 +12,11 @@ using System.IO;
 using System.Linq;
 
 namespace Dargon.Nest.Exeggutor {
-   public interface HatchlingContextFactory {
-      HatchlingContext Create(string name, IDargonEgg egg);
+   public interface HatchlingContextInitializer {
+      HatchlingContext Spawn(string name, IDargonEgg egg);
    }
 
-   public class HatchlingContextFactoryImpl : HatchlingContextFactory {
+   public class HatchlingContextInitializerImpl : HatchlingContextInitializer {
       private static Logger logger = LogManager.GetCurrentClassLogger();
 
       private readonly IFileSystemProxy fileSystemProxy;
@@ -24,14 +24,14 @@ namespace Dargon.Nest.Exeggutor {
       private readonly PofStreamsFactory pofStreamsFactory;
       private readonly ExecutorHostConfiguration configuration;
 
-      public HatchlingContextFactoryImpl(IFileSystemProxy fileSystemProxy, IPofSerializer nestSerializer, PofStreamsFactory pofStreamsFactory, ExecutorHostConfiguration configuration) {
+      public HatchlingContextInitializerImpl(IFileSystemProxy fileSystemProxy, IPofSerializer nestSerializer, PofStreamsFactory pofStreamsFactory, ExecutorHostConfiguration configuration) {
          this.fileSystemProxy = fileSystemProxy;
          this.nestSerializer = nestSerializer;
          this.pofStreamsFactory = pofStreamsFactory;
          this.configuration = configuration;
       }
 
-      public HatchlingContext Create(string name, IDargonEgg egg) {
+      public HatchlingContext Spawn(string name, IDargonEgg egg) {
          var eggPath = egg.Location;
 
          logger.Info($"Spawning hatchling of name {name} and path {eggPath}!");

@@ -6,16 +6,16 @@ namespace Dargon.Nest.Exeggutor {
    }
 
    public class EggContextFactoryImpl : EggContextFactory {
-      private readonly HatchlingContextFactory hatchlingContextFactory;
+      private readonly HatchlingContextInitializer hatchlingContextInitializer;
       private readonly IProcessProxy processProxy;
 
-      public EggContextFactoryImpl(HatchlingContextFactory hatchlingContextFactory, IProcessProxy processProxy) {
-         this.hatchlingContextFactory = hatchlingContextFactory;
+      public EggContextFactoryImpl(HatchlingContextInitializer hatchlingContextInitializer, IProcessProxy processProxy) {
+         this.hatchlingContextInitializer = hatchlingContextInitializer;
          this.processProxy = processProxy;
       }
 
       public IEggContext Create(IDargonEgg egg) {
-         return new EggContext(hatchlingContextFactory, processProxy, egg);
+         return new EggContext(hatchlingContextInitializer, processProxy, egg);
       }
    }
 }

@@ -10,6 +10,7 @@ using System.Text;
 namespace Nest.Init {
    public static class Program {
       private static readonly char[] kPathDelimiters = { '/', '\\' };
+      private const string kReadyFileName = "READY";
 
       private const string kStageDirectoryName = "stage";
       private const string kNestsDirectoryName = "nests";
