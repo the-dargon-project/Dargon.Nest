@@ -29,6 +29,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Nest.Daemon.Impl", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dev-nest-commander", "dev-nest-commander\dev-nest-commander.csproj", "{402F5C4E-504A-4B1E-A881-0C4CFFD3D6ED}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{F73123F4-7B91-442B-AAF3-5D04926E07DD}"
+	ProjectSection(SolutionItems) = preProject
+		InstallationLayout.txt = InstallationLayout.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

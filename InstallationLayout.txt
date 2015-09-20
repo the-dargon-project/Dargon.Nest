@@ -1,0 +1,20 @@
+Dargon
+:- init.exe
+:- init.json
+:- cache
+:  :- 3d72a9ce
+:  '- b45a81f1
+:- logs
+:  :- cored.log
+:  '- nestd.log
+'- nests
+   :- client
+   :  :- cored
+   :  :- dargon-cli
+   :  '- dargon-client
+   '- nest  
+      :- nest
+      :- nestd
+      :  '- nestd.exe
+      '- nest-host
+         '- nest-host.exe
