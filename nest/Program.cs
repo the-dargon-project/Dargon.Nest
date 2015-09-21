@@ -1,11 +1,8 @@
-﻿using System;
+﻿using Dargon.Repl;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Security.Policy;
-using Dargon.Repl;
-using ItzWarty;
 
 namespace Dargon.Nest.Repl {
    public static class Program {

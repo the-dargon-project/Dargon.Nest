@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dargon.Nest">
+      <HintPath>..\packages\Dargon.Nest.0.4.1\lib\net45\Dargon.Nest.dll</HintPath>
+    </Reference>
     <Reference Include="Dargon.Nest.Egg.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dargon.Nest.Egg.Api.0.1.1\lib\net45\Dargon.Nest.Egg.Api.dll</HintPath>
       <Private>True</Private>
@@ -64,8 +67,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Hosts\HostOperations.cs" />
+    <Compile Include="DaemonConfiguration.cs" />
     <Compile Include="Hatchlings\HatchlingContext.cs" />
     <Compile Include="Hatchlings\HatchlingSpawner.cs" />
+    <Compile Include="Hosts\HostProcess.cs" />
     <Compile Include="Updating\StageManager.cs" />
     <Compile Include="Updating\BackgroundUpdateFetcher.cs" />
     <Compile Include="Utilities\FileUtilities.cs" />
@@ -88,7 +94,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Eggs\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
