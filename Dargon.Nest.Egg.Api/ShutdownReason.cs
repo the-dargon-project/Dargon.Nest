@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Dargon.Nest.Egg {
-   public enum ShutdownReason {
-      None,
-      Update
+   public enum ShutdownReason : int {
+      None = 0,
+      HostKilled = 1,
+      Update = 2
    }
 }

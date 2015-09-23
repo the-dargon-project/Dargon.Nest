@@ -1,6 +1,5 @@
 ﻿using Castle.DynamicProxy;
 using CommandLine;
-using Dargon.Nest.Daemon;
 using Dargon.Nest.Eggxecutor;
 using Dargon.PortableObjects;
 using Dargon.PortableObjects.Streams;
@@ -74,15 +73,15 @@ namespace dev_egg_runner {
          ServiceClientFactory serviceClientFactory = new ServiceClientFactoryImpl(proxyGenerator, streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
          var client = serviceClientFactory.Local(options.NestPort, ClusteringRole.GuestOnly);
          var exeggutor = client.GetService<ExeggutorService>();
-         var nestDaemon = client.GetService<NestDaemonService>();
+//         var nestDaemon = client.GetService<InternalNestDaemonService>();
 
          switch (options.Command) {
             case "spawn-egg":
                SpawnEgg(pofSerializer, exeggutor, options);
                break;
-            case "kill-nest": 
-               nestDaemon.KillHatchlingsAndDaemon();
-               break;
+//            case "kill-nest": 
+//               nestDaemon.KillHatchlingsAndDaemon();
+//               break;
          }
       }
 

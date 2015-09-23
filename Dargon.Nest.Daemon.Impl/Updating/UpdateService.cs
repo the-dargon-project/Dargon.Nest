@@ -1,4 +1,5 @@
 ﻿using Dargon.Nest.Daemon.Hatchlings;
+using Dargon.Nest.Egg;
 using ItzWarty;
 
 namespace Dargon.Nest.Daemon.Updating {
@@ -14,7 +15,7 @@ namespace Dargon.Nest.Daemon.Updating {
       public void ProcessStagedUpdate(string nestName) {
          if (stageManager.IsUpdateStaged(nestName)) {
             var hatchlings = hatchlingDirectory.EnumerateHatchlingsOfNest(nestName);
-            hatchlings.ForEach(h => h.Kill());
+            hatchlings.ForEach(h => h.Shutdown(ShutdownReason.Update));
             stageManager.ProcessStagedUpdate(nestName);
          }
       }

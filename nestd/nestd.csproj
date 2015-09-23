@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{6A07D05B-4C55-44A7-A13F-43CF768A6ADF}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dargon.Nest.Daemon</RootNamespace>
     <AssemblyName>nestd</AssemblyName>
@@ -49,20 +49,9 @@
     <Reference Include="Dargon.Management.Api">
       <HintPath>..\packages\Dargon.Management.Api.0.1.2\lib\net45\Dargon.Management.Api.dll</HintPath>
     </Reference>
-    <Reference Include="Dargon.Management.Impl">
-      <HintPath>..\packages\Dargon.Management.Impl.0.1.3\lib\net45\Dargon.Management.Impl.dll</HintPath>
-    </Reference>
-    <Reference Include="Dargon.Nest.Egg.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Dargon.Management.Impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Dargon.Nest.Egg.Api.0.1.1\lib\net45\Dargon.Nest.Egg.Api.dll</HintPath>
-    </Reference>
-    <Reference Include="Dargon.Nest.Eggxecutor.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dargon.Nest.Exeggutor.Api.0.3.2\lib\net45\Dargon.Nest.Eggxecutor.Api.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Dargon.Nest.Exeggutor.Host.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Dargon.Nest.Exeggutor.Host.Api.0.1.4\lib\net45\Dargon.Nest.Exeggutor.Host.Api.dll</HintPath>
+      <HintPath>..\packages\Dargon.Management.Impl.0.2.0\lib\net45\Dargon.Management.Impl.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.PortableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dargon.PortableObjects.0.2.0\lib\net45\Dargon.PortableObjects.dll</HintPath>
@@ -127,6 +116,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Dargon.Ryu\Dargon.Ryu.Impl\Dargon.Ryu.Impl.csproj">
+      <Project>{2ed5c703-8a91-4701-9ae9-da86aa93a169}</Project>
+      <Name>Dargon.Ryu.Impl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dargon.Nest.Daemon.Api\Dargon.Nest.Daemon.Api.csproj">
       <Project>{8EA47E3B-F3FF-4B2A-8A0F-DE735D3513D7}</Project>
       <Name>Dargon.Nest.Daemon.Api</Name>
@@ -135,9 +128,17 @@
       <Project>{2D1B7A75-90E1-432C-9D87-9A9B00A2B151}</Project>
       <Name>Dargon.Nest.Daemon.Impl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dargon.Nest.Exeggutor.Impl\Dargon.Nest.Exeggutor.Impl.csproj">
-      <Project>{FD02D2EF-27FA-4C6A-A8D0-9CB4A7FBD5BC}</Project>
-      <Name>Dargon.Nest.Exeggutor.Impl</Name>
+    <ProjectReference Include="..\Dargon.Nest.Egg.Api\Dargon.Nest.Egg.Api.csproj">
+      <Project>{52ac94a1-a1c0-43b2-8b1b-001cc11518be}</Project>
+      <Name>Dargon.Nest.Egg.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Nest.Exeggutor.Api\Dargon.Nest.Exeggutor.Api.csproj">
+      <Project>{7d1d757d-531b-49f0-8f63-b4e3563be606}</Project>
+      <Name>Dargon.Nest.Exeggutor.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dargon.Nest.Exeggutor.Host.Api\Dargon.Nest.Exeggutor.Host.Api.csproj">
+      <Project>{9c76f6ee-dac8-436a-8623-a8578353dfb9}</Project>
+      <Name>Dargon.Nest.Exeggutor.Host.Api</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

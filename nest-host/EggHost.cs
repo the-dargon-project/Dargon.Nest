@@ -36,8 +36,8 @@ namespace nest_host {
             AppDomain.CurrentDomain.AssemblyResolve += CreateCachedAssemblyResolveHandler(assemblyPathsByAssemblySimpleName, assemblyPathsByAssemblyFullName);
             INestApplicationEgg eggInstance = InstantiateNestApplicationEgg(eggAssemblyPath);
             var dispatcher = pofStreamsFactory.CreateDispatcher(pofStream);
-            dispatcher.RegisterHandler<ShutdownDto>(dto => Console.WriteLine("Egg shutdown result: " + eggInstance.Shutdown() + "!"));
-            dispatcher.RegisterShutdownHandler(() => eggInstance.Shutdown());
+            dispatcher.RegisterHandler<ShutdownDto>(dto => Console.WriteLine("Egg shutdown result: " + eggInstance.Shutdown(dto.Reason) + "!"));
+            dispatcher.RegisterShutdownHandler(() => eggInstance.Shutdown(ShutdownReason.HostKilled));
             var startResult = eggInstance.Start(new EggParameters(this, bootstrapArguments.Name, bootstrapArguments.PayloadBytes));
             dispatcher.Start();
             pofStream.Write(new BootstrapResultDto(startResult));
@@ -116,6 +116,10 @@ namespace nest_host {
       }
 
       public void Shutdown() {
+         Shutdown(ShutdownReason.None);
+      }
+
+      public void Shutdown(ShutdownReason reason) {
          shutdownLatch.Signal();
       }
 

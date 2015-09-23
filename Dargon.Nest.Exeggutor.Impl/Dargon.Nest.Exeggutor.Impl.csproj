@@ -97,7 +97,6 @@
     <Compile Include="EggContext.cs" />
     <Compile Include="EggContextFactory.cs" />
     <Compile Include="ExecutorHostConfiguration.cs" />
-    <Compile Include="ExeggutorMob.cs" />
     <Compile Include="ExeggutorServiceImpl.cs" />
     <Compile Include="HatchlingContext.cs" />
     <Compile Include="IEggContext.cs" />

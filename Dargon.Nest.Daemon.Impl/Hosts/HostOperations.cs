@@ -14,7 +14,7 @@ namespace Dargon.Nest.Daemon.Hosts {
          this.fileSystemProxy = fileSystemProxy;
          this.daemonConfiguration = daemonConfiguration;
       }
-
+      
       public void CopyHostToLocalEgg(LocalDargonEgg localEgg) {
          var nestHostFileInfo = fileSystemProxy.GetFileInfo(daemonConfiguration.HostExecutablePath);
          var nestHostDirectory = nestHostFileInfo.Parent;
@@ -40,40 +40,6 @@ namespace Dargon.Nest.Daemon.Hosts {
          if (File.Exists(nestMainAppConfigPath)) {
             File.Copy(nestMainAppConfigPath, nestHostAppConfigPath, true);
          }
-      }
-
-      public void StartHostProcess(LocalDargonEgg localEgg, string arguments) {
-         CopyHostToLocalEgg(localEgg);
-
-         var originalNestHostFileInfo = new FileInfo(daemonConfiguration.HostExecutablePath);
-         var targetNestHostFileInfo = new FileInfo(Path.Combine(localEgg.RootPath, originalNestHostFileInfo.Name));
-
-         var processStartInfo = new ProcessStartInfo() {
-            FileName = targetNestHostFileInfo.FullName,
-            Arguments = arguments,
-            UseShellExecute = false,
-            RedirectStandardError = true,
-            RedirectStandardOutput = true,
-            RedirectStandardInput = true
-         };
-
-         var process = new Process {
-            StartInfo = processStartInfo,
-            EnableRaisingEvents = true
-         };
-
-         process.Start();
-
-         var reader = new BinaryReader(process.StandardOutput.BaseStream);
-         var writer = new BinaryWriter(process.StandardInput.BaseStream);
-         Debug.Assert(process != null);
-
-         process.EnableRaisingEvents = true;
-
-         writer.Write(0x5453454e);
-         writer.Flush();
-
-
       }
    }
 }

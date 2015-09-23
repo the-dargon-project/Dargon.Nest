@@ -1,29 +1,18 @@
-﻿using Castle.DynamicProxy;
-using CommandLine;
-using Dargon.Nest.Eggxecutor;
-using Dargon.Nest.Exeggutor;
-using Dargon.Nest.Exeggutor.Host.PortableObjects;
-using Dargon.PortableObjects;
-using Dargon.PortableObjects.Streams;
+﻿using CommandLine;
+using Dargon.Management.Server;
+using Dargon.Ryu;
 using Dargon.Services;
-using Dargon.Services.Messaging;
+using Dargon.Services.Clustering;
 using ItzWarty;
-using ItzWarty.Collections;
-using ItzWarty.IO;
 using ItzWarty.Networking;
-using ItzWarty.Processes;
-using ItzWarty.Threading;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
 using NLog.Targets.Wrappers;
 using System;
 using System.IO;
+using System.Net;
 using System.Reflection;
-using System.Threading;
-using Dargon.Management;
-using Dargon.Management.Server;
-using Dargon.Services.Clustering;
 
 namespace Dargon.Nest.Daemon {
    public static class Program {
@@ -38,21 +27,13 @@ namespace Dargon.Nest.Daemon {
                  HelpText = "Dargon Management Interface Port")]
          public int ManagementPort { get; set; }
 
-         [Option("DspHeartBeatInterval", DefaultValue = 30000,
-                 HelpText = "Dargon Service Protocol Heartbeat Interval")]
-         public int DspHeartBeatInterval { get; set; }
-
          [Option('h', "HostPath", DefaultValue = "./../nest-host/nest-host.exe",
                  HelpText = "Path to nest host executable")]
          public string HostPath { get; set; }
 
-         [Option('n', "NestPath", DefaultValue = null,
-                 HelpText = "Path to dargon nest.")]
+         [Option('n', "NestsPath", DefaultValue = "./../..",
+                 HelpText = "Path to `nests` directory.")]
          public string NestPath { get; set; }
-
-         [Option('c', "Command", DefaultValue = null,
-                 HelpText = "Nest commands to execute when nest daemon has initialized.")]
-         public string Command { get; set; }
       }
 
       public static void Main(string[] args) {
@@ -61,7 +42,7 @@ namespace Dargon.Nest.Daemon {
 
          logger.Info("Logging Initialized.");
          var options = new Options();
-         if (CommandLine.Parser.Default.ParseArguments(args, options)) {
+         if (Parser.Default.ParseArguments(args, options)) {
             Run(options);
          } else {
             logger.Error("Invalid arguments.");
@@ -69,66 +50,31 @@ namespace Dargon.Nest.Daemon {
       }
 
       public static void Run(Options options) {
-         if (options.NestPath == null) {
-            var nestDaemonDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
-            options.NestPath = nestDaemonDirectory.Parent.FullName;
-         }
+         var ryu = new RyuFactory().Create();
+         ryu.Touch<ItzWartyCommonsRyuPackage>();
+         ryu.Touch<ItzWartyProxiesRyuPackage>();
 
-         // construct libwarty dependencies
-         ICollectionFactory collectionFactory = new CollectionFactory();
+         // Configure Dargon.Services
+         ryu.Set<ClusteringConfiguration>(new ClusteringConfigurationImpl(
+            IPAddress.Loopback,
+            options.DspPort,
+            ClusteringRole.HostOrGuest));
 
-         // construct libwarty-proxies dependencies
-         IStreamFactory streamFactory = new StreamFactory();
-         IFileSystemProxy fileSystemProxy = new FileSystemProxy(streamFactory);
-         IThreadingFactory threadingFactory = new ThreadingFactory();
-         ISynchronizationFactory synchronizationFactory = new SynchronizationFactory();
-         IThreadingProxy threadingProxy = new ThreadingProxy(threadingFactory, synchronizationFactory);
-         IDnsProxy dnsProxy = new DnsProxy();
-         ITcpEndPointFactory tcpEndPointFactory = new TcpEndPointFactory(dnsProxy);
-         INetworkingInternalFactory networkingInternalFactory = new NetworkingInternalFactory(threadingProxy, streamFactory);
-         ISocketFactory socketFactory = new SocketFactory(tcpEndPointFactory, networkingInternalFactory);
-         INetworkingProxy networkingProxy = new NetworkingProxy(socketFactory, tcpEndPointFactory);
-         IProcessProxy processProxy = new ProcessProxy();
+         // Configure Dargon.Management
+         var managementServerEndpoint = ryu.Get<INetworkingProxy>().CreateAnyEndPoint(options.ManagementPort);
+         ryu.Set<IManagementServerConfiguration>(new ManagementServerConfiguration(managementServerEndpoint));
 
-         // Common POF Context
-         var pofContext = new PofContext().With(x => {
-            x.MergeContext(new DspPofContext());               // 0 - 999
-            x.MergeContext(new ExeggutorPofContext(3000));     // 3000 - 3499, must reflect value in nestd
-            x.MergeContext(new ExeggutorHostPofContext(3500));
-            x.MergeContext(new ManagementPofContext());
+         // Configure Dargon.Nest.Daemon
+         ryu.Set<DaemonConfiguration>(new DaemonConfiguration {
+            HostExecutablePath = options.HostPath,
+            NestsPath = options.NestPath
          });
-         var pofSerializer = new PofSerializer(pofContext);
 
-         // Pof Streams Dependencies
-         PofStreamsFactory pofStreamsFactory = new PofStreamsFactoryImpl(threadingProxy, streamFactory, pofSerializer);
+         ((RyuContainerImpl)ryu).Setup(true);
 
-         // construct libdsp dependencies
-         ProxyGenerator proxyGenerator = new ProxyGenerator();
-         var serviceClientFactory = new ServiceClientFactoryImpl(proxyGenerator, streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
-         // construct libdsp local service node
-         ServiceClient localServiceClient = serviceClientFactory.Local(options.DspPort, ClusteringRole.HostOnly);
+         logger.Info("..");
 
-         // construct dargon.management dependencies
-         ITcpEndPoint managementServerEndpoint = tcpEndPointFactory.CreateAnyEndPoint(options.ManagementPort);
-         var managementFactory = new ManagementFactoryImpl(collectionFactory, threadingProxy, networkingProxy, pofContext, pofSerializer);
-         var localManagementServer = managementFactory.CreateServer(new ManagementServerConfiguration(managementServerEndpoint));
-
-         // Nest-Host Dependencies
-         ExecutorHostConfiguration executorHostConfiguration = new ExecutorHostConfigurationImpl(options.HostPath);
-         HatchlingContextInitializer hatchlingContextInitializer = new HatchlingContextInitializerImpl(fileSystemProxy, pofSerializer, pofStreamsFactory, executorHostConfiguration);
-         EggContextFactory eggContextFactory = new EggContextFactoryImpl(hatchlingContextInitializer, processProxy);
-         ExeggutorServiceImpl exeggutorService = new ExeggutorServiceImpl(options.NestPath, eggContextFactory);
-         localManagementServer.RegisterInstance(new ExeggutorMob(exeggutorService));
-         localServiceClient.RegisterService(exeggutorService, typeof(ExeggutorService));
-
-         // Nest-Daemon Dependencies
-//         var nestDaemonService = new NestDaemonServiceProxyImpl(exeggutorService);
-//         localServiceClient.RegisterService(nestDaemonService, typeof(NestDaemonService));
-//         logger.Info("Exposed nestd service.");
-
-//         AppDomain.CurrentDomain.ProcessExit += (s, e) => nestDaemonService.KillHatchlingsAndDaemon();
-
-//         nestDaemonService.Run();
+         ryu.Get<InternalNestDaemonService>().WaitForShutdown();
          logger.Info("Shutting down nestd.");
       }
 

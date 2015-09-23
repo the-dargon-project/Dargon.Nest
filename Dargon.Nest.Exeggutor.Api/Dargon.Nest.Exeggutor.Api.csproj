@@ -38,6 +38,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dargon.PortableObjects.0.1.3\lib\net45\Dargon.PortableObjects.dll</HintPath>
     </Reference>
+    <Reference Include="Dargon.Ryu.Api">
+      <HintPath>..\packages\Dargon.Ryu.Api.0.3.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\Dargon.Ryu.Api.dll</HintPath>
+    </Reference>
     <Reference Include="ItzWarty.Commons">
       <HintPath>..\packages\ItzWarty.Commons.0.1.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
     </Reference>
@@ -51,11 +54,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EggNotFoundException.cs" />
+    <Compile Include="ExeggutorApiRyuPackage.cs" />
     <Compile Include="ExeggutorPofContext.cs" />
     <Compile Include="ExeggutorService.cs" />
+    <Compile Include="HatchlingStartFlags.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpawnConfiguration.cs" />
-    <Compile Include="HatchlingStartFlags.cs" />
     <Compile Include="SpawnHatchlingResult.cs" />
   </ItemGroup>
   <ItemGroup>

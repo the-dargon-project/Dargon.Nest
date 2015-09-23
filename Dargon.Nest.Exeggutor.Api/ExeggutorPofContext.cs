@@ -6,9 +6,11 @@ using Dargon.PortableObjects;
 
 namespace Dargon.Nest.Eggxecutor {
    public class ExeggutorPofContext : PofContext {
-      public ExeggutorPofContext(int basePofId) {
-         RegisterPortableObjectType(basePofId + 0, typeof(SpawnConfiguration));
-         RegisterPortableObjectType(basePofId + 1, typeof(SpawnHatchlingResult));
+      private const int kBasePofId = 3000;
+
+      public ExeggutorPofContext() {
+         RegisterPortableObjectType(kBasePofId + 0, typeof(SpawnConfiguration));
+         RegisterPortableObjectType(kBasePofId + 1, typeof(SpawnHatchlingResult));
       }
    }
 }

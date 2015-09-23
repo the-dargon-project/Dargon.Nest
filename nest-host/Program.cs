@@ -31,7 +31,7 @@ namespace nest_host {
          var synchronizationFactory = new SynchronizationFactory();
          var threadingProxy = new ThreadingProxy(threadingFactory, synchronizationFactory);
          var pofContext = new PofContext().With(x => {
-            x.MergeContext(new ExeggutorHostPofContext(3500)); // Note: Must reflect value in nest-host
+            x.MergeContext(new ExeggutorHostPofContext()); // Note: Must reflect value in nest-host
          });
          var pofSerializer = new PofSerializer(pofContext);
          var pofStreamsFactory = new PofStreamsFactoryImpl(threadingProxy, streamFactory, pofSerializer);

@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Nest", "Dargon.Nest\Dargon.Nest.csproj", "{FEC88CE6-2D59-41DA-9608-00EF6EC91E76}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Nest.Exeggutor.Impl", "Dargon.Nest.Exeggutor.Impl\Dargon.Nest.Exeggutor.Impl.csproj", "{FD02D2EF-27FA-4C6A-A8D0-9CB4A7FBD5BC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Nest.Egg.Api", "Dargon.Nest.Egg.Api\Dargon.Nest.Egg.Api.csproj", "{52AC94A1-A1C0-43B2-8B1B-001CC11518BE}"
 EndProject
@@ -36,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "init", "init\init.csproj", "{45029D9F-C2A1-45E6-B461-90FB89196063}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.Ryu.Impl", "..\Dargon.Ryu\Dargon.Ryu.Impl\Dargon.Ryu.Impl.csproj", "{2ED5C703-8A91-4701-9AE9-DA86AA93A169}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,10 +46,6 @@ Global
 		{FEC88CE6-2D59-41DA-9608-00EF6EC91E76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEC88CE6-2D59-41DA-9608-00EF6EC91E76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEC88CE6-2D59-41DA-9608-00EF6EC91E76}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FD02D2EF-27FA-4C6A-A8D0-9CB4A7FBD5BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD02D2EF-27FA-4C6A-A8D0-9CB4A7FBD5BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD02D2EF-27FA-4C6A-A8D0-9CB4A7FBD5BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FD02D2EF-27FA-4C6A-A8D0-9CB4A7FBD5BC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{52AC94A1-A1C0-43B2-8B1B-001CC11518BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{52AC94A1-A1C0-43B2-8B1B-001CC11518BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52AC94A1-A1C0-43B2-8B1B-001CC11518BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -98,6 +94,10 @@ Global
 		{45029D9F-C2A1-45E6-B461-90FB89196063}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45029D9F-C2A1-45E6-B461-90FB89196063}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45029D9F-C2A1-45E6-B461-90FB89196063}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2ED5C703-8A91-4701-9AE9-DA86AA93A169}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ED5C703-8A91-4701-9AE9-DA86AA93A169}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ED5C703-8A91-4701-9AE9-DA86AA93A169}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ED5C703-8A91-4701-9AE9-DA86AA93A169}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
