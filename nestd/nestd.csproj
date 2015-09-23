@@ -69,8 +69,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Dargon.PortableObjects.Streams, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dargon.PortableObjects.Streams.0.3.0\lib\net45\Dargon.PortableObjects.Streams.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dargon.PortableObjects.Streams.0.3.1\lib\net45\Dargon.PortableObjects.Streams.dll</HintPath>
     </Reference>
     <Reference Include="Dargon.Ryu.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dargon.Ryu.Api.0.3.0\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\Dargon.Ryu.Api.dll</HintPath>
