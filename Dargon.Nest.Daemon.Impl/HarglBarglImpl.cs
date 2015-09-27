@@ -24,7 +24,7 @@ namespace Dargon.Nest.Daemon {
       }
 
       public void KillHatchlings() {
-         throw new NotImplementedException();
+
       }
 
       public void KillHatchlingsAndUpdateAllPackages() {

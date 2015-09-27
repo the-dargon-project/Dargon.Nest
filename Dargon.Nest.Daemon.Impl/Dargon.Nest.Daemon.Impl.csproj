@@ -92,6 +92,7 @@
     <Compile Include="Hatchlings\NestContextFactory.cs" />
     <Compile Include="Hatchlings\NestDirectory.cs" />
     <Compile Include="Hatchlings\NestDirectorySynchronizer.cs" />
+    <Compile Include="Hatchlings\NestLockManager.cs" />
     <Compile Include="Hosts\HostOperations.cs" />
     <Compile Include="DaemonConfiguration.cs" />
     <Compile Include="Hatchlings\HatchlingContext.cs" />

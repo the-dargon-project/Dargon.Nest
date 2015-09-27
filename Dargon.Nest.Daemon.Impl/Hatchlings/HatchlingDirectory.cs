@@ -1,4 +1,5 @@
-﻿using ItzWarty.Collections;
+﻿using ItzWarty;
+using ItzWarty.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace Dargon.Nest.Daemon.Hatchlings {
 
    public interface ManageableHatchlingDirectory : ReadableHatchlingDirectory {
       void RegisterHatchling(HatchlingContext hatchling);
+      void UnregisterHatchling(HatchlingContext hatchling);
    }
 
    public class HatchlingDirectoryImpl : ManageableHatchlingDirectory {
@@ -21,6 +23,11 @@ namespace Dargon.Nest.Daemon.Hatchlings {
       public void RegisterHatchling(HatchlingContext hatchling) {
          hatchlings.Add(hatchling);
          hatchlingsByName.Add(hatchling.Name, hatchling);
+      }
+
+      public void UnregisterHatchling(HatchlingContext hatchling) {
+         hatchlings.Remove(hatchling);
+         hatchlingsByName.TryRemove(hatchling.Name, hatchling);
       }
 
       public bool TryGetHatchlingByName(string name, out HatchlingContext hatchling) => hatchlingsByName.TryGetValue(name, out hatchling);

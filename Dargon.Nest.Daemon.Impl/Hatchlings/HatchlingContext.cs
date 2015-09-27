@@ -33,6 +33,7 @@ namespace Dargon.Nest.Daemon.Hatchlings {
 
       public void Initialize() {
          hatchlingDirectory.RegisterHatchling(this);
+         hostProcess.Exited += (s, e) => hatchlingDirectory.UnregisterHatchling(this);
       }
 
       public Guid Id => id;

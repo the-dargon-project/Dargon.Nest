@@ -22,6 +22,7 @@ namespace Dargon.Nest.Daemon {
          Singleton<ManageableHatchlingDirectory, HatchlingDirectoryImpl>();
          Singleton<NestDirectory>();
          Singleton<NestDirectorySynchronizer>(RyuTypeFlags.Required);
+         Singleton<NestLockManager>();
          LocalService<ExeggutorService, HarglBarglImpl>();
          PofContext<ExeggutorPofContext>();
          PofContext<ExeggutorHostPofContext>();
