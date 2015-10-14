@@ -15,7 +15,7 @@ namespace Dargon.Nest {
       public InMemoryEgg(string name, string version, string sourcePath) {
          this.name = name;
          this.version = version;
-         this.sourcePath = new FileInfo(sourcePath).FullName.Trim('/', '\\');
+         this.sourcePath = FormatSystemPath(sourcePath);
          var internalFilePaths = Directory.EnumerateFiles(sourcePath, "*", SearchOption.AllDirectories).Select(GetInternalPath).ToArray();
          foreach (var internalPath in internalFilePaths) {
             var hash = NestUtil.GetFileHash(GetAbsolutePath(internalPath));
@@ -38,13 +38,18 @@ namespace Dargon.Nest {
       public bool IsValid() {
          return true;
       }
+      
+      private string FormatSystemPath(string absolutePath) {
+         return Path.GetFullPath(absolutePath).TrimEnd('/', '\\');
+      }
 
       private string GetAbsolutePath(string internalPath) {
          return Path.Combine(sourcePath, internalPath);
       }
 
       private string GetInternalPath(string absolutePath) {
-         return absolutePath.Substring(sourcePath.Length).Trim('/', '\\');
+         const int kLeadingSlashLength = 1;
+         return FormatSystemPath(absolutePath).Substring(sourcePath.Length + kLeadingSlashLength);
       }
    }
 }
