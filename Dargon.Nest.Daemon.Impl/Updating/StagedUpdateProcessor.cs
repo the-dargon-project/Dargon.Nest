@@ -2,19 +2,19 @@ using System.IO;
 using Dargon.Nest.Daemon.Utilities;
 
 namespace Dargon.Nest.Daemon.Updating {
-   public interface StageManager {
+   public interface StagedUpdateProcessor {
       bool IsUpdateStaged(string nestName);
-      void ProcessStagedUpdate(string nestName);
+      void ProcessDeadNestWithStagedUpdate(string nestName);
    }
 
-   public class StageManagerImpl : StageManager {
+   public class StagedUpdateProcessorImpl : StagedUpdateProcessor {
       private const string kReadyFileName = "READY";
 
       private readonly FileUtilities fileUtilities;
       private readonly DirectoryInfo stageDirectoryInfo;
       private readonly DirectoryInfo nestsDirectoryInfo;
 
-      public StageManagerImpl(FileUtilities fileUtilities, DirectoryInfo stageDirectoryInfo, DirectoryInfo nestsDirectoryInfo) {
+      public StagedUpdateProcessorImpl(FileUtilities fileUtilities, DirectoryInfo stageDirectoryInfo, DirectoryInfo nestsDirectoryInfo) {
          this.fileUtilities = fileUtilities;
          this.stageDirectoryInfo = stageDirectoryInfo;
          this.nestsDirectoryInfo = nestsDirectoryInfo;
@@ -25,7 +25,7 @@ namespace Dargon.Nest.Daemon.Updating {
          return File.Exists(readyFilePath);
       }
 
-      public void ProcessStagedUpdate(string nestName) {
+      public void ProcessDeadNestWithStagedUpdate(string nestName) {
          var stagedNest = new DirectoryInfo(Path.Combine(stageDirectoryInfo.FullName, nestName));
          var targetNest = new DirectoryInfo(Path.Combine(nestsDirectoryInfo.FullName, nestName));
          var stagedReadyFilePath = Path.Combine(stagedNest.FullName, kReadyFileName);

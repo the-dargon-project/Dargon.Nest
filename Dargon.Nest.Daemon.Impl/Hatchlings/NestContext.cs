@@ -1,11 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using ItzWarty.Collections;
+using ItzWarty.IO;
+using IOPath = System.IO.Path;
 
 namespace Dargon.Nest.Daemon.Hatchlings {
    public interface NestContext {
       string Name { get; }
+      string Path { get; }
+      string Version { get; }
+      string Remote { get; }
+
       EggContext GetEggByName(string eggName);
       bool TryGetEggByName(string eggName, out EggContext eggContext);
    }
@@ -14,14 +21,19 @@ namespace Dargon.Nest.Daemon.Hatchlings {
       private readonly object synchronization = new object();
       private readonly ConcurrentDictionary<string, EggContext> eggsByName = new ConcurrentDictionary<string, EggContext>();
       private readonly string nestName;
+      private readonly string nestPath;
       private readonly LocalDargonNest nest;
 
-      public NestContextImpl(string nestName, LocalDargonNest nest) {
+      public NestContextImpl(string nestName, string nestPath, LocalDargonNest nest) {
          this.nestName = nestName;
+         this.nestPath = nestPath;
          this.nest = nest;
       }
 
       public string Name => nestName;
+      public string Path => nestPath;
+      public string Version => TryReadOrNull(IOPath.Combine(Path, "VERSION"));
+      public string Remote => TryReadOrNull(IOPath.Combine(Path, "REMOTE"));
 
       public EggContext GetEggByName(string eggName) {
          EggContext result;
@@ -47,6 +59,14 @@ namespace Dargon.Nest.Daemon.Hatchlings {
                eggContext = eggsByName[eggName] = new EggContext(egg, this);
                return true;
             }
+         }
+      }
+
+      private string TryReadOrNull(string path) {
+         if (!File.Exists(path)) {
+            return null;
+         } else {
+            return File.ReadAllText(path);
          }
       }
    }

@@ -12,13 +12,13 @@ namespace Dargon.Nest.Daemon {
       private readonly InternalNestDaemonService daemonService;
       private readonly ReadableHatchlingDirectory hatchlingDirectory;
       private readonly NestDirectory nestDirectory;
-      private readonly HarglBarglImpl harglBargl;
+      private readonly NestServiceImpl nestService;
 
-      public ExeggutorMob(InternalNestDaemonService daemonService, ReadableHatchlingDirectory hatchlingDirectory, NestDirectory nestDirectory, HarglBarglImpl harglBargl) {
+      public ExeggutorMob(InternalNestDaemonService daemonService, ReadableHatchlingDirectory hatchlingDirectory, NestDirectory nestDirectory, NestServiceImpl nestService) {
          this.daemonService = daemonService;
          this.hatchlingDirectory = hatchlingDirectory;
          this.nestDirectory = nestDirectory;
-         this.harglBargl = harglBargl;
+         this.nestService = nestService;
       }
 
       [ManagedOperation]
@@ -34,7 +34,7 @@ namespace Dargon.Nest.Daemon {
       [ManagedOperation]
       public string SpawnHatchling(string eggName, string instanceName) {
          SpawnConfiguration configuration = new SpawnConfiguration { Arguments = null, InstanceName = instanceName };
-         var spawnResult = harglBargl.SpawnHatchling(eggName, configuration);
+         var spawnResult = nestService.SpawnHatchling(eggName, configuration);
          return "Spawned hatchling of guid " + spawnResult.HatchlingId + ": " + spawnResult.StartResult;
       }
 
@@ -50,7 +50,7 @@ namespace Dargon.Nest.Daemon {
 
       [ManagedOperation]
       public string KillHatchlingsAndUpdateAllPackages() {
-         harglBargl.KillHatchlingsAndUpdateAllPackages();
+         nestService.KillHatchlingsAndUpdateAllPackages();
          return "Success!";
       }
    }

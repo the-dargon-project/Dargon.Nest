@@ -6,7 +6,17 @@ using ItzWarty;
 using ItzWarty.Collections;
 
 namespace Dargon.Nest.Daemon.Hatchlings {
-   public class NestDirectory {
+   public interface ReadableNestDirectory {
+      NestContext GetNestContextByName(string name);
+      IEnumerable<NestContext> EnumerateNests();
+   }
+
+   public interface ManageableNestDirectory : ReadableNestDirectory {
+      void Register(NestContext nest);
+      void Unregister(NestContext nest);
+   }
+
+   public class NestDirectory : ManageableNestDirectory {
       private readonly IConcurrentDictionary<string, NestContext> nestsByName = new ConcurrentDictionary<string, NestContext>();
 
       public void Register(NestContext nest) {

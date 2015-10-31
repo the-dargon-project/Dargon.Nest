@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Dargon.Nest.Daemon.Hosts;
 using Dargon.Nest.Egg;
 using Dargon.Nest.Eggxecutor;
@@ -13,7 +14,7 @@ namespace Dargon.Nest.Daemon.Hatchlings {
       NestContext Nest { get; }
       NestResult StartResult { get; }
 
-      void Shutdown(ShutdownReason reason);
+      Task ShutdownAsync(ShutdownReason reason);
    }
 
    public class HatchlingContextImpl : HatchlingContext {
@@ -43,6 +44,6 @@ namespace Dargon.Nest.Daemon.Hatchlings {
       public NestContext Nest => eggContext.NestContext;
       public NestResult StartResult => hostProcess.StartResult;
 
-      public void Shutdown(ShutdownReason reason) => hostProcess.Shutdown(reason);
+      public Task ShutdownAsync(ShutdownReason reason) => hostProcess.ShutdownAsync(reason);
    }
 }

@@ -16,14 +16,14 @@ namespace Dargon.Nest.Daemon {
          Singleton<HatchlingSpawner, HatchlingSpawnerImpl>();
          Singleton<HostOperations>();
          Singleton<HostProcessFactory>();
-         Singleton<HarglBarglImpl>();
+         Singleton<NestServiceImpl>();
          Singleton<HatchlingDirectoryImpl>();
          Singleton<ReadableHatchlingDirectory, HatchlingDirectoryImpl>();
          Singleton<ManageableHatchlingDirectory, HatchlingDirectoryImpl>();
          Singleton<NestDirectory>();
          Singleton<NestDirectorySynchronizer>(RyuTypeFlags.Required);
          Singleton<NestLockManager>();
-         LocalService<ExeggutorService, HarglBarglImpl>();
+         LocalService<ExeggutorService, NestServiceImpl>();
          PofContext<ExeggutorPofContext>();
          PofContext<ExeggutorHostPofContext>();
          Mob<ExeggutorMob>();

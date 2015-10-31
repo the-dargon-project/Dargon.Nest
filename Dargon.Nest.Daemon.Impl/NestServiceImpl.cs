@@ -1,0 +1,84 @@
+﻿using Dargon.Nest.Daemon.Hatchlings;
+using Dargon.Nest.Eggxecutor;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Dargon.Nest.Daemon.Updating;
+using Dargon.Nest.Egg;
+using Nito.AsyncEx;
+
+namespace Dargon.Nest.Daemon {
+   public class NestServiceImpl : ExeggutorService {
+      // Nonrecursive; reads for single-nest operations, write for multi-nest operations.
+      private readonly AsyncReaderWriterLock multinestAccessLock = new AsyncReaderWriterLock();
+      private readonly HatchlingSpawner hatchlingSpawner;
+      private readonly ManageableHatchlingDirectory hatchlingDirectory;
+      private readonly ManageableNestDirectory nestDirectory;
+      private readonly UpdateFetcher updateFetcher;
+      private readonly StagedUpdateProcessor stagedUpdateProcessor;
+
+      public NestServiceImpl(HatchlingSpawner hatchlingSpawner, ManageableHatchlingDirectory hatchlingDirectory, ManageableNestDirectory nestDirectory, UpdateFetcher updateFetcher, StagedUpdateProcessor stagedUpdateProcessor) {
+         this.hatchlingSpawner = hatchlingSpawner;
+         this.hatchlingDirectory = hatchlingDirectory;
+         this.nestDirectory = nestDirectory;
+         this.updateFetcher = updateFetcher;
+         this.stagedUpdateProcessor = stagedUpdateProcessor;
+      }
+
+      public SpawnHatchlingResult SpawnHatchling(string eggName, SpawnConfiguration configuration) {
+         return SpawnHatchlingAsync(eggName, configuration).Result;
+      }
+
+      public async Task<SpawnHatchlingResult> SpawnHatchlingAsync(string eggName, SpawnConfiguration configuration) {
+         using (await multinestAccessLock.ReaderLockAsync()) {
+            var hatchling = hatchlingSpawner.Spawn(eggName, configuration);
+
+            var result = new SpawnHatchlingResult();
+            result.HatchlingId = hatchling.Id;
+            if (!configuration.StartFlags.HasFlag(HatchlingStartFlags.StartAsynchronously)) {
+               result.StartResult = hatchling.StartResult;
+            }
+            return result;
+         }
+      }
+
+      public void KillHatchlings() {
+         KillHatchlingsAsync().Wait();
+      }
+
+      public async Task KillHatchlingsAsync() {
+         using (await multinestAccessLock.WriterLockAsync()) {
+            await KillHatchlings_UnderLockAsync(ShutdownReason.None);
+         }
+      }
+
+      public void KillHatchlingsAndUpdateAllPackages() {
+         KillHatchlingsAndUpdateAllPackagesAsync().Wait();
+      }
+
+      public async Task KillHatchlingsAndUpdateAllPackagesAsync() {
+         using (await multinestAccessLock.WriterLockAsync()) {
+            await KillHatchlings_UnderLockAsync(ShutdownReason.Update);
+            await UpdateHatchlings_UnderLockAsync();
+         }
+      }
+
+      private Task KillHatchlings_UnderLockAsync(ShutdownReason reason) {
+         return KillHatchlings_UnderLockAsync(reason, hatchlingDirectory.EnumerateHatchlings());
+      }
+
+      private Task KillHatchlings_UnderLockAsync(ShutdownReason reason, IEnumerable<HatchlingContext> hatchlings) {
+         return Task.WhenAll(hatchlings.Select(x => x.ShutdownAsync(reason)));
+      }
+
+      private async Task UpdateHatchlings_UnderLockAsync() {
+         await updateFetcher.FetchUpdatesAsync();
+         foreach (var nest in nestDirectory.EnumerateNests()) {
+            if (stagedUpdateProcessor.IsUpdateStaged(nest.Name)) {
+               stagedUpdateProcessor.ProcessDeadNestWithStagedUpdate(nest.Name);
+            }
+         }
+      }
+   }
+}

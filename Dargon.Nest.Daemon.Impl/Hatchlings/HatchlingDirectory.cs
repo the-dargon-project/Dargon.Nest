@@ -7,7 +7,7 @@ using System.Linq;
 namespace Dargon.Nest.Daemon.Hatchlings {
    public interface ReadableHatchlingDirectory {
       bool TryGetHatchlingByName(string name, out HatchlingContext hatchling);
-      IReadOnlySet <HatchlingContext> EnumerateHatchlings();
+      IReadOnlySet<HatchlingContext> EnumerateHatchlings();
       IEnumerable<HatchlingContext> EnumerateHatchlingsOfNest(string nestName);
    }
 

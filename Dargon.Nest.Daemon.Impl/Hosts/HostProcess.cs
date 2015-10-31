@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using Dargon.Nest.Daemon.Hatchlings;
 using Dargon.Nest.Egg;
 using Dargon.Nest.Eggxecutor;
@@ -91,11 +92,11 @@ namespace Dargon.Nest.Daemon.Hosts {
          Send(new BootstrapDto(
             spawnConfiguration.InstanceName,
             eggContext.RootPath,
-            spawnConfiguration.Arguments));
+            spawnConfiguration.Arguments)).Wait();
       }
 
-      public void Shutdown(ShutdownReason reason) {
-         Send(new ShutdownDto { Reason = reason });
+      public async Task ShutdownAsync(ShutdownReason reason) {
+         await Send(new ShutdownDto { Reason = reason });
       }
 
       private void SendMagic() {
@@ -103,8 +104,8 @@ namespace Dargon.Nest.Daemon.Hosts {
          pofStream.Writer.BaseStream.Flush();
       }
 
-      private void Send(object x) {
-         pofStream.Write(x);
+      private async Task Send(object x) {
+         await pofStream.WriteAsync(x);
          pofStream.Writer.BaseStream.Flush();
       }
 

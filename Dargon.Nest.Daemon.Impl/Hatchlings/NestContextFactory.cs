@@ -15,7 +15,7 @@ namespace Dargon.Nest.Daemon.Hatchlings {
 
       public NestContext Create(string path) {
          var directoryInfo = fileSystemProxy.GetDirectoryInfo(path);
-         return new NestContextImpl(directoryInfo.Name, new LocalDargonNest(directoryInfo.FullName));
+         return new NestContextImpl(directoryInfo.Name, directoryInfo.FullName, new LocalDargonNest(directoryInfo.FullName));
       }
    }
 }

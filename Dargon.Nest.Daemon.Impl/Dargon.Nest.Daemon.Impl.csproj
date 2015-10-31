@@ -104,13 +104,12 @@
     <Compile Include="Hosts\HostProcess.cs" />
     <Compile Include="InternalNestDaemonService.cs" />
     <Compile Include="NestDaemonImplRyuPackage.cs" />
-    <Compile Include="Updating\StageManager.cs" />
-    <Compile Include="Updating\BackgroundUpdateFetcher.cs" />
+    <Compile Include="Updating\StagedUpdateProcessor.cs" />
+    <Compile Include="Updating\UpdateFetcher.cs" />
     <Compile Include="Utilities\FileUtilities.cs" />
     <Compile Include="Hatchlings\NestContext.cs" />
-    <Compile Include="Updating\UpdateService.cs" />
     <Compile Include="Hatchlings\HatchlingDirectory.cs" />
-    <Compile Include="HarglBarglImpl.cs" />
+    <Compile Include="NestServiceImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
