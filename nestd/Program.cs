@@ -101,9 +101,12 @@ namespace Dargon.Nest.Daemon {
       }
 
       private static void InitializeLogging() {
-         var nestDaemonDirectory = new FileInfo(Assembly.GetEntryAssembly().Location).Directory;
-         var nestDirectory = nestDaemonDirectory.Parent;
-         var nestLogsDirectory = new DirectoryInfo(Path.Combine(nestDirectory.FullName, "logs"));
+         var eggDirectory = new FileInfo(Assembly.GetEntryAssembly().Location).Directory;
+         var eggNestDirectory = eggDirectory.Parent;
+         var nestsDirectory = eggNestDirectory.Parent;
+         var nestRootDirectory = nestsDirectory.Parent;
+         var nestLogsDirectoryPath = Path.Combine(nestRootDirectory.FullName, "logs", eggNestDirectory.Name);
+         var nestLogsDirectory = new DirectoryInfo(nestLogsDirectoryPath);
          if (!nestLogsDirectory.Exists) {
             nestLogsDirectory.Create();
          }

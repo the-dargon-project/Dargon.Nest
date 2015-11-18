@@ -30,13 +30,13 @@ namespace Dargon.Nest.Daemon.Hatchlings {
 
       public HatchlingContext Spawn(string eggName, SpawnConfiguration spawnConfiguration = null) {
          var hatchlingId = Guid.NewGuid();
+         var eggContext = eggDirectory.GetContextByName(eggName);
 
          logger.Info($"Spawning instance of egg {eggName} with id {hatchlingId}!");
          spawnConfiguration = spawnConfiguration ?? new SpawnConfiguration();
          spawnConfiguration.Arguments = spawnConfiguration.Arguments ?? new byte[0];
-         spawnConfiguration.InstanceName = spawnConfiguration.InstanceName ?? hatchlingId.ToString("n");
+         spawnConfiguration.InstanceName = spawnConfiguration.InstanceName ?? (eggContext.Name + "-" + hatchlingId.ToString("n"));
 
-         var eggContext = eggDirectory.GetContextByName(eggName);
          hostOperations.CopyHostToLocalEgg(eggContext.Egg);
          var hostProcess = hostProcessFactory.CreateAndInitialize(eggContext, spawnConfiguration);
          var hatchlingContext = new HatchlingContextImpl(hatchlingId, hostProcess, spawnConfiguration, eggContext, hatchlingDirectory);

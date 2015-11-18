@@ -47,11 +47,15 @@ namespace nest_host {
          var bootstrapDto = pofStream.Read<BootstrapDto>();
 
          // Redirect nest-host (and thus hatchling) output to a log file.
-         var nestHostDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
-         var nestDirectory = nestHostDirectory.Parent;
-         var logDirectory = Path.Combine(nestDirectory.FullName, "logs");
-         Directory.CreateDirectory(logDirectory);
-         var outputWriter = new StreamWriter(new FileStream(Path.Combine(logDirectory, bootstrapDto.Name + ".log"), FileMode.Append, FileAccess.Write, FileShare.Read)) { AutoFlush = true };
+         var eggDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
+         var eggNestDirectory = eggDirectory.Parent;
+         var nestsDirectory = eggNestDirectory.Parent;
+         var nestRootDirectory = nestsDirectory.Parent;
+         var logsDirectory = Path.Combine(nestRootDirectory.FullName, "logs");
+         Directory.CreateDirectory(logsDirectory);
+         var nestLogsDirectory = Path.Combine(logsDirectory, eggNestDirectory.Name);
+         Directory.CreateDirectory(nestLogsDirectory);
+         var outputWriter = new StreamWriter(new FileStream(Path.Combine(nestLogsDirectory, bootstrapDto.Name + ".log"), FileMode.Append, FileAccess.Write, FileShare.Read)) { AutoFlush = true };
          Console.SetIn(new StreamReader(Stream.Null));
          Console.SetOut(outputWriter);
          Console.SetError(outputWriter);
@@ -70,19 +74,11 @@ namespace nest_host {
       }
 
       private static void HandleThreadException(object sender, ThreadExceptionEventArgs e) {
-         Console.WriteLine("!");
-         Console.WriteLine("!");
-         Console.WriteLine("!");
-         Console.WriteLine("!");
          Console.Error.WriteLine("Unhandled Thread Exception");
          Console.Error.WriteLine(e.Exception);
       }
 
       private static void HandleUnhandledAppDomainException(object sender, UnhandledExceptionEventArgs e) {
-         Console.WriteLine("!!");
-         Console.WriteLine("!!");
-         Console.WriteLine("!!");
-         Console.WriteLine("!!");
          Console.Error.WriteLine("Unhandled Appdomain Exception");
          Console.Error.WriteLine(e.ExceptionObject);
       }

@@ -9,6 +9,7 @@
       }
 
       public LocalDargonEgg Egg => egg;
+      public string Name => egg.Name;
       public string RootPath => egg.RootPath;
       public NestContext NestContext => nestContext;
    }

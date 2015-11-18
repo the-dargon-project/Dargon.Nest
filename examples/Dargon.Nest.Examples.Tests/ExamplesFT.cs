@@ -80,7 +80,7 @@ namespace Dargon.Nest.Examples.Tests {
          var exampleClientSpawner = Process.Start(
             new ProcessStartInfo(
                commanderFileInfo.FullName, 
-               $"-c spawn-egg -e example/example-client -p {kTestServicesPort}") {
+               $"-c spawn-egg -e example/example-client -p {kTestServicesPort} -n example-client") {
                UseShellExecute = true
             });
          exampleClientSpawner.WaitForExit();

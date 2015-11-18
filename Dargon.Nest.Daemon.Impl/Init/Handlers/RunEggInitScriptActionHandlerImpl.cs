@@ -20,7 +20,10 @@ namespace Dargon.Nest.Daemon.Init.Handlers {
 
       public void Process(NestContext nest, dynamic action) {
          string eggName = action["egg-name"];
-         hatchlingSpawner.Spawn(eggName);
+         string instanceName = action["instance-name"] ?? eggName;
+         hatchlingSpawner.Spawn(eggName, new SpawnConfiguration {
+            InstanceName = instanceName
+         });
       }
    }
 }

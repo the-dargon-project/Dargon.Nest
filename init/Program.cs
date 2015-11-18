@@ -23,6 +23,20 @@ namespace Nest.Init {
          var rootDirectory = new FileInfo(initAssembly.Location).Directory;
          Debug.Assert(rootDirectory != null);
 
+         using (var logFile = File.Open(Path.Combine(rootDirectory.FullName, "init.log"), FileMode.Append, FileAccess.Write))
+         using (var logFileWriter = new StreamWriter(logFile)) {
+            Console.SetOut(logFileWriter);
+            Console.SetError(logFileWriter);
+
+            try {
+               Run(args, rootDirectory);
+            } catch (Exception e) {
+               Console.Error.WriteLine(e);
+            }
+         }
+      }
+
+      private static void Run(string[] args, DirectoryInfo rootDirectory) {
          var nestsDirectory = new DirectoryInfo(Path.Combine(rootDirectory.FullName, kNestsDirectoryName));
          if (!nestsDirectory.Exists) {
             nestsDirectory.Create();
@@ -49,7 +63,7 @@ namespace Nest.Init {
          } else {
             logsDirectory.Create();
          }
-         
+
          var nestDaemonPath = Path.Combine(rootDirectory.FullName, kNestDaemonRelativePath);
          if (File.Exists(nestDaemonPath)) {
             Process.Start(
@@ -90,10 +104,10 @@ namespace Nest.Init {
       private static ZipArchive OpenOrCreateZipArchiveForUpdating(string logsArchivePath) {
          var fs = new FileStream(logsArchivePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
          try {
-            return new ZipArchive(fs, ZipArchiveMode.Create, false);
+            return new ZipArchive(fs, ZipArchiveMode.Update, false);
          } catch (InvalidDataException) {
             fs.SetLength(0);
-            return new ZipArchive(fs, ZipArchiveMode.Create, false);
+            return new ZipArchive(fs, ZipArchiveMode.Update, false);
          }
       }
 
