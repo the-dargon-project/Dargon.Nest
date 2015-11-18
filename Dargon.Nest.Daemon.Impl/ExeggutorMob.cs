@@ -9,12 +9,12 @@ using ItzWarty;
 
 namespace Dargon.Nest.Daemon {
    public class ExeggutorMob {
-      private readonly InternalNestDaemonService daemonService;
+      private readonly NestDaemonService daemonService;
       private readonly ReadableHatchlingDirectory hatchlingDirectory;
       private readonly NestDirectoryImpl nestDirectory;
       private readonly NestServiceImpl nestService;
 
-      public ExeggutorMob(InternalNestDaemonService daemonService, ReadableHatchlingDirectory hatchlingDirectory, NestDirectoryImpl nestDirectory, NestServiceImpl nestService) {
+      public ExeggutorMob(NestDaemonService daemonService, ReadableHatchlingDirectory hatchlingDirectory, NestDirectoryImpl nestDirectory, NestServiceImpl nestService) {
          this.daemonService = daemonService;
          this.hatchlingDirectory = hatchlingDirectory;
          this.nestDirectory = nestDirectory;

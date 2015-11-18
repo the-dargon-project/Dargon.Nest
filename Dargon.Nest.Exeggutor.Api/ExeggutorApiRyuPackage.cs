@@ -8,6 +8,7 @@ using Dargon.Ryu;
 namespace Dargon.Nest.Eggxecutor {
    public class ExeggutorApiRyuPackage : RyuPackageV1 {
       public ExeggutorApiRyuPackage() {
+         PofContext<ExeggutorPofContext>();
       }
    }
 }

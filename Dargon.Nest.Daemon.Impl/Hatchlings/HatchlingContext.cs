@@ -15,6 +15,8 @@ namespace Dargon.Nest.Daemon.Hatchlings {
       NestResult StartResult { get; }
 
       Task ShutdownAsync(ShutdownReason reason);
+
+      HatchlingStateDto ToDataTransferObject();
    }
 
    public class HatchlingContextImpl : HatchlingContext {
@@ -45,5 +47,13 @@ namespace Dargon.Nest.Daemon.Hatchlings {
       public NestResult StartResult => hostProcess.StartResult;
 
       public Task ShutdownAsync(ShutdownReason reason) => hostProcess.ShutdownAsync(reason);
+
+      public HatchlingStateDto ToDataTransferObject() {
+         return new HatchlingStateDto {
+            Id = Id,
+            Name = Name,
+            StartResult = StartResult
+         };
+      }
    }
 }

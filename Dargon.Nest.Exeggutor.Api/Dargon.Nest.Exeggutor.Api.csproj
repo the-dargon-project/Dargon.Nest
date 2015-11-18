@@ -60,6 +60,7 @@
     <Compile Include="ExeggutorPofContext.cs" />
     <Compile Include="ExeggutorService.cs" />
     <Compile Include="HatchlingStartFlags.cs" />
+    <Compile Include="HatchlingStateDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpawnConfiguration.cs" />
     <Compile Include="SpawnHatchlingResult.cs" />

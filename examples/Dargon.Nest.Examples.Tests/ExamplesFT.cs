@@ -1,21 +1,35 @@
-﻿using Dargon.Ryu;
+﻿using Dargon.Nest.Daemon;
+using Dargon.Nest.Eggxecutor;
+using Dargon.Ryu;
+using Dargon.Services;
+using Dargon.Services.Clustering;
 using ItzWarty;
 using ItzWarty.IO;
+using NMockito;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Threading;
 using Xunit;
+using static Dargon.Services.AsyncStatics;
 
 namespace Dargon.Nest.Examples.Tests {
-   public class ExamplesFT {
+   public class ExamplesFT : NMockitoInstance {
       private const int kTestServicesPort = 40000;
 
       [Fact]
       public void Run() {
          var ryu = new RyuFactory().Create();
          ryu.Touch<ItzWartyProxiesRyuPackage>();
+         ryu.Touch<ServicesRyuPackage>();
+         ryu.Touch<ExeggutorApiRyuPackage>();
+         ryu.Set<ClusteringConfiguration>(new ClusteringConfigurationImpl(
+            IPAddress.Loopback,
+            kTestServicesPort,
+            ClusteringRole.HostOrGuest));
          ((RyuContainerImpl)ryu).Setup(true);
 
          var fileSystemProxy = ryu.Get<IFileSystemProxy>();
@@ -56,15 +70,32 @@ namespace Dargon.Nest.Examples.Tests {
                UseShellExecute = true
             });
 
-         var commanderFileInfo = fileSystemProxy.GetFileInfo(BuildPath("..", "dev-nest-commander", "dev-nest-commander.exe"));
-         Console.WriteLine(commanderFileInfo.FullName);
+         var serviceClient = ryu.Get<ServiceClient>();
+         var exeggutorService = serviceClient.GetService<ExeggutorService>();
+         var hatchlings = exeggutorService.EnumerateHatchlings().ToArray();
+         Console.WriteLine("Hatchling count: " + hatchlings.Length);
+         AssertEquals(1, hatchlings.Length);
 
-         Process.Start(
+         var commanderFileInfo = fileSystemProxy.GetFileInfo(BuildPath("..", "dev-nest-commander", "dev-nest-commander.exe"));
+         var exampleClientSpawner = Process.Start(
             new ProcessStartInfo(
                commanderFileInfo.FullName, 
                $"-c spawn-egg -e example/example-client -p {kTestServicesPort}") {
                UseShellExecute = true
             });
+         exampleClientSpawner.WaitForExit();
+         hatchlings = exeggutorService.EnumerateHatchlings().ToArray();
+         AssertEquals(2, hatchlings.Length);
+         Thread.Sleep(5000);
+         hatchlings = exeggutorService.EnumerateHatchlings().ToArray();
+         AssertEquals(0, hatchlings.Length);
+         exeggutorService.KillHatchlings();
+
+         var nestDaemonService = serviceClient.GetService<NestDaemonService>();
+         var shutdownTask = Async(() => nestDaemonService.WaitForShutdown());
+         AssertFalse(shutdownTask.IsCompleted);
+         nestDaemonService.KillDaemon();
+         shutdownTask.Wait();
       }
 
       private void ImportProjectToNest(LocalDargonNest nest, string folderPath, string projectName) {

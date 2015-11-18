@@ -96,7 +96,7 @@ namespace Dargon.Nest.Daemon {
             initScriptRunner.RunNestInitializationScript(nest);
          }
 
-         ryu.Get<InternalNestDaemonService>().WaitForShutdown();
+         ryu.Get<NestDaemonService>().WaitForShutdown();
          logger.Info("Shutting down nestd.");
       }
 

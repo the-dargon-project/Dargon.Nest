@@ -34,7 +34,7 @@ namespace example_client {
          ((RyuContainerImpl)ryu).Setup(true);
          Log("Successfully initialized example client.");
          new Thread(() => {
-            Thread.Sleep(2000);
+            Thread.Sleep(2500);
             Log("Sending killall + update signal.");
             var exeggutor = ryu.Get<ExeggutorService>();
             exeggutor.KillHatchlingsAndUpdateAllPackages();

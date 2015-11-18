@@ -18,7 +18,6 @@ namespace Dargon.Nest.Daemon {
    public class NestDaemonImplRyuPackage : RyuPackageV1 {
       public NestDaemonImplRyuPackage() {
          Singleton<FileUtilities, FileUtilitiesImpl>();
-         Singleton<InternalNestDaemonService, InternalNestDaemonServiceImpl>();
          Singleton<HatchlingSpawner, HatchlingSpawnerImpl>();
          Singleton<HostOperations>();
          Singleton<HostProcessFactory>();
@@ -36,8 +35,9 @@ namespace Dargon.Nest.Daemon {
          Singleton<NestLockManager>();
          Singleton<RunEggInitScriptActionHandlerImpl>(RyuTypeFlags.Required);
          Singleton<InitScriptRunner>(ConstructInitScriptRunner);
+         Singleton<NestDaemonServiceImpl>();
          LocalService<ExeggutorService, NestServiceImpl>();
-         PofContext<ExeggutorPofContext>();
+         LocalService<NestDaemonService, NestDaemonServiceImpl>();
          PofContext<ExeggutorHostPofContext>();
          Mob<ExeggutorMob>();
       }

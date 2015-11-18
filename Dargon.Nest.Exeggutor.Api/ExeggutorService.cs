@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -7,6 +7,9 @@ namespace Dargon.Nest.Eggxecutor {
    public interface ExeggutorService {
       SpawnHatchlingResult SpawnHatchling(string eggName, SpawnConfiguration configuration);
       Task<SpawnHatchlingResult> SpawnHatchlingAsync(string eggName, SpawnConfiguration configuration);
+
+      IEnumerable<HatchlingStateDto> EnumerateHatchlings();
+      Task<IEnumerable<HatchlingStateDto>> EnumerateHatchlingsAsync();
 
       void KillHatchlings();
       Task KillHatchlingsAsync();

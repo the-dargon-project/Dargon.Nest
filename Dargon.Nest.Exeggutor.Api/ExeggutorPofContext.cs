@@ -11,6 +11,7 @@ namespace Dargon.Nest.Eggxecutor {
       public ExeggutorPofContext() {
          RegisterPortableObjectType(kBasePofId + 0, typeof(SpawnConfiguration));
          RegisterPortableObjectType(kBasePofId + 1, typeof(SpawnHatchlingResult));
+         RegisterPortableObjectType(kBasePofId + 100, typeof(HatchlingStateDto));
       }
    }
 }

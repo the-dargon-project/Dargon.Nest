@@ -123,8 +123,8 @@
     <Compile Include="Hosts\HostProcess.cs" />
     <Compile Include="Init\Handlers\RunEggInitScriptActionHandlerImpl.cs" />
     <Compile Include="Init\InitScriptRunner.cs" />
-    <Compile Include="InternalNestDaemonService.cs" />
     <Compile Include="NestDaemonImplRyuPackage.cs" />
+    <Compile Include="NestDaemonServiceImpl.cs" />
     <Compile Include="Updating\StagedUpdateProcessor.cs" />
     <Compile Include="Updating\UpdateFetcher.cs" />
     <Compile Include="Utilities\FileUtilities.cs" />

@@ -45,6 +45,17 @@ namespace Dargon.Nest.Daemon {
          }
       }
 
+      public IEnumerable<HatchlingStateDto> EnumerateHatchlings() {
+         return EnumerateHatchlingsAsync().Result;
+      }
+
+      public async Task<IEnumerable<HatchlingStateDto>> EnumerateHatchlingsAsync() {
+         using (await multinestAccessLock.ReaderLockAsync()) {
+            return from hatchling in hatchlingDirectory.EnumerateHatchlings()
+                   select hatchling.ToDataTransferObject();
+         }
+      }
+
       public void KillHatchlings() {
          KillHatchlingsAsync().Wait();
       }
