@@ -34,11 +34,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dargon.Repl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dargon.Repl.0.0.0\lib\net45\Dargon.Repl.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="ItzWarty.Commons">
+    <Reference Include="ItzWarty.Commons, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ItzWarty.Commons.0.3.5\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -56,13 +57,13 @@
     <Compile Include="UpdateEggCommand.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Dargon.Nest\Dargon.Nest.csproj">
       <Project>{fec88ce6-2d59-41da-9608-00ef6ec91e76}</Project>
       <Name>Dargon.Nest</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

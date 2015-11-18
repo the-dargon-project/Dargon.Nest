@@ -11,9 +11,9 @@ namespace Dargon.Nest.Daemon.Updating {
 
    public class UpdateFetcherImpl : UpdateFetcher {
       private readonly WebClient webClient = new WebClient();
-      private readonly NestDirectory nestDirectory;
+      private readonly NestDirectoryImpl nestDirectory;
 
-      public UpdateFetcherImpl(NestDirectory nestDirectory) {
+      public UpdateFetcherImpl(NestDirectoryImpl nestDirectory) {
          this.nestDirectory = nestDirectory;
       }
 
@@ -27,7 +27,9 @@ namespace Dargon.Nest.Daemon.Updating {
       }
 
       public async Task FetchUpdatesForNestAsync(NestContext nest) {
-         await webClient.DownloadStringTaskAsync(nest.Remote);
+         var remote = nest.Remote;
+         if (string.IsNullOrWhiteSpace(remote)) return;
+         await webClient.DownloadStringTaskAsync(remote);
       }
    }
 }

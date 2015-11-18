@@ -70,11 +70,19 @@ namespace nest_host {
       }
 
       private static void HandleThreadException(object sender, ThreadExceptionEventArgs e) {
+         Console.WriteLine("!");
+         Console.WriteLine("!");
+         Console.WriteLine("!");
+         Console.WriteLine("!");
          Console.Error.WriteLine("Unhandled Thread Exception");
          Console.Error.WriteLine(e.Exception);
       }
 
       private static void HandleUnhandledAppDomainException(object sender, UnhandledExceptionEventArgs e) {
+         Console.WriteLine("!!");
+         Console.WriteLine("!!");
+         Console.WriteLine("!!");
+         Console.WriteLine("!!");
          Console.Error.WriteLine("Unhandled Appdomain Exception");
          Console.Error.WriteLine(e.ExceptionObject);
       }

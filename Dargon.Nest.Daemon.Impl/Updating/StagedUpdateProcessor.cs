@@ -1,5 +1,6 @@
 using System.IO;
 using Dargon.Nest.Daemon.Utilities;
+using ItzWarty.IO;
 
 namespace Dargon.Nest.Daemon.Updating {
    public interface StagedUpdateProcessor {
@@ -11,10 +12,10 @@ namespace Dargon.Nest.Daemon.Updating {
       private const string kReadyFileName = "READY";
 
       private readonly FileUtilities fileUtilities;
-      private readonly DirectoryInfo stageDirectoryInfo;
-      private readonly DirectoryInfo nestsDirectoryInfo;
+      private readonly IDirectoryInfo stageDirectoryInfo;
+      private readonly IDirectoryInfo nestsDirectoryInfo;
 
-      public StagedUpdateProcessorImpl(FileUtilities fileUtilities, DirectoryInfo stageDirectoryInfo, DirectoryInfo nestsDirectoryInfo) {
+      public StagedUpdateProcessorImpl(FileUtilities fileUtilities, IDirectoryInfo stageDirectoryInfo, IDirectoryInfo nestsDirectoryInfo) {
          this.fileUtilities = fileUtilities;
          this.stageDirectoryInfo = stageDirectoryInfo;
          this.nestsDirectoryInfo = nestsDirectoryInfo;

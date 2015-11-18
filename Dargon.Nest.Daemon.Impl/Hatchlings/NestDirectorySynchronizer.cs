@@ -10,10 +10,10 @@ namespace Dargon.Nest.Daemon.Hatchlings {
    public class NestDirectorySynchronizer {
       private readonly IFileSystemProxy fileSystemProxy;
       private readonly DaemonConfiguration daemonConfiguration;
-      private readonly NestDirectory nestDirectory;
+      private readonly NestDirectoryImpl nestDirectory;
       private readonly NestContextFactory nestContextFactory;
 
-      public NestDirectorySynchronizer(IFileSystemProxy fileSystemProxy, DaemonConfiguration daemonConfiguration, NestDirectory nestDirectory, NestContextFactory nestContextFactory) {
+      public NestDirectorySynchronizer(IFileSystemProxy fileSystemProxy, DaemonConfiguration daemonConfiguration, NestDirectoryImpl nestDirectory, NestContextFactory nestContextFactory) {
          this.fileSystemProxy = fileSystemProxy;
          this.daemonConfiguration = daemonConfiguration;
          this.nestDirectory = nestDirectory;

@@ -11,10 +11,10 @@ namespace Dargon.Nest.Daemon {
    public class ExeggutorMob {
       private readonly InternalNestDaemonService daemonService;
       private readonly ReadableHatchlingDirectory hatchlingDirectory;
-      private readonly NestDirectory nestDirectory;
+      private readonly NestDirectoryImpl nestDirectory;
       private readonly NestServiceImpl nestService;
 
-      public ExeggutorMob(InternalNestDaemonService daemonService, ReadableHatchlingDirectory hatchlingDirectory, NestDirectory nestDirectory, NestServiceImpl nestService) {
+      public ExeggutorMob(InternalNestDaemonService daemonService, ReadableHatchlingDirectory hatchlingDirectory, NestDirectoryImpl nestDirectory, NestServiceImpl nestService) {
          this.daemonService = daemonService;
          this.hatchlingDirectory = hatchlingDirectory;
          this.nestDirectory = nestDirectory;
@@ -44,7 +44,7 @@ namespace Dargon.Nest.Daemon {
          if (!hatchlingDirectory.TryGetHatchlingByName(name, out hatchling)) {
             return $"Couldn't find hatchling of name \"{name}\"";
          }
-         hatchling.Shutdown(ShutdownReason.None);
+         hatchling.ShutdownAsync(ShutdownReason.None);
          return $"Sent shutdown command to hatchling of name \"{name}\"!";
       }
 

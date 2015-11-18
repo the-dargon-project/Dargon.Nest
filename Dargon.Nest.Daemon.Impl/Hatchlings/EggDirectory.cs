@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace Dargon.Nest.Daemon.Hatchlings {
    public class EggDirectory {
-      private readonly NestDirectory nestDirectory;
+      private readonly NestDirectoryImpl nestDirectory;
 
-      public EggDirectory(NestDirectory nestDirectory) {
+      public EggDirectory(NestDirectoryImpl nestDirectory) {
          this.nestDirectory = nestDirectory;
       }
 

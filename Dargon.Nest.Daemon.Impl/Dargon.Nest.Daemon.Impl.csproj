@@ -31,51 +31,70 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core">
+    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Dargon.Management.Api">
+    <Reference Include="Dargon.Management.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dargon.Management.Api.0.1.2\lib\net45\Dargon.Management.Api.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Dargon.Management.Impl">
+    <Reference Include="Dargon.Management.Impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dargon.Management.Impl.0.2.0\lib\net45\Dargon.Management.Impl.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Dargon.Nest">
+    <Reference Include="Dargon.Nest, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dargon.Nest.0.4.1\lib\net45\Dargon.Nest.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Dargon.PortableObjects">
+    <Reference Include="Dargon.PortableObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dargon.PortableObjects.0.2.0\lib\net45\Dargon.PortableObjects.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Dargon.PortableObjects.Streams">
+    <Reference Include="Dargon.PortableObjects.Streams, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dargon.PortableObjects.Streams.0.3.1\lib\net45\Dargon.PortableObjects.Streams.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Dargon.Ryu.Api">
+    <Reference Include="Dargon.Ryu.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dargon.Ryu.Api.0.3.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\Dargon.Ryu.Api.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Dargon.Services.Api">
+    <Reference Include="Dargon.Services.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dargon.Services.Api.1.0.0\lib\net45\Dargon.Services.Api.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Dargon.Services.Impl">
+    <Reference Include="Dargon.Services.Impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dargon.Services.Impl.1.0.1\lib\net45\Dargon.Services.Impl.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Dargon.Utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dargon.Utilities.0.1.2\lib\net45\Dargon.Utilities.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ItzWarty.Commons">
+    <Reference Include="ItzWarty.Commons, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ItzWarty.Commons.0.5.2\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Commons.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="ItzWarty.Proxies.Api">
+    <Reference Include="ItzWarty.Proxies.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ItzWarty.Proxies.Api.0.1.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\ItzWarty.Proxies.Api.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Nito.AsyncEx">
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nito.AsyncEx, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Nito.AsyncEx.Concurrent">
+    <Reference Include="Nito.AsyncEx.Concurrent, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.Concurrent.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Nito.AsyncEx.Enlightenment">
+    <Reference Include="Nito.AsyncEx.Enlightenment, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.Enlightenment.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
@@ -94,7 +113,7 @@
     <Compile Include="Hatchlings\EggContext.cs" />
     <Compile Include="Hatchlings\EggDirectory.cs" />
     <Compile Include="Hatchlings\NestContextFactory.cs" />
-    <Compile Include="Hatchlings\NestDirectory.cs" />
+    <Compile Include="Hatchlings\NestDirectoryImpl.cs" />
     <Compile Include="Hatchlings\NestDirectorySynchronizer.cs" />
     <Compile Include="Hatchlings\NestLockManager.cs" />
     <Compile Include="Hosts\HostOperations.cs" />
@@ -102,6 +121,8 @@
     <Compile Include="Hatchlings\HatchlingContext.cs" />
     <Compile Include="Hatchlings\HatchlingSpawner.cs" />
     <Compile Include="Hosts\HostProcess.cs" />
+    <Compile Include="Init\Handlers\RunEggInitScriptActionHandlerImpl.cs" />
+    <Compile Include="Init\InitScriptRunner.cs" />
     <Compile Include="InternalNestDaemonService.cs" />
     <Compile Include="NestDaemonImplRyuPackage.cs" />
     <Compile Include="Updating\StagedUpdateProcessor.cs" />
@@ -126,14 +147,13 @@
       <Name>Dargon.Nest.Exeggutor.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dargon.Nest.Exeggutor.Host.Api\Dargon.Nest.Exeggutor.Host.Api.csproj">
-      <Project>{9C76F6EE-DAC8-436A-8623-A8578353DFB9}</Project>
+      <Project>{9c76f6ee-dac8-436a-8623-a8578353dfb9}</Project>
       <Name>Dargon.Nest.Exeggutor.Host.Api</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

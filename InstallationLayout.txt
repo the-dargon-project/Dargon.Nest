@@ -15,6 +15,7 @@ root
 :     '- nestd.log
 :- nests
 :  :- client
+:  :  :- init.json
 :  :  :- REMOTE
 :  :  :- VERSION
 :  :  :- cored

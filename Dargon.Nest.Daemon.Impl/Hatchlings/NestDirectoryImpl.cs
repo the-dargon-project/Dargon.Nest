@@ -16,7 +16,7 @@ namespace Dargon.Nest.Daemon.Hatchlings {
       void Unregister(NestContext nest);
    }
 
-   public class NestDirectory : ManageableNestDirectory {
+   public class NestDirectoryImpl : ManageableNestDirectory {
       private readonly IConcurrentDictionary<string, NestContext> nestsByName = new ConcurrentDictionary<string, NestContext>();
 
       public void Register(NestContext nest) {

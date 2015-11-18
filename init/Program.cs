@@ -52,7 +52,10 @@ namespace Nest.Init {
          
          var nestDaemonPath = Path.Combine(rootDirectory.FullName, kNestDaemonRelativePath);
          if (File.Exists(nestDaemonPath)) {
-            Process.Start(nestDaemonPath, string.Join(" ", args));
+            Process.Start(
+               new ProcessStartInfo(nestDaemonPath, string.Join(" ", args)) {
+                  WorkingDirectory = new FileInfo(nestDaemonPath).Directory.FullName
+               });
          }
       }
 

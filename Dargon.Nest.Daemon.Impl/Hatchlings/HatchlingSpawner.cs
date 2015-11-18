@@ -9,7 +9,7 @@ using NLog;
 
 namespace Dargon.Nest.Daemon.Hatchlings {
    public interface HatchlingSpawner {
-      HatchlingContext Spawn(string eggName, SpawnConfiguration spawnConfiguration);
+      HatchlingContext Spawn(string eggName, SpawnConfiguration spawnConfiguration = null);
    }
 
    public class HatchlingSpawnerImpl : HatchlingSpawner {
@@ -28,8 +28,8 @@ namespace Dargon.Nest.Daemon.Hatchlings {
          this.hatchlingDirectory = hatchlingDirectory;
       }
 
-      public HatchlingContext Spawn(string eggName, SpawnConfiguration spawnConfiguration) {
-         Guid hatchlingId = Guid.NewGuid();
+      public HatchlingContext Spawn(string eggName, SpawnConfiguration spawnConfiguration = null) {
+         var hatchlingId = Guid.NewGuid();
 
          logger.Info($"Spawning instance of egg {eggName} with id {hatchlingId}!");
          spawnConfiguration = spawnConfiguration ?? new SpawnConfiguration();
@@ -39,7 +39,9 @@ namespace Dargon.Nest.Daemon.Hatchlings {
          var eggContext = eggDirectory.GetContextByName(eggName);
          hostOperations.CopyHostToLocalEgg(eggContext.Egg);
          var hostProcess = hostProcessFactory.CreateAndInitialize(eggContext, spawnConfiguration);
-         return new HatchlingContextImpl(hatchlingId, hostProcess, spawnConfiguration, eggContext, hatchlingDirectory);
+         var hatchlingContext = new HatchlingContextImpl(hatchlingId, hostProcess, spawnConfiguration, eggContext, hatchlingDirectory);
+         hatchlingContext.Initialize();
+         return hatchlingContext;
       }
    }
 }

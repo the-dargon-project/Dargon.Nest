@@ -1,15 +1,17 @@
 ﻿using Dargon.Nest.Daemon.Hatchlings;
+using Dargon.Nest.Daemon.Updating;
+using Dargon.Nest.Egg;
 using Dargon.Nest.Eggxecutor;
-using System;
+using Nito.AsyncEx;
+using NLog;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Dargon.Nest.Daemon.Updating;
-using Dargon.Nest.Egg;
-using Nito.AsyncEx;
 
 namespace Dargon.Nest.Daemon {
    public class NestServiceImpl : ExeggutorService {
+      private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
       // Nonrecursive; reads for single-nest operations, write for multi-nest operations.
       private readonly AsyncReaderWriterLock multinestAccessLock = new AsyncReaderWriterLock();
       private readonly HatchlingSpawner hatchlingSpawner;
@@ -48,6 +50,7 @@ namespace Dargon.Nest.Daemon {
       }
 
       public async Task KillHatchlingsAsync() {
+         logger.Info("Invoking KillHatchlings!");
          using (await multinestAccessLock.WriterLockAsync()) {
             await KillHatchlings_UnderLockAsync(ShutdownReason.None);
          }
@@ -58,6 +61,7 @@ namespace Dargon.Nest.Daemon {
       }
 
       public async Task KillHatchlingsAndUpdateAllPackagesAsync() {
+         logger.Info("Invoking KillHatchlingsAndUpdateAllPackages!");
          using (await multinestAccessLock.WriterLockAsync()) {
             await KillHatchlings_UnderLockAsync(ShutdownReason.Update);
             await UpdateHatchlings_UnderLockAsync();

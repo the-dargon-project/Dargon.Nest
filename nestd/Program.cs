@@ -13,6 +13,9 @@ using System;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using Dargon.Nest.Daemon.Hatchlings;
+using Dargon.Nest.Daemon.Init;
+using ItzWarty.IO;
 
 namespace Dargon.Nest.Daemon {
    public static class Program {
@@ -27,6 +30,10 @@ namespace Dargon.Nest.Daemon {
                  HelpText = "Dargon Management Interface Port")]
          public int ManagementPort { get; set; }
 
+         [Option("WorkingDirectory", DefaultValue = null,
+                 HelpText = "Overrides the application's working directory.")]
+         public string WorkingDirectory { get; set; }
+
          [Option('h', "HostPath", DefaultValue = "./../nest-host/nest-host.exe",
                  HelpText = "Path to nest host executable")]
          public string HostPath { get; set; }
@@ -34,15 +41,22 @@ namespace Dargon.Nest.Daemon {
          [Option('n', "NestsPath", DefaultValue = "./../..",
                  HelpText = "Path to `nests` directory.")]
          public string NestPath { get; set; }
+
+         [Option('s', "StagePath", DefaultValue = "./../../../stage",
+                 HelpText = "Path to `stage` directory.")]
+         public string StagePath { get; set; }
       }
 
       public static void Main(string[] args) {
-         Environment.CurrentDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName;
-         InitializeLogging();
-
-         logger.Info("Logging Initialized.");
          var options = new Options();
-         if (Parser.Default.ParseArguments(args, options)) {
+         bool argumentsValid = Parser.Default.ParseArguments(args, options);
+         if (!string.IsNullOrWhiteSpace(options.WorkingDirectory)) {
+            Environment.CurrentDirectory = options.WorkingDirectory;
+         }
+         InitializeLogging();
+         logger.Info("Logging Initialized.");
+
+         if (argumentsValid) {
             Run(options);
          } else {
             logger.Error("Invalid arguments.");
@@ -50,6 +64,7 @@ namespace Dargon.Nest.Daemon {
       }
 
       public static void Run(Options options) {
+         logger.Info("Initializing with working directory: " + Environment.CurrentDirectory);
          var ryu = new RyuFactory().Create();
          ryu.Touch<ItzWartyCommonsRyuPackage>();
          ryu.Touch<ItzWartyProxiesRyuPackage>();
@@ -65,14 +80,21 @@ namespace Dargon.Nest.Daemon {
          ryu.Set<IManagementServerConfiguration>(new ManagementServerConfiguration(managementServerEndpoint));
 
          // Configure Dargon.Nest.Daemon
-         ryu.Set<DaemonConfiguration>(new DaemonConfiguration {
-            HostExecutablePath = options.HostPath,
-            NestsPath = options.NestPath
-         });
+         var daemonConfiguration = new DaemonConfiguration {
+            HostExecutablePath = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, options.HostPath)),
+            NestsPath = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, options.NestPath)),
+            StagePath = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, options.StagePath))
+         };
+         ryu.Set<DaemonConfiguration>(daemonConfiguration);
 
          ((RyuContainerImpl)ryu).Setup(true);
 
-         logger.Info("..");
+         logger.Info($"nestd initialized. dmi: {options.ManagementPort}. services: {options.DspPort}. Daemon configuration: {daemonConfiguration}");
+
+         var initScriptRunner = ryu.Get<InitScriptRunner>();
+         foreach (var nest in ryu.Get<ReadableNestDirectory>().EnumerateNests()) {
+            initScriptRunner.RunNestInitializationScript(nest);
+         }
 
          ryu.Get<InternalNestDaemonService>().WaitForShutdown();
          logger.Info("Shutting down nestd.");
