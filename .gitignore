@@ -186,3 +186,6 @@ FakesAssemblies/
 
 # Nuget Executables and configuration
 NuGet.exe
+
+# vs code
+.vscode

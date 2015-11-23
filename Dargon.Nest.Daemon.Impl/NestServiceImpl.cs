@@ -7,26 +7,20 @@ using NLog;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Fody.Constructors;
 
 namespace Dargon.Nest.Daemon {
+   [RequiredFieldsConstructor]
    public class NestServiceImpl : ExeggutorService {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
       // Nonrecursive; reads for single-nest operations, write for multi-nest operations.
       private readonly AsyncReaderWriterLock multinestAccessLock = new AsyncReaderWriterLock();
-      private readonly HatchlingSpawner hatchlingSpawner;
-      private readonly ManageableHatchlingDirectory hatchlingDirectory;
-      private readonly ManageableNestDirectory nestDirectory;
-      private readonly UpdateFetcher updateFetcher;
-      private readonly StagedUpdateProcessor stagedUpdateProcessor;
-
-      public NestServiceImpl(HatchlingSpawner hatchlingSpawner, ManageableHatchlingDirectory hatchlingDirectory, ManageableNestDirectory nestDirectory, UpdateFetcher updateFetcher, StagedUpdateProcessor stagedUpdateProcessor) {
-         this.hatchlingSpawner = hatchlingSpawner;
-         this.hatchlingDirectory = hatchlingDirectory;
-         this.nestDirectory = nestDirectory;
-         this.updateFetcher = updateFetcher;
-         this.stagedUpdateProcessor = stagedUpdateProcessor;
-      }
+      private readonly HatchlingSpawner hatchlingSpawner = null;
+      private readonly ManageableHatchlingDirectory hatchlingDirectory = null;
+      private readonly ManageableNestDirectory nestDirectory = null;
+      private readonly UpdateFetcher updateFetcher = null;
+      private readonly StagedUpdateProcessor stagedUpdateProcessor = null;
 
       public SpawnHatchlingResult SpawnHatchling(string eggName, SpawnConfiguration configuration) {
          return SpawnHatchlingAsync(eggName, configuration).Result;

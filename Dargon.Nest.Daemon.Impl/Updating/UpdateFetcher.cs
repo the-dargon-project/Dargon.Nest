@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Fody.Constructors;
 
 namespace Dargon.Nest.Daemon.Updating {
    public interface UpdateFetcher {
@@ -9,13 +10,10 @@ namespace Dargon.Nest.Daemon.Updating {
       Task FetchUpdatesForNestAsync(string nestName);
    }
 
+   [RequiredFieldsConstructor]
    public class UpdateFetcherImpl : UpdateFetcher {
       private readonly WebClient webClient = new WebClient();
-      private readonly NestDirectoryImpl nestDirectory;
-
-      public UpdateFetcherImpl(NestDirectoryImpl nestDirectory) {
-         this.nestDirectory = nestDirectory;
-      }
+      private readonly NestDirectoryImpl nestDirectory = null;
 
       public Task FetchUpdatesAsync() {
          return Task.WhenAll(nestDirectory.EnumerateNests().Select(FetchUpdatesForNestAsync));

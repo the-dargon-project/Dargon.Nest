@@ -1,13 +1,11 @@
+using Fody.Constructors;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Dargon.Nest.Daemon.Hatchlings {
+   [RequiredFieldsConstructor]
    public class EggDirectory {
-      private readonly NestDirectoryImpl nestDirectory;
-
-      public EggDirectory(NestDirectoryImpl nestDirectory) {
-         this.nestDirectory = nestDirectory;
-      }
+      private readonly NestDirectoryImpl nestDirectory = null;
 
       public EggContext GetContextByName(string name) {
          if (name.Contains('/')) {

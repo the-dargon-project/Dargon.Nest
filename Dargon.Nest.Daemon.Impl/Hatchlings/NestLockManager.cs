@@ -1,24 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Fody.Constructors;
 using ItzWarty.IO;
+using System;
+using System.IO;
+using System.Threading;
 
 namespace Dargon.Nest.Daemon.Hatchlings {
+   [RequiredFieldsConstructor]
    public class NestLockManager {
       private const string kLockFileName = "LOCK";
 
-      private readonly IFileSystemProxy fileSystemProxy;
-      private readonly DaemonConfiguration daemonConfiguration;
-
-      public NestLockManager(IFileSystemProxy fileSystemProxy, DaemonConfiguration daemonConfiguration) {
-         this.fileSystemProxy = fileSystemProxy;
-         this.daemonConfiguration = daemonConfiguration;
-      }
+      private readonly IFileSystemProxy fileSystemProxy = null;
+      private readonly DaemonConfiguration daemonConfiguration = null;
 
       public IDisposable TakeRead(string nestName) => Take(nestName, true);
       public IDisposable TakeWrite(string nestName) => Take(nestName, false);

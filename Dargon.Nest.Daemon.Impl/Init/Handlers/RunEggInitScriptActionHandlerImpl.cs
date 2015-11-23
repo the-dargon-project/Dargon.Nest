@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dargon.Nest.Daemon.Hatchlings;
+﻿using Dargon.Nest.Daemon.Hatchlings;
 using Dargon.Nest.Eggxecutor;
+using Fody.Constructors;
 using NLog;
 
 namespace Dargon.Nest.Daemon.Init.Handlers {
+   [RequiredFieldsConstructor]
    public class RunEggInitScriptActionHandlerImpl : InitScriptActionHandler {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-      private readonly HatchlingSpawner hatchlingSpawner;
-
-      public RunEggInitScriptActionHandlerImpl(HatchlingSpawner hatchlingSpawner) {
-         this.hatchlingSpawner = hatchlingSpawner;
-      }
+      private readonly HatchlingSpawner hatchlingSpawner = null;
 
       public string ActionName => "run-egg";
 

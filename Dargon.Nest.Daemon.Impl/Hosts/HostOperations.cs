@@ -1,19 +1,15 @@
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
+using Fody.Constructors;
 using ItzWarty;
 using ItzWarty.IO;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace Dargon.Nest.Daemon.Hosts {
+   [RequiredFieldsConstructor]
    public class HostOperations {
-      private readonly IFileSystemProxy fileSystemProxy;
-      private readonly DaemonConfiguration daemonConfiguration;
-
-      public HostOperations(IFileSystemProxy fileSystemProxy, DaemonConfiguration daemonConfiguration) {
-         this.fileSystemProxy = fileSystemProxy;
-         this.daemonConfiguration = daemonConfiguration;
-      }
+      private readonly IFileSystemProxy fileSystemProxy = null;
+      private readonly DaemonConfiguration daemonConfiguration = null;
       
       public void CopyHostToLocalEgg(LocalDargonEgg localEgg) {
          var nestHostFileInfo = fileSystemProxy.GetFileInfo(daemonConfiguration.HostExecutablePath);

@@ -66,10 +66,6 @@
       <HintPath>..\packages\Dargon.Ryu.Api.0.3.0\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\Dargon.Ryu.Api.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dargon.Ryu.Impl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dargon.Ryu.Impl.0.3.5\lib\net45\Dargon.Ryu.Impl.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Dargon.Services.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dargon.Services.Api.1.0.0\lib\net45\Dargon.Services.Api.dll</HintPath>
       <Private>True</Private>
@@ -120,6 +116,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Dargon.Ryu\Dargon.Ryu.Impl\Dargon.Ryu.Impl.csproj">
+      <Project>{2ed5c703-8a91-4701-9ae9-da86aa93a169}</Project>
+      <Name>Dargon.Ryu.Impl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Dargon.Services\Dargon.Services.Impl\Dargon.Services.Impl.csproj">
       <Project>{9e41dc5d-e409-45e5-ae89-191db4252ee0}</Project>
       <Name>Dargon.Services.Impl</Name>

@@ -1,4 +1,6 @@
-﻿namespace Dargon.Nest.Daemon.Hatchlings {
+﻿using Fody.Constructors;
+
+namespace Dargon.Nest.Daemon.Hatchlings {
    public class EggContext {
       private readonly LocalDargonEgg egg;
       private readonly NestContext nestContext;

@@ -1,24 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Fody.Constructors;
 using ItzWarty.IO;
+using System.IO;
 
 namespace Dargon.Nest.Daemon.Hatchlings {
-   public class NestDirectorySynchronizer {
-      private readonly IFileSystemProxy fileSystemProxy;
-      private readonly DaemonConfiguration daemonConfiguration;
-      private readonly NestDirectoryImpl nestDirectory;
-      private readonly NestContextFactory nestContextFactory;
-
-      public NestDirectorySynchronizer(IFileSystemProxy fileSystemProxy, DaemonConfiguration daemonConfiguration, NestDirectoryImpl nestDirectory, NestContextFactory nestContextFactory) {
-         this.fileSystemProxy = fileSystemProxy;
-         this.daemonConfiguration = daemonConfiguration;
-         this.nestDirectory = nestDirectory;
-         this.nestContextFactory = nestContextFactory;
-      }
+    [RequiredFieldsConstructor]
+    public class NestDirectorySynchronizer {
+      private readonly IFileSystemProxy fileSystemProxy = null;
+      private readonly DaemonConfiguration daemonConfiguration = null;
+      private readonly NestDirectoryImpl nestDirectory = null;
+      private readonly NestContextFactory nestContextFactory = null;
 
       public void Initialize() {
          var watcher = new FileSystemWatcher(daemonConfiguration.NestsPath);

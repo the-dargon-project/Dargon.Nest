@@ -5,6 +5,7 @@ using System.Linq;
 using Dargon.Nest.Daemon.Hosts;
 using Dargon.Nest.Eggxecutor;
 using Dargon.Nest.Exeggutor;
+using Fody.Constructors;
 using NLog;
 
 namespace Dargon.Nest.Daemon.Hatchlings {
@@ -12,21 +13,13 @@ namespace Dargon.Nest.Daemon.Hatchlings {
       HatchlingContext Spawn(string eggName, SpawnConfiguration spawnConfiguration = null);
    }
 
+   [RequiredFieldsConstructor]
    public class HatchlingSpawnerImpl : HatchlingSpawner {
       private static Logger logger = LogManager.GetCurrentClassLogger();
-      private readonly DaemonConfiguration daemonConfiguration;
-      private readonly HostOperations hostOperations;
-      private readonly HostProcessFactory hostProcessFactory;
-      private readonly EggDirectory eggDirectory;
-      private readonly ManageableHatchlingDirectory hatchlingDirectory;
-
-      public HatchlingSpawnerImpl(DaemonConfiguration daemonConfiguration, HostOperations hostOperations, HostProcessFactory hostProcessFactory, EggDirectory eggDirectory, ManageableHatchlingDirectory hatchlingDirectory) {
-         this.daemonConfiguration = daemonConfiguration;
-         this.hostOperations = hostOperations;
-         this.hostProcessFactory = hostProcessFactory;
-         this.eggDirectory = eggDirectory;
-         this.hatchlingDirectory = hatchlingDirectory;
-      }
+      private readonly HostOperations hostOperations = null;
+      private readonly HostProcessFactory hostProcessFactory = null;
+      private readonly EggDirectory eggDirectory = null;
+      private readonly ManageableHatchlingDirectory hatchlingDirectory = null;
 
       public HatchlingContext Spawn(string eggName, SpawnConfiguration spawnConfiguration = null) {
          var hatchlingId = Guid.NewGuid();

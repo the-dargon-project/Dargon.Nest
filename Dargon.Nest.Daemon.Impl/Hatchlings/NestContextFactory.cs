@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Fody.Constructors;
 using ItzWarty.IO;
 
 namespace Dargon.Nest.Daemon.Hatchlings {
+   [RequiredFieldsConstructor]
    public class NestContextFactory {
-      private readonly IFileSystemProxy fileSystemProxy;
-
-      public NestContextFactory(IFileSystemProxy fileSystemProxy) {
-         this.fileSystemProxy = fileSystemProxy;
-      }
+      private readonly IFileSystemProxy fileSystemProxy = null;
 
       public NestContext Create(string path) {
          var directoryInfo = fileSystemProxy.GetDirectoryInfo(path);

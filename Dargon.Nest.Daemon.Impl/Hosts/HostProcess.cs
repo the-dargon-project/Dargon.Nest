@@ -1,30 +1,23 @@
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using Dargon.Nest.Daemon.Hatchlings;
 using Dargon.Nest.Egg;
 using Dargon.Nest.Eggxecutor;
 using Dargon.Nest.Exeggutor.Host.PortableObjects;
 using Dargon.PortableObjects.Streams;
+using Fody.Constructors;
 using ItzWarty;
 using ItzWarty.IO;
-using ItzWarty.Processes;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Dargon.Nest.Daemon.Hosts {
+   [RequiredFieldsConstructor]
    public class HostProcessFactory {
-      private readonly IStreamFactory streamFactory;
-      private readonly IProcessProxy processProxy;
-      private readonly PofStreamsFactory pofStreamsFactory;
-      private readonly DaemonConfiguration daemonConfiguration;
-
-      public HostProcessFactory(IStreamFactory streamFactory, IProcessProxy processProxy, PofStreamsFactory pofStreamsFactory, DaemonConfiguration daemonConfiguration) {
-         this.streamFactory = streamFactory;
-         this.processProxy = processProxy;
-         this.pofStreamsFactory = pofStreamsFactory;
-         this.daemonConfiguration = daemonConfiguration;
-      }
+      private readonly IStreamFactory streamFactory = null;
+      private readonly PofStreamsFactory pofStreamsFactory = null;
+      private readonly DaemonConfiguration daemonConfiguration = null;
 
       public HostProcess CreateAndInitialize(EggContext eggContext, SpawnConfiguration spawnConfiguration) {
          var originalNestHostFileInfo = new FileInfo(daemonConfiguration.HostExecutablePath);

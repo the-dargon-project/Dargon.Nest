@@ -1,25 +1,17 @@
-﻿using System;
-using System.Collections.Specialized;
-using System.Linq;
-using Dargon.Management;
+﻿using Dargon.Management;
 using Dargon.Nest.Daemon.Hatchlings;
 using Dargon.Nest.Egg;
 using Dargon.Nest.Eggxecutor;
+using Fody.Constructors;
 using ItzWarty;
+using System.Linq;
 
 namespace Dargon.Nest.Daemon {
+   [RequiredFieldsConstructor]
    public class ExeggutorMob {
-      private readonly NestDaemonService daemonService;
-      private readonly ReadableHatchlingDirectory hatchlingDirectory;
-      private readonly NestDirectoryImpl nestDirectory;
-      private readonly NestServiceImpl nestService;
-
-      public ExeggutorMob(NestDaemonService daemonService, ReadableHatchlingDirectory hatchlingDirectory, NestDirectoryImpl nestDirectory, NestServiceImpl nestService) {
-         this.daemonService = daemonService;
-         this.hatchlingDirectory = hatchlingDirectory;
-         this.nestDirectory = nestDirectory;
-         this.nestService = nestService;
-      }
+      private readonly ReadableHatchlingDirectory hatchlingDirectory = null;
+      private readonly NestDirectoryImpl nestDirectory = null;
+      private readonly NestServiceImpl nestService = null;
 
       [ManagedOperation]
       public string EnumerateNests() {

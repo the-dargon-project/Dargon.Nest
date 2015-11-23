@@ -1,5 +1,6 @@
 using System.IO;
 using Dargon.Nest.Daemon.Utilities;
+using Fody.Constructors;
 using ItzWarty.IO;
 
 namespace Dargon.Nest.Daemon.Updating {
