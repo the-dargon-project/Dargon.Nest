@@ -42,10 +42,6 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dargon.Nest, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dargon.Nest\bin\Debug\Dargon.Nest.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -100,6 +96,12 @@
     <None Include="resources\installer_icon.png" />
     <None Include="resources\installer_icon_small.ico" />
     <None Include="resources\installer_icon_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dargon.Nest\Dargon.Nest.csproj">
+      <Project>{fec88ce6-2d59-41da-9608-00ef6ec91e76}</Project>
+      <Name>Dargon.Nest</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
