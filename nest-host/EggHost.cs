@@ -60,8 +60,10 @@ namespace nest_host {
       }
 
       private static bool TryGetEggAssemblyPath(BootstrapDto bootstrapArguments, out string eggStartPath) {
-         eggStartPath = Path.Combine(bootstrapArguments.EggPath, "nest-main.dll");
-         return File.Exists(eggStartPath);
+         var pathWithoutExtension = Path.Combine(bootstrapArguments.EggPath, new DirectoryInfo(bootstrapArguments.EggPath).Name);
+         if (File.Exists(eggStartPath = pathWithoutExtension + ".dll")) return true;
+         if (File.Exists(eggStartPath = pathWithoutExtension + ".exe")) return true;
+         return false;
       }
 
       private ResolveEventHandler CreateCachedAssemblyResolveHandler(Dictionary<string, string> assemblyPathsBySimpleName, Dictionary<string, string> assemblyPathsByFullName) {

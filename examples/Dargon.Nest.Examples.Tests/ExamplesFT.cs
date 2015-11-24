@@ -70,6 +70,8 @@ namespace Dargon.Nest.Examples.Tests {
                UseShellExecute = true
             });
 
+         Thread.Sleep(8000);
+
          var serviceClient = ryu.Get<ServiceClient>();
          var exeggutorService = serviceClient.GetService<ExeggutorService>();
          var hatchlings = exeggutorService.EnumerateHatchlings().ToArray();
