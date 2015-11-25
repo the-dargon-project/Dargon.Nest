@@ -13,6 +13,7 @@ using ItzWarty.Threading;
 using System;
 using System.IO;
 using System.Threading;
+using Dargon.Nest.Daemon;
 
 namespace dev_egg_runner {
    public class Options {
@@ -64,7 +65,7 @@ namespace dev_egg_runner {
 
          IPofContext pofContext = new PofContext().With(x => {
             x.MergeContext(new DspPofContext());               // 0 - 999
-            x.MergeContext(new ExeggutorPofContext(3000));     // 3000 - 3499, must reflect value in nestd
+            x.MergeContext(new ExeggutorPofContext());     // 3000 - 3499, must reflect value in nestd
          });
          IPofSerializer pofSerializer = new PofSerializer(pofContext);
 
@@ -73,15 +74,16 @@ namespace dev_egg_runner {
          ServiceClientFactory serviceClientFactory = new ServiceClientFactoryImpl(proxyGenerator, streamFactory, collectionFactory, threadingProxy, networkingProxy, pofSerializer, pofStreamsFactory);
          var client = serviceClientFactory.Local(options.NestPort, ClusteringRole.GuestOnly);
          var exeggutor = client.GetService<ExeggutorService>();
-//         var nestDaemon = client.GetService<InternalNestDaemonService>();
+         var nestDaemon = client.GetService<NestDaemonService>();
 
          switch (options.Command) {
             case "spawn-egg":
                SpawnEgg(pofSerializer, exeggutor, options);
                break;
-//            case "kill-nest": 
-//               nestDaemon.KillHatchlingsAndDaemon();
-//               break;
+            case "kill-nest": 
+               exeggutor.KillHatchlings();
+               nestDaemon.KillDaemon();
+               break;
          }
       }
 
