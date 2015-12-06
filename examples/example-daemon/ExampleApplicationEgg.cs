@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading;
-using Dargon.Nest.Egg;
+using Dargon.Nest.Eggs;
 using Dargon.Ryu;
 using Dargon.Services;
 using Dargon.Services.Clustering;

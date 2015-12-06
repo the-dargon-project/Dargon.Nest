@@ -1,0 +1,30 @@
+root
+:- eggs
+:  '- thumbnail-generator
+:     :- cache
+:     :  '- a9fe3452
+:     '- releases
+:        :- list
+:        '- thumbnail-generator-0.0.0
+:           :- REMOTE
+:           '- FILELIST
+:- bundles
+:  :- client
+:  :  '- releases
+:  :     :- list
+:  :     '- client-0.0.0
+:  :        '- CONTENTS
+:  :        '- configuration
+:  :           :- list
+:  :           '- system-state.json
+:  '- trinket
+'- deployments
+   '- dargon-client
+      :- channels
+      :  :- list
+      :  :- alpha
+      :  '- stable
+      '- releases
+         :- list
+         '- dargon-client-0.0.0
+            '- BUNDLES

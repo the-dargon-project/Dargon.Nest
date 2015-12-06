@@ -24,8 +24,8 @@ namespace Dargon.Nest.Daemon.Updating {
          return FetchUpdatesForNestAsync(nestContext);
       }
 
-      public async Task FetchUpdatesForNestAsync(NestContext nest) {
-         var remote = nest.Remote;
+      public async Task FetchUpdatesForNestAsync(BundleContext bundle) {
+         var remote = bundle.Remote;
          if (string.IsNullOrWhiteSpace(remote)) return;
          await webClient.DownloadStringTaskAsync(remote);
       }

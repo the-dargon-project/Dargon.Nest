@@ -37,7 +37,7 @@ namespace Dargon.Nest.Daemon.Hatchlings {
       }
 
       public IEnumerable<HatchlingContext> EnumerateHatchlingsOfNest(string nestName) {
-         return hatchlings.Where(h => h.Nest.Name.Equals(nestName, StringComparison.OrdinalIgnoreCase));
+         return hatchlings.Where(h => h.Bundle.Name.Equals(nestName, StringComparison.OrdinalIgnoreCase));
       }
    }
 }

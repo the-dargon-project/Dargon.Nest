@@ -1,5 +1,4 @@
-﻿using Dargon.Nest.Egg;
-using Dargon.Nest.Eggxecutor;
+﻿using Dargon.Nest.Eggxecutor;
 using Dargon.Ryu;
 using Dargon.Services;
 using Dargon.Services.Clustering;
@@ -7,6 +6,7 @@ using System;
 using System.Diagnostics;
 using System.Net;
 using System.Threading;
+using Dargon.Nest.Eggs;
 
 namespace example_client {
    public class ProgramRyuPackage : RyuPackageV1 {

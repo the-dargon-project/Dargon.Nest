@@ -1,13 +1,13 @@
 ﻿using Dargon.Nest.Daemon.Hatchlings;
 using Dargon.Nest.Daemon.Updating;
-using Dargon.Nest.Egg;
+using Dargon.Nest.Eggs;
 using Dargon.Nest.Eggxecutor;
+using Fody.Constructors;
 using Nito.AsyncEx;
 using NLog;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Fody.Constructors;
 
 namespace Dargon.Nest.Daemon {
    [RequiredFieldsConstructor]

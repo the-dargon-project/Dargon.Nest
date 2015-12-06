@@ -13,10 +13,10 @@ namespace Nest.Init {
       private const string kReadyFileName = "READY";
 
       private const string kStageDirectoryName = "stage";
-      private const string kNestsDirectoryName = "nests";
+      private const string kBundlesDirectoryName = "bundles";
       private const string kTempDirectoryName = "temp";
       private const string kLogsDirectoryName = "logs";
-      private const string kNestDaemonRelativePath = kNestsDirectoryName + "/nest/nestd/nestd.exe";
+      private const string kNestDaemonRelativePath = kBundlesDirectoryName + "/nest/nestd/nestd.exe";
 
       public static void Main(string[] args) {
          var initAssembly = Assembly.GetExecutingAssembly();
@@ -37,7 +37,7 @@ namespace Nest.Init {
       }
 
       private static void Run(string[] args, DirectoryInfo rootDirectory) {
-         var nestsDirectory = new DirectoryInfo(Path.Combine(rootDirectory.FullName, kNestsDirectoryName));
+         var nestsDirectory = new DirectoryInfo(Path.Combine(rootDirectory.FullName, kBundlesDirectoryName));
          if (!nestsDirectory.Exists) {
             nestsDirectory.Create();
          }

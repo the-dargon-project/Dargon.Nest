@@ -57,9 +57,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dargon.Nest.Egg.Api\Dargon.Nest.Egg.Api.csproj">
+    <ProjectReference Include="..\Dargon.Nest.Egg.Api\Dargon.Nest.Eggs.Api.csproj">
       <Project>{52AC94A1-A1C0-43B2-8B1B-001CC11518BE}</Project>
-      <Name>Dargon.Nest.Egg.Api</Name>
+      <Name>Dargon.Nest.Eggs.Api</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

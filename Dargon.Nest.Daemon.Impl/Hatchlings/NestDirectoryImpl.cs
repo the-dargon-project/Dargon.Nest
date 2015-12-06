@@ -7,34 +7,34 @@ using ItzWarty.Collections;
 
 namespace Dargon.Nest.Daemon.Hatchlings {
    public interface ReadableNestDirectory {
-      NestContext GetNestContextByName(string name);
-      IEnumerable<NestContext> EnumerateNests();
+      BundleContext GetNestContextByName(string name);
+      IEnumerable<BundleContext> EnumerateNests();
    }
 
    public interface ManageableNestDirectory : ReadableNestDirectory {
-      void Register(NestContext nest);
-      void Unregister(NestContext nest);
+      void Register(BundleContext bundle);
+      void Unregister(BundleContext bundle);
    }
 
    public class NestDirectoryImpl : ManageableNestDirectory {
-      private readonly IConcurrentDictionary<string, NestContext> nestsByName = new ConcurrentDictionary<string, NestContext>();
+      private readonly IConcurrentDictionary<string, BundleContext> nestsByName = new ConcurrentDictionary<string, BundleContext>();
 
-      public void Register(NestContext nest) {
-         nestsByName.Add(nest.Name, nest);
+      public void Register(BundleContext bundle) {
+         nestsByName.Add(bundle.Name, bundle);
       }
 
-      public void Unregister(NestContext nest) {
-         nestsByName.TryRemove(nest.Name, nest);
+      public void Unregister(BundleContext bundle) {
+         nestsByName.TryRemove(bundle.Name, bundle);
       }
 
-      public NestContext GetNestContextByName(string name) {
-         NestContext nestContext;
-         if (!nestsByName.TryGetValue(name, out nestContext)) {
+      public BundleContext GetNestContextByName(string name) {
+         BundleContext bundleContext;
+         if (!nestsByName.TryGetValue(name, out bundleContext)) {
             throw new KeyNotFoundException($"Could not find nest of name {name}!");
          }
-         return nestContext;
+         return bundleContext;
       }
 
-      public IEnumerable<NestContext> EnumerateNests() => nestsByName.Values;
+      public IEnumerable<BundleContext> EnumerateNests() => nestsByName.Values;
    }
 }

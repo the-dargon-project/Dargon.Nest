@@ -2,17 +2,17 @@
 
 namespace Dargon.Nest.Daemon.Hatchlings {
    public class EggContext {
-      private readonly LocalDargonEgg egg;
-      private readonly NestContext nestContext;
+      private readonly ManageableEgg egg;
+      private readonly BundleContext bundleContext;
 
-      public EggContext(LocalDargonEgg egg, NestContext nestContext) {
+      public EggContext(ManageableEgg egg, BundleContext bundleContext) {
          this.egg = egg;
-         this.nestContext = nestContext;
+         this.bundleContext = bundleContext;
       }
 
-      public LocalDargonEgg Egg => egg;
+      public ManageableEgg Egg => egg;
       public string Name => egg.Name;
-      public string RootPath => egg.RootPath;
-      public NestContext NestContext => nestContext;
+      public string Location => egg.Location;
+      public BundleContext BundleContext => bundleContext;
    }
 }

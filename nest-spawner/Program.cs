@@ -25,38 +25,38 @@ namespace nest_spawner {
             // Configure Run at Startup
             RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
             rk.SetValue("Dargon", nestSpawnerExecutablePath);
-
-            // Update Nest Directory
-            var nestDirectoryPath = nestSpawnerDirectory.Parent.FullName;
-            var isInstallation = !File.Exists(Path.Combine(nestDirectoryPath, "REMOTE"));
-
-            var nest = new LocalDargonNest(nestDirectoryPath);
-            if (isInstallation || args.Any(s => s.Equals("--update"))) {
-               nest.Remote = "http://dargon.io/files/nest";
-               nest.Channel = "stable";
-
-               var updateNestOptions = new UpdateNestOptions();
-               var updateState = new UpdateState();
-               updateNestOptions.UpdateState = updateState;
-               Dispatcher uiThreadDispatcher = null;
-               var uiThreadReadySignal = new ManualResetEvent(false);
-               new Thread(() => {
-                  new UpdateStatusWindow() { DataContext = updateState }.Show();
-                  uiThreadDispatcher = Dispatcher.CurrentDispatcher;
-                  uiThreadReadySignal.Set();
-                  Dispatcher.Run();
-               }) { ApartmentState = ApartmentState.STA }.Start();
-               uiThreadReadySignal.WaitOne();
-               nest.UpdateNest(updateNestOptions);
-               uiThreadDispatcher.BeginInvokeShutdown(DispatcherPriority.Send);
-               uiThreadDispatcher.Thread.Join();
-            }
-
-            // Start NestD
-            nest.ExecuteEgg("nestd", "");
-
-            // Start CoreD
-            nest.ExecuteEgg("dev-egg-runner", "-e cored -n cored");
+//
+//            // Update Nest Directory
+//            var nestDirectoryPath = nestSpawnerDirectory.Parent.FullName;
+//            var isInstallation = !File.Exists(Path.Combine(nestDirectoryPath, "REMOTE"));
+//
+//            var nest = new LocalDargonNest(nestDirectoryPath);
+//            if (isInstallation || args.Any(s => s.Equals("--update"))) {
+//               nest.Remote = "http://dargon.io/files/nest";
+//               nest.Channel = "stable";
+//
+//               var updateNestOptions = new UpdateNestOptions();
+//               var updateState = new UpdateState();
+//               updateNestOptions.UpdateState = updateState;
+//               Dispatcher uiThreadDispatcher = null;
+//               var uiThreadReadySignal = new ManualResetEvent(false);
+//               new Thread(() => {
+//                  new UpdateStatusWindow() { DataContext = updateState }.Show();
+//                  uiThreadDispatcher = Dispatcher.CurrentDispatcher;
+//                  uiThreadReadySignal.Set();
+//                  Dispatcher.Run();
+//               }) { ApartmentState = ApartmentState.STA }.Start();
+//               uiThreadReadySignal.WaitOne();
+//               nest.UpdateNest(updateNestOptions);
+//               uiThreadDispatcher.BeginInvokeShutdown(DispatcherPriority.Send);
+//               uiThreadDispatcher.Thread.Join();
+//            }
+//
+//            // Start NestD
+//            nest.ExecuteEgg("nestd", "");
+//
+//            // Start CoreD
+//            nest.ExecuteEgg("dev-egg-runner", "-e cored -n cored");
          }
       }
 

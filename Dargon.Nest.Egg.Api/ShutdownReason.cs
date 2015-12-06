@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Dargon.Nest.Egg {
+﻿namespace Dargon.Nest.Eggs {
    public enum ShutdownReason : int {
       None = 0,
       HostKilled = 1,

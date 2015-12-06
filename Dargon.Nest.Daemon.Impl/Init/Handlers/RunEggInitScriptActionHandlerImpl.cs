@@ -11,7 +11,7 @@ namespace Dargon.Nest.Daemon.Init.Handlers {
 
       public string ActionName => "run-egg";
 
-      public void Process(NestContext nest, dynamic action) {
+      public void Process(BundleContext bundle, dynamic action) {
          string eggName = action["egg-name"];
          string instanceName = action["instance-name"] ?? eggName;
          hatchlingSpawner.Spawn(eggName, new SpawnConfiguration {

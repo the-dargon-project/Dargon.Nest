@@ -1,5 +1,4 @@
-﻿using Dargon.Nest.Egg;
-using Dargon.Nest.Exeggutor.Host.PortableObjects;
+﻿using Dargon.Nest.Exeggutor.Host.PortableObjects;
 using Dargon.PortableObjects.Streams;
 using ItzWarty;
 using ItzWarty.Threading;
@@ -10,6 +9,7 @@ using System.Linq;
 using System.Net.Mime;
 using System.Reflection;
 using System.Threading;
+using Dargon.Nest.Eggs;
 
 namespace nest_host {
    public class EggHost : IEggHost {

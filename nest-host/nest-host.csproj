@@ -107,9 +107,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dargon.Nest.Egg.Api\Dargon.Nest.Egg.Api.csproj">
+    <ProjectReference Include="..\Dargon.Nest.Egg.Api\Dargon.Nest.Eggs.Api.csproj">
       <Project>{52ac94a1-a1c0-43b2-8b1b-001cc11518be}</Project>
-      <Name>Dargon.Nest.Egg.Api</Name>
+      <Name>Dargon.Nest.Eggs.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dargon.Nest.Exeggutor.Host.Api\Dargon.Nest.Exeggutor.Host.Api.csproj">
       <Project>{9c76f6ee-dac8-436a-8623-a8578353dfb9}</Project>

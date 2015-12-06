@@ -33,9 +33,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dargon.Repl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Dargon.Repl.0.0.0\lib\net45\Dargon.Repl.dll</HintPath>
+    <Reference Include="CommandLine">
+      <HintPath>..\..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ItzWarty.Commons, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -48,17 +47,21 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UpdateNestCommand.cs" />
+    <None Include="deprecated\UpdateNestCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CreateEggCommand.cs" />
-    <Compile Include="ExecEggCommand.cs" />
-    <Compile Include="InstallEggCommand.cs" />
-    <Compile Include="ListEggsCommand.cs" />
+    <None Include="deprecated\CreateEggCommand.cs" />
+    <None Include="deprecated\ExecEggCommand.cs" />
+    <None Include="deprecated\InstallEggCommand.cs" />
+    <None Include="deprecated\ListEggsCommand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ReplGlobals.cs" />
-    <Compile Include="UpdateEggCommand.cs" />
+    <None Include="deprecated\UpdateEggCommand.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\dependencies\Dargon.Repl\Dargon.Repl.csproj">
+      <Project>{65be5525-edbf-4f6b-96c0-651df025cd6d}</Project>
+      <Name>Dargon.Repl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dargon.Nest\Dargon.Nest.csproj">
       <Project>{fec88ce6-2d59-41da-9608-00ef6ec91e76}</Project>
       <Name>Dargon.Nest</Name>

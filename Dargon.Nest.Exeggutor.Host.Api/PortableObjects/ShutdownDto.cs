@@ -1,4 +1,4 @@
-﻿using Dargon.Nest.Egg;
+﻿using Dargon.Nest.Eggs;
 using Dargon.PortableObjects;
 
 namespace Dargon.Nest.Exeggutor.Host.PortableObjects {

@@ -40,21 +40,49 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Deprecated\EggFactory.cs" />
+    <None Include="Deprecated\InMemoryEgg.cs" />
+    <None Include="Deprecated\RemoteEgg.cs" />
+    <None Include="Deprecated\EggFileListEntry.cs" />
+    <Compile Include="BundleFactory.cs" />
+    <Compile Include="Internals\Bundles\Local\LocalLocationBackedBundleMetadata.cs" />
+    <Compile Include="Internals\Bundles\Local\LocalLocationBackedEggContainer.cs" />
+    <Compile Include="Internals\Bundles\ManageableBundleProxy.cs" />
+    <Compile Include="Internals\Bundles\ReadableBundleMetadata.cs" />
+    <Compile Include="Internals\Bundles\Remote\RemoteUrlBackedBundleMetadata.cs" />
+    <Compile Include="Internals\Eggs\EggFileEntry.cs" />
+    <Compile Include="Internals\Eggs\Common\LocationBackedEggRepository.cs" />
     <Compile Include="EggFactory.cs" />
-    <Compile Include="InMemoryEgg.cs" />
-    <Compile Include="RemoteDargonEgg.cs" />
-    <Compile Include="EggFileListEntry.cs" />
-    <Compile Include="EggFileListSerializer.cs" />
-    <Compile Include="IDargonEgg.cs" />
-    <Compile Include="IDargonNest.cs" />
-    <Compile Include="LocalDargonNest.cs" />
-    <Compile Include="LocalDargonEgg.cs" />
-    <Compile Include="NestConstants.cs" />
-    <Compile Include="LocalNestLock.cs" />
+    <Compile Include="Internals\Eggs\EggFileListSerializer.cs" />
+    <None Include="Deprecated\Egg.cs" />
+    <Compile Include="Internals\Eggs\EggOperations.cs" />
+    <Compile Include="Internals\Eggs\ManageableEggProxy.cs" />
+    <Compile Include="Internals\Eggs\InMemory\InMemoryEggMetadata.cs" />
+    <Compile Include="Internals\Eggs\InMemory\InMemoryEggRepository.cs" />
+    <Compile Include="Internals\Eggs\NestFileCache.cs" />
+    <Compile Include="Internals\Eggs\ReadableEggProxy.cs" />
+    <Compile Include="Internals\IoUtilities.cs" />
+    <Compile Include="Internals\Eggs\Common\RepositoryBackedEggMetadata.cs" />
+    <Compile Include="Internals\Eggs\ManageableEggRepository.cs" />
+    <Compile Include="Internals\NestConstants.cs" />
+    <Compile Include="NestExtensions.cs" />
+    <Compile Include="ManageableEgg.cs" />
+    <Compile Include="ReadableEgg.cs" />
+    <Compile Include="ManageableNest.cs" />
+    <Compile Include="ManageableBundle.cs" />
+    <Compile Include="ReadableBundle.cs" />
+    <Compile Include="Internals\Eggs\ReadableEggRepository.cs" />
+    <Compile Include="Internals\Eggs\ReadableEggMetadata.cs" />
+    <Compile Include="ReadableNest.cs" />
+    <None Include="Deprecated\LocalDargonBundle.cs" />
+    <None Include="Deprecated\LocalEgg.cs" />
+    <None Include="Deprecated\NestConstants.cs" />
+    <None Include="Deprecated\LocalNestLock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="NestUtil.cs" />
-    <Compile Include="UpdateNestOptions.cs" />
+    <None Include="Deprecated\NestUtil.cs" />
+    <None Include="Deprecated\UpdateNestOptions.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

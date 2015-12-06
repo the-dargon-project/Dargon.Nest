@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Dargon.Nest.Repl {
    public static class ReplGlobals {
-      public static string NestPath = null;
+      public static string CurrentDirectory = Environment.CurrentDirectory;
       public static bool InteractiveMode = false;
    }
 }

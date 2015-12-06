@@ -1,6 +1,6 @@
 ﻿using Dargon.Management;
 using Dargon.Nest.Daemon.Hatchlings;
-using Dargon.Nest.Egg;
+using Dargon.Nest.Eggs;
 using Dargon.Nest.Eggxecutor;
 using Fody.Constructors;
 using ItzWarty;

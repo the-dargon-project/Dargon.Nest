@@ -8,7 +8,7 @@ namespace Dargon.Nest.Daemon.Hatchlings {
       private readonly IFileSystemProxy fileSystemProxy = null;
       private readonly DaemonConfiguration daemonConfiguration = null;
       private readonly NestDirectoryImpl nestDirectory = null;
-      private readonly NestContextFactory nestContextFactory = null;
+      private readonly BundleContextFactory bundleContextFactory = null;
 
       public void Initialize() {
          var watcher = new FileSystemWatcher(daemonConfiguration.NestsPath);
@@ -27,7 +27,7 @@ namespace Dargon.Nest.Daemon.Hatchlings {
          if (!fileInfo.Attributes.HasFlag(FileAttributes.Directory)) {
             return;
          }
-         var nestContext = nestContextFactory.Create(e.FullPath);
+         var nestContext = bundleContextFactory.Create(e.FullPath);
          nestDirectory.Register(nestContext);
       }
 

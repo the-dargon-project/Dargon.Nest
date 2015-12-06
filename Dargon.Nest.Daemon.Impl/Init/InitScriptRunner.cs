@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace Dargon.Nest.Daemon.Init {
    public interface InitScriptRunner {
-      void RunNestInitializationScript(NestContext nest);
+      void RunNestInitializationScript(BundleContext bundle);
    }
 
    public class InitScriptRunnerImpl : InitScriptRunner {
@@ -21,8 +21,8 @@ namespace Dargon.Nest.Daemon.Init {
          this.actionHandlersByType = actionHandlersByType;
       }
 
-      public void RunNestInitializationScript(NestContext nest) {
-         var initFilePath = Path.Combine(nest.Path, "init.json");
+      public void RunNestInitializationScript(BundleContext bundle) {
+         var initFilePath = Path.Combine(bundle.Path, "init.json");
          if (!File.Exists(initFilePath)) return;
          logger.Info(initFilePath);
          var initFileJson = File.ReadAllText(initFilePath);
@@ -34,7 +34,7 @@ namespace Dargon.Nest.Daemon.Init {
             if (!actionHandlersByType.TryGetValue(actionType, out handler)) {
                logger.Error("Could not find init script handler for type " + action.type);
             } else {
-               handler.Process(nest, action);
+               handler.Process(bundle, action);
             }
          }
       }
@@ -42,6 +42,6 @@ namespace Dargon.Nest.Daemon.Init {
 
    public interface InitScriptActionHandler {
       string ActionName { get; }
-      void Process(NestContext nest, dynamic action);
+      void Process(BundleContext bundle, dynamic action);
    }
 }

@@ -1,4 +1,4 @@
-﻿namespace Dargon.Nest.Egg {
+﻿namespace Dargon.Nest.Eggs {
    public class EggParameters : IEggParameters {
       public EggParameters(IEggHost host, string instanceName, byte[] arguments) {
          Host = host;

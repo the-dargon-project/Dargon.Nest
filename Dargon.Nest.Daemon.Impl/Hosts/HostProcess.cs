@@ -1,5 +1,5 @@
 using Dargon.Nest.Daemon.Hatchlings;
-using Dargon.Nest.Egg;
+using Dargon.Nest.Eggs;
 using Dargon.Nest.Eggxecutor;
 using Dargon.Nest.Exeggutor.Host.PortableObjects;
 using Dargon.PortableObjects.Streams;
@@ -21,7 +21,7 @@ namespace Dargon.Nest.Daemon.Hosts {
 
       public HostProcess CreateAndInitialize(EggContext eggContext, SpawnConfiguration spawnConfiguration) {
          var originalNestHostFileInfo = new FileInfo(daemonConfiguration.HostExecutablePath);
-         var targetNestHostFileInfo = new FileInfo(Path.Combine(eggContext.RootPath, originalNestHostFileInfo.Name));
+         var targetNestHostFileInfo = new FileInfo(Path.Combine(eggContext.Location, originalNestHostFileInfo.Name));
 
          var processStartInfo = new ProcessStartInfo() {
             FileName = targetNestHostFileInfo.FullName,
@@ -84,7 +84,7 @@ namespace Dargon.Nest.Daemon.Hosts {
          SendMagic();
          Send(new BootstrapDto(
             spawnConfiguration.InstanceName,
-            eggContext.RootPath,
+            eggContext.Location,
             spawnConfiguration.Arguments)).Wait();
       }
 

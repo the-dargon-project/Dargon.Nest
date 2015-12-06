@@ -1,9 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using Dargon.Nest.Daemon.Hosts;
-using Dargon.Nest.Egg;
+﻿using Dargon.Nest.Daemon.Hosts;
+using Dargon.Nest.Eggs;
 using Dargon.Nest.Eggxecutor;
-using ItzWarty;
+using System;
+using System.Threading.Tasks;
 
 namespace Dargon.Nest.Daemon.Hatchlings {
    public interface HatchlingContext {
@@ -11,7 +10,7 @@ namespace Dargon.Nest.Daemon.Hatchlings {
       string Name { get; }
 
       HostProcess Process { get; }
-      NestContext Nest { get; }
+      BundleContext Bundle { get; }
       NestResult StartResult { get; }
 
       Task ShutdownAsync(ShutdownReason reason);
@@ -43,7 +42,7 @@ namespace Dargon.Nest.Daemon.Hatchlings {
       public string Name => spawnConfiguration.InstanceName;
 
       public HostProcess Process => hostProcess;
-      public NestContext Nest => eggContext.NestContext;
+      public BundleContext Bundle => eggContext.BundleContext;
       public NestResult StartResult => hostProcess.StartResult;
 
       public Task ShutdownAsync(ShutdownReason reason) => hostProcess.ShutdownAsync(reason);
