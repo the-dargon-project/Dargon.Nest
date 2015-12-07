@@ -67,7 +67,7 @@ namespace nest_host {
          Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
          AppDomain.CurrentDomain.UnhandledException += HandleUnhandledAppDomainException;
 
-         new EggHost(pofStreamsFactory, pofStream).Run(bootstrapDto);
+         new HatchlingHostImpl(pofStreamsFactory, pofStream, bootstrapDto).Run();
 
          GC.KeepAlive(standardInput);
          GC.KeepAlive(standardOutput);

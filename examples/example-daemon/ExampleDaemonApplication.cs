@@ -7,10 +7,10 @@ using Dargon.Services;
 using Dargon.Services.Clustering;
 
 namespace example_daemon {
-   public class ExampleApplicationEgg : INestApplicationEgg {
-      private IEggHost host;
+   public class ExampleDaemonApplication : NestApplication {
+      private HatchlingHost host;
 
-      public NestResult Start(IEggParameters parameters) {
+      public NestResult Start(HatchlingParameters parameters) {
          host = parameters?.Host;
 
          var ryu = new RyuFactory().Create();

@@ -61,11 +61,6 @@
       <HintPath>..\..\packages\Dargon.PortableObjects.0.2.0\lib\net45\Dargon.PortableObjects.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dargon.PortableObjects.Streams, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Dargon.PortableObjects.Streams.0.3.1\lib\net45\Dargon.PortableObjects.Streams.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Dargon.Services.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Dargon.Services.Api.1.0.0\lib\net45\Dargon.Services.Api.dll</HintPath>
@@ -137,6 +132,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\dependencies\Dargon.PortableObject.Streams\Dargon.PortableObjects.Streams.csproj">
+      <Project>{49882b74-813d-462c-89ef-1ddf4142d663}</Project>
+      <Name>Dargon.PortableObjects.Streams</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\dependencies\Dargon.Ryu\Dargon.Ryu.Api\Dargon.Ryu.Api.csproj">
       <Project>{be844deb-2f95-407e-973e-ae3f3983b54d}</Project>
       <Name>Dargon.Ryu.Api</Name>

@@ -13,11 +13,11 @@ namespace Dargon.Nest.Daemon.Init {
 
    public class InitScriptRunnerImpl : InitScriptRunner {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-      private readonly ReadableNestDirectory nestDirectory;
+      private readonly ReadableBundleDirectory bundleDirectory;
       private readonly IReadOnlyDictionary<string, InitScriptActionHandler> actionHandlersByType;
 
-      public InitScriptRunnerImpl(ReadableNestDirectory nestDirectory, IReadOnlyDictionary<string, InitScriptActionHandler> actionHandlersByType) {
-         this.nestDirectory = nestDirectory;
+      public InitScriptRunnerImpl(ReadableBundleDirectory bundleDirectory, IReadOnlyDictionary<string, InitScriptActionHandler> actionHandlersByType) {
+         this.bundleDirectory = bundleDirectory;
          this.actionHandlersByType = actionHandlersByType;
       }
 
@@ -27,6 +27,7 @@ namespace Dargon.Nest.Daemon.Init {
          logger.Info(initFilePath);
          var initFileJson = File.ReadAllText(initFilePath);
          dynamic initConfig = JsonConvert.DeserializeObject(initFileJson);
+         if (initConfig == null) return; // happens on empty init file
          var initHooks = initConfig["init-hooks"];
          foreach (dynamic action in initHooks) {
             string actionType = action.type;

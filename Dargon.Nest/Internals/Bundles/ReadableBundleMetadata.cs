@@ -1,18 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Dargon.Nest.Internals.Bundles {
    public interface ReadableBundleMetadata {
-      string Channel { get; }
-      string Remote { get; }
+      string Name { get; }
       string Version { get; }
+      string Remote { get; }
+      string InitScript { get; }
    }
 
    public interface ReadableEggContainer {
       string Location { get; }
-      IEnumerable<ReadableEgg> EnumerateEggs();
+      Task<IEnumerable<ReadableEgg>> EnumerateEggsAsync();
    }
 
    public interface ManageableEggContainer : ReadableEggContainer {
-      new IEnumerable<ManageableEgg> EnumerateEggs();
+      new Task<IEnumerable<ManageableEgg>> EnumerateEggsAsync();
    }
 }

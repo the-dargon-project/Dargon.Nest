@@ -53,11 +53,6 @@
       <HintPath>..\..\packages\Dargon.PortableObjects.0.2.0\lib\net45\Dargon.PortableObjects.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dargon.PortableObjects.Streams, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Dargon.PortableObjects.Streams.0.3.1\lib\net45\Dargon.PortableObjects.Streams.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Dargon.Ryu.Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Dargon.Ryu.Api.0.3.1\lib\portable-net45+netcore45+MonoAndroid1+MonoTouch1\Dargon.Ryu.Api.dll</HintPath>
@@ -129,11 +124,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExeggutorMob.cs" />
+    <Compile Include="Management\ExeggutorMob.cs" />
     <Compile Include="Hatchlings\EggContext.cs" />
     <Compile Include="Hatchlings\EggDirectory.cs" />
     <Compile Include="Hatchlings\BundleContextFactory.cs" />
-    <Compile Include="Hatchlings\NestDirectoryImpl.cs" />
+    <Compile Include="Hatchlings\BundleDirectoryImpl.cs" />
+    <Compile Include="Hatchlings\HatchlingSpawnerService.cs" />
     <Compile Include="Hatchlings\NestDirectorySynchronizer.cs" />
     <Compile Include="Hatchlings\NestLockManager.cs" />
     <Compile Include="Hosts\HostOperations.cs" />
@@ -143,17 +139,23 @@
     <Compile Include="Hosts\HostProcess.cs" />
     <Compile Include="Init\Handlers\RunEggInitScriptActionHandlerImpl.cs" />
     <Compile Include="Init\InitScriptRunner.cs" />
+    <Compile Include="Management\RestartMob.cs" />
     <Compile Include="NestDaemonImplRyuPackage.cs" />
     <Compile Include="NestDaemonServiceImpl.cs" />
+    <Compile Include="Restart\RestartSignalService.cs" />
     <Compile Include="Updating\StagedUpdateProcessor.cs" />
-    <Compile Include="Updating\UpdateFetcher.cs" />
+    <None Include="Updating\UpdateService.cs" />
     <Compile Include="Utilities\FileUtilities.cs" />
     <Compile Include="Hatchlings\BundleContext.cs" />
     <Compile Include="Hatchlings\HatchlingDirectory.cs" />
-    <Compile Include="NestServiceImpl.cs" />
+    <Compile Include="ExeggutorSynchronization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\dependencies\Dargon.PortableObject.Streams\Dargon.PortableObjects.Streams.csproj">
+      <Project>{49882b74-813d-462c-89ef-1ddf4142d663}</Project>
+      <Name>Dargon.PortableObjects.Streams</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dargon.Nest.Daemon.Api\Dargon.Nest.Daemon.Api.csproj">
       <Project>{8EA47E3B-F3FF-4B2A-8A0F-DE735D3513D7}</Project>
       <Name>Dargon.Nest.Daemon.Api</Name>

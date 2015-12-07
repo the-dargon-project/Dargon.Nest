@@ -51,7 +51,7 @@ namespace Dargon.Nest.Daemon.Hatchlings {
             if (eggsByName.TryGetValue(eggName, out eggContext)) {
                return true;
             }
-            var egg = bundle.EnumerateEggs().FirstOrDefault(x => x.Name.Equals(eggName, StringComparison.OrdinalIgnoreCase));
+            var egg = bundle.EnumerateEggsAsync().Result.FirstOrDefault(x => x.Name.Equals(eggName, StringComparison.OrdinalIgnoreCase));
             if (egg == null) {
                eggContext = null;
                return false;

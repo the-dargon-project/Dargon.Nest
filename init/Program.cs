@@ -20,7 +20,9 @@ namespace Nest.Init {
 
       public static void Main(string[] args) {
          var initAssembly = Assembly.GetExecutingAssembly();
-         var rootDirectory = new FileInfo(initAssembly.Location).Directory;
+         var initDirectory = new FileInfo(initAssembly.Location).Directory;
+         Debug.Assert(initDirectory != null);
+         var rootDirectory = initDirectory.Parent;
          Debug.Assert(rootDirectory != null);
 
          using (var logFile = File.Open(Path.Combine(rootDirectory.FullName, "init.log"), FileMode.Append, FileAccess.Write))
@@ -70,6 +72,8 @@ namespace Nest.Init {
                new ProcessStartInfo(nestDaemonPath, string.Join(" ", args)) {
                   WorkingDirectory = new FileInfo(nestDaemonPath).Directory.FullName
                });
+         } else {
+            Console.Error.WriteLine("Expected but could not find nest daemon path: " + nestDaemonPath);
          }
       }
 

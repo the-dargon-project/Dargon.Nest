@@ -7,8 +7,8 @@
       }
 
       public string Name => IoUtilities.ExtractNameFromPath(location);
-      public string Version => IoUtilities.ReadString(IoUtilities.CombinePath(location, NestConstants.kVersionFileName));
-      public string Channel => IoUtilities.ReadString(IoUtilities.CombinePath(location, NestConstants.kChannelFileName));
-      public string Remote => IoUtilities.ReadString(IoUtilities.CombinePath(location, NestConstants.kRemoteFileName));
+      public string Version => IoUtilities.ReadStringOrFallbackAsync(IoUtilities.CombinePath(location, NestConstants.kVersionFileName)).Result;
+      public string Remote => IoUtilities.ReadStringOrFallbackAsync(IoUtilities.CombinePath(location, NestConstants.kRemoteFileName)).Result;
+      public string InitScript => IoUtilities.ReadStringOrFallbackAsync(IoUtilities.CombinePath(location, NestConstants.kInitJsonFileName)).Result;
    }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 
 namespace Dargon.Nest.Daemon {
    public class NestDaemonServiceImpl : NestDaemonService {
@@ -10,6 +11,21 @@ namespace Dargon.Nest.Daemon {
 
       public void WaitForShutdown() {
          shutdownLatch.WaitOne();
+      }
+
+      public void RestartDaemon() {
+         AppDomain.CurrentDomain.ProcessExit += RestartExitHandler;
+         KillDaemon();
+      }
+
+      private void RestartExitHandler(object sender, EventArgs e) {
+         InitUtilities.ExecInit();
+      }
+   }
+
+   public static class InitUtilities {
+      public static void ExecInit() {
+
       }
    }
 }

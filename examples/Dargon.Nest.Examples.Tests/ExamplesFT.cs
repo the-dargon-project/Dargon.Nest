@@ -106,7 +106,7 @@ namespace Dargon.Nest.Examples.Tests {
       private void ImportProjectToBundle(ManageableBundle bundle, string folderPath, string projectName) {
          var debugFolderPath = BuildPath(folderPath, projectName);
          var importableEgg = EggFactory.InMemory(projectName, debugFolderPath, "dev");
-         bundle.InstallEgg(importableEgg);
+         bundle.InstallEggAsync(importableEgg);
       }
 
       private static string BuildPath(string folderPath, string projectName, string relative = "") {

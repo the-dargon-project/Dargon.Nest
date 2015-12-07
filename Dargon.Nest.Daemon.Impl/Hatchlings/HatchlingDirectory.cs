@@ -8,7 +8,7 @@ namespace Dargon.Nest.Daemon.Hatchlings {
    public interface ReadableHatchlingDirectory {
       bool TryGetHatchlingByName(string name, out HatchlingContext hatchling);
       IReadOnlySet<HatchlingContext> EnumerateHatchlings();
-      IEnumerable<HatchlingContext> EnumerateHatchlingsOfNest(string nestName);
+      IEnumerable<HatchlingContext> EnumerateHatchlingsOfBundle(string nestName);
    }
 
    public interface ManageableHatchlingDirectory : ReadableHatchlingDirectory {
@@ -36,7 +36,7 @@ namespace Dargon.Nest.Daemon.Hatchlings {
          return hatchlings;
       }
 
-      public IEnumerable<HatchlingContext> EnumerateHatchlingsOfNest(string nestName) {
+      public IEnumerable<HatchlingContext> EnumerateHatchlingsOfBundle(string nestName) {
          return hatchlings.Where(h => h.Bundle.Name.Equals(nestName, StringComparison.OrdinalIgnoreCase));
       }
    }

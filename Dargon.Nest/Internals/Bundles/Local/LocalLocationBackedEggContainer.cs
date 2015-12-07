@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Dargon.Nest.Internals.Eggs;
 
 namespace Dargon.Nest.Internals.Bundles.Local {
@@ -12,14 +13,14 @@ namespace Dargon.Nest.Internals.Bundles.Local {
 
       public string Location => location;
 
-      public IEnumerable<ManageableEgg> EnumerateEggs() {
+      public Task<IEnumerable<ManageableEgg>> EnumerateEggsAsync() => Task.FromResult(EnumerateEggsHelper());
+
+      private IEnumerable<ManageableEgg> EnumerateEggsHelper() {
          foreach (var directory in Directory.EnumerateDirectories(location)) {
-            yield return EggFactory.FileBacked(directory);
+            yield return EggFactory.Local(directory);
          }
       }
 
-      IEnumerable<ReadableEgg> ReadableEggContainer.EnumerateEggs() {
-         return EnumerateEggs();
-      }
+      async Task<IEnumerable<ReadableEgg>> ReadableEggContainer.EnumerateEggsAsync() => await EnumerateEggsAsync();
    }
 }

@@ -1,5 +1,7 @@
-﻿namespace Dargon.Nest.Internals.Eggs {
+﻿using System.Threading.Tasks;
+
+namespace Dargon.Nest.Internals.Eggs {
    public interface ManageableEggRepository : ReadableEggRepository {
-      void Sync(ReadableEggRepository remote);
+      Task SyncAsync(ReadableEggRepository remote);
    }
 }

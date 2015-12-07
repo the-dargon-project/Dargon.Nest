@@ -7,7 +7,7 @@ namespace Dargon.Nest.Daemon.Hatchlings {
     public class NestDirectorySynchronizer {
       private readonly IFileSystemProxy fileSystemProxy = null;
       private readonly DaemonConfiguration daemonConfiguration = null;
-      private readonly NestDirectoryImpl nestDirectory = null;
+      private readonly BundleDirectoryImpl bundleDirectory = null;
       private readonly BundleContextFactory bundleContextFactory = null;
 
       public void Initialize() {
@@ -28,7 +28,7 @@ namespace Dargon.Nest.Daemon.Hatchlings {
             return;
          }
          var nestContext = bundleContextFactory.Create(e.FullPath);
-         nestDirectory.Register(nestContext);
+         bundleDirectory.Register(nestContext);
       }
 
       private void HandleDeleted(object sender, FileSystemEventArgs e) {
@@ -36,8 +36,8 @@ namespace Dargon.Nest.Daemon.Hatchlings {
          if (!fileInfo.Attributes.HasFlag(FileAttributes.Directory)) {
             return;
          }
-         var nestContext = nestDirectory.GetNestContextByName(e.Name);
-         nestDirectory.Unregister(nestContext);
+         var nestContext = bundleDirectory.GetBundleContextByName(e.Name);
+         bundleDirectory.Unregister(nestContext);
       }
 
       private void HandleRenamed(object sender, RenamedEventArgs e) {

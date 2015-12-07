@@ -1,44 +1,53 @@
 root
-'- deployments
+:- deployments
+:  '- dargon-client
+:     :- CHANNEL                    stable
+:     :- REMOTE                     https://packages.dargon.io
+:     :- VERSION                    0.0.0
+:     :- LOCK
+:     :- bundles
+:     :  :- client
+:     :  :  :- init.json
+:     :  :  :- REMOTE
+:     :  :  :- VERSION
+:     :  :  :- cored
+:     :  :  :- dargon-cli
+:     :  :  '- dargon-client
+:     :  '- nest  
+:     :     :- REMOTE
+:     :     :- VERSION
+:     :     :- nest
+:     :     :- nestd
+:     :     :  :- nestd.exe
+:     :     :  '- NEST_INIT
+:     :     '- nest-host
+:     :        '- nest-host.exe
+:     :- cache
+:     :  :- 3d72a9ce
+:     :  '- b45a81f1
+:     :- config
+:     :  :- client
+:     :  :  '- system-state.json
+:     :  '- nest
+:     :     '- system-state.json
+:     :- init
+:     :  :- init.exe
+:     :  :- FILELIST
+:     :  :- REMOTE
+:     :  '- VERSION
+:     :- logs
+:     :  :- client
+:     :  :  '- cored.log
+:     :  '- nest
+:     :     '- nestd.log
+:     :- restart
+:     :  '- trinket-10382
+:     :- stage
+:     :  '- client
+:     :     '- cored
+:     :        '- NEST_READY
+:     '- temp
+:        '- a9fe3452
+:           '- cored
+'- stage
    '- dargon-client
-      :- init.exe
-      :- CHANNEL                    stable
-      :- REMOTE                     https://packages.dargon.io
-      :- VERSION                    0.0.0
-      :- bundles
-      :   :- client
-      :   :  :- init.json
-      :   :  :- REMOTE
-      :   :  :- VERSION
-      :   :  :- cored
-      :   :  :- dargon-cli
-      :   :  '- dargon-client
-      :   '- nest  
-      :      :- REMOTE
-      :      :- VERSION
-      :      :- nest
-      :      :- nestd
-      :      :  :- nestd.exe
-      :      :  '- NEST_INIT
-      :      '- nest-host
-      :         '- nest-host.exe
-      :- cache
-      :  :- 3d72a9ce
-      :  '- b45a81f1
-      :- config
-      :  :- client
-      :  :  '- system-state.json
-      :  '- nest
-      :     '- system-state.json
-      :- logs
-      :  :- client
-      :  :  '- cored.log
-      :  '- nest
-      :     '- nestd.log
-      :- stage
-      :  '- client
-      :     '- cored
-      :        '- NEST_READY
-      '- temp
-         '- a9fe3452
-            '- cored

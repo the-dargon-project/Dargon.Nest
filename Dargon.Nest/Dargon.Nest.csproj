@@ -35,6 +35,22 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Nito.AsyncEx">
+      <HintPath>..\..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nito.AsyncEx.Concurrent">
+      <HintPath>..\..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.Concurrent.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nito.AsyncEx.Enlightenment">
+      <HintPath>..\..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.Enlightenment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Semver">
+      <HintPath>..\..\packages\semver.1.1.2\lib\net45\Semver.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,13 +61,19 @@
     <None Include="Deprecated\RemoteEgg.cs" />
     <None Include="Deprecated\EggFileListEntry.cs" />
     <Compile Include="BundleFactory.cs" />
+    <Compile Include="DeploymentFactory.cs" />
+    <Compile Include="Internals\Bundles\BundleOperations.cs" />
+    <Compile Include="Internals\Deployment\DeploymentOperations.cs" />
     <Compile Include="Internals\Bundles\Local\LocalLocationBackedBundleMetadata.cs" />
     <Compile Include="Internals\Bundles\Local\LocalLocationBackedEggContainer.cs" />
     <Compile Include="Internals\Bundles\ManageableBundleProxy.cs" />
     <Compile Include="Internals\Bundles\ReadableBundleMetadata.cs" />
+    <Compile Include="Internals\Bundles\ReadableBundleProxy.cs" />
     <Compile Include="Internals\Bundles\Remote\RemoteUrlBackedBundleMetadata.cs" />
+    <Compile Include="Internals\Deployment\Local\LocalDeploymentMetadata.cs" />
+    <Compile Include="Internals\Deployment\ReadableDeploymentProxy.cs" />
     <Compile Include="Internals\Eggs\EggFileEntry.cs" />
-    <Compile Include="Internals\Eggs\Common\LocationBackedEggRepository.cs" />
+    <Compile Include="Internals\Eggs\Local\LocalEggRepository.cs" />
     <Compile Include="EggFactory.cs" />
     <Compile Include="Internals\Eggs\EggFileListSerializer.cs" />
     <None Include="Deprecated\Egg.cs" />
@@ -61,12 +83,25 @@
     <Compile Include="Internals\Eggs\InMemory\InMemoryEggRepository.cs" />
     <Compile Include="Internals\Eggs\NestFileCache.cs" />
     <Compile Include="Internals\Eggs\ReadableEggProxy.cs" />
+    <Compile Include="Internals\Eggs\Remote\RemoteEggRepository.cs" />
     <Compile Include="Internals\IoUtilities.cs" />
-    <Compile Include="Internals\Eggs\Common\RepositoryBackedEggMetadata.cs" />
+    <Compile Include="Internals\Eggs\Local\LocalEggMetadata.cs" />
     <Compile Include="Internals\Eggs\ManageableEggRepository.cs" />
     <Compile Include="Internals\NestConstants.cs" />
-    <Compile Include="NestExtensions.cs" />
+    <Compile Include="Internals\Deployment\Local\LocalBundleContainer.cs" />
+    <Compile Include="Internals\Nests\Local\LocalDeploymentContainerImpl.cs" />
+    <Compile Include="Internals\Nests\ManageableDeploymentContainer.cs" />
+    <Compile Include="Internals\Nests\ReadableDeploymentContainer.cs" />
+    <Compile Include="Internals\Nests\ReadableNestProxy.cs" />
+    <Compile Include="Internals\Utilities\FileLock.cs" />
+    <Compile Include="ManageableDeployment.cs" />
+    <Compile Include="Internals\Deployment\ManageableDeploymentProxy.cs" />
+    <Compile Include="BundleExtensions.cs" />
     <Compile Include="ManageableEgg.cs" />
+    <Compile Include="Internals\Deployment\ReadableBundleContainer.cs" />
+    <Compile Include="NestFactory.cs" />
+    <Compile Include="ReadableDeployment.cs" />
+    <Compile Include="Internals\Deployment\ReadableDeploymentMetadata.cs" />
     <Compile Include="ReadableEgg.cs" />
     <Compile Include="ManageableNest.cs" />
     <Compile Include="ManageableBundle.cs" />
@@ -81,6 +116,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="Deprecated\NestUtil.cs" />
     <None Include="Deprecated\UpdateNestOptions.cs" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

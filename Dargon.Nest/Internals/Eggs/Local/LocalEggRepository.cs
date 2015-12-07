@@ -1,18 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace Dargon.Nest.Internals.Eggs.Common {
-   public class LocationBackedEggRepository : ManageableEggRepository {
+namespace Dargon.Nest.Internals.Eggs.Local {
+   public class LocalEggRepository : ManageableEggRepository {
       private readonly string path;
 
-      public LocationBackedEggRepository(string path) {
+      public LocalEggRepository(string path) {
          this.path = path;
       }
 
       public string Location => path;
 
-      public IEnumerable<EggFileEntry> EnumerateFiles() {
-         var data = IoUtilities.ReadString(ComputeFullPath("filelist"));
+      public async Task<IEnumerable<EggFileEntry>> EnumerateFilesAsync() {
+         var data = await IoUtilities.ReadStringAsync(ComputeFullPath(NestConstants.kFileListFileName));
          return EggFileEntrySerializer.Deserialize(data);
       }
 
@@ -20,11 +21,11 @@ namespace Dargon.Nest.Internals.Eggs.Common {
          return IoUtilities.CombinePath(path, internalPath);
       }
 
-      public void Sync(ReadableEggRepository remote) {
+      public Task SyncAsync(ReadableEggRepository remote) {
          if (!IoUtilities.IsLocal(path)) {
             throw new NotSupportedException("Cannot sync as path is not local: " + path);
          }
-         EggOperations.Update(path, remote);
+         return EggOperations.UpdateAsync(path, EggFactory.FromPath(remote.Location));
       }
    }
 }

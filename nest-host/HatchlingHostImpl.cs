@@ -1,4 +1,5 @@
-﻿using Dargon.Nest.Exeggutor.Host.PortableObjects;
+﻿using Dargon.Nest.Eggs;
+using Dargon.Nest.Exeggutor.Host.PortableObjects;
 using Dargon.PortableObjects.Streams;
 using ItzWarty;
 using ItzWarty.Threading;
@@ -6,25 +7,24 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Mime;
 using System.Reflection;
-using System.Threading;
-using Dargon.Nest.Eggs;
 
 namespace nest_host {
-   public class EggHost : IEggHost {
+   public class HatchlingHostImpl : HatchlingHost {
+      private readonly ICountdownEvent shutdownLatch = new CountdownEventProxy(1);
       private readonly PofStreamsFactory pofStreamsFactory;
       private readonly PofStream pofStream;
-      private readonly ICountdownEvent shutdownLatch = new CountdownEventProxy(1);
+      private readonly BootstrapDto bootstrapArguments;
 
-      public EggHost(PofStreamsFactory pofStreamsFactory, PofStream pofStream) {
+      public HatchlingHostImpl(PofStreamsFactory pofStreamsFactory, PofStream pofStream, BootstrapDto bootstrapArguments) {
          this.pofStreamsFactory = pofStreamsFactory;
          this.pofStream = pofStream;
+         this.bootstrapArguments = bootstrapArguments;
       }
 
-      public void Run(BootstrapDto bootstrapArguments) {
+      public void Run() {
          Console.WriteLine($"Path = \"{bootstrapArguments.EggPath}\"; Name = \"{bootstrapArguments.Name}\"; PayloadLength = {bootstrapArguments.PayloadBytes.Length}.");
-
+         
          string eggAssemblyPath;
          if (!TryGetEggAssemblyPath(bootstrapArguments, out eggAssemblyPath)) {
             Console.Error.WriteLine($"Could not find nest-main.dll in \"{bootstrapArguments.EggPath}\"!");
@@ -34,11 +34,11 @@ namespace nest_host {
             GetAssemblyPathsByAssemblyName(bootstrapArguments, out assemblyPathsByAssemblySimpleName, out assemblyPathsByAssemblyFullName);
 
             AppDomain.CurrentDomain.AssemblyResolve += CreateCachedAssemblyResolveHandler(assemblyPathsByAssemblySimpleName, assemblyPathsByAssemblyFullName);
-            INestApplicationEgg eggInstance = InstantiateNestApplicationEgg(eggAssemblyPath);
+            NestApplication instance = InstantiateNestApplicationEgg(eggAssemblyPath);
             var dispatcher = pofStreamsFactory.CreateDispatcher(pofStream);
-            dispatcher.RegisterHandler<ShutdownDto>(dto => Console.WriteLine("Egg shutdown result: " + eggInstance.Shutdown(dto.Reason) + "!"));
-            dispatcher.RegisterShutdownHandler(() => eggInstance.Shutdown(ShutdownReason.HostKilled));
-            var startResult = eggInstance.Start(new EggParameters(this, bootstrapArguments.Name, bootstrapArguments.PayloadBytes));
+            dispatcher.RegisterHandler<ShutdownDto>(dto => Console.WriteLine("Egg shutdown result: " + instance.Shutdown(dto.Reason) + "!"));
+            dispatcher.RegisterShutdownHandler(() => instance.Shutdown(ShutdownReason.HostKilled));
+            var startResult = instance.Start(new HatchlingParameters(this, bootstrapArguments.Name, bootstrapArguments.PayloadBytes));
             dispatcher.Start();
             pofStream.Write(new BootstrapResultDto(startResult));
             Console.WriteLine("Egg started with " + startResult);
@@ -48,14 +48,14 @@ namespace nest_host {
          }
       }
 
-      private INestApplicationEgg InstantiateNestApplicationEgg(string eggAssemblyPath) {
+      private NestApplication InstantiateNestApplicationEgg(string eggAssemblyPath) {
          var eggAssembly = Assembly.LoadFile(eggAssemblyPath);
          var candidates = eggAssembly.GetExportedTypes().Where(FilterNestApplicationEggs).ToArray();
          if (candidates.Length != 1) {
             throw new InvalidOperationException("Could not select Nest entry point - too many candidates! Found " + candidates.Select(c => c.FullName).Join(", "));
          } else {
             var eggClass = candidates.First();
-            return (INestApplicationEgg)Activator.CreateInstance(eggClass);
+            return (NestApplication)Activator.CreateInstance(eggClass);
          }
       }
 
@@ -125,8 +125,23 @@ namespace nest_host {
          shutdownLatch.Signal();
       }
 
+      public void SetRestartToken(HatchlingParameters parameters) {
+         var restartDirectoryPath = Path.Combine(bootstrapArguments.EggPath, "..", "..", "..", "restart");
+         Directory.CreateDirectory(restartDirectoryPath);
+
+         var restartFilePath = Path.Combine(restartDirectoryPath, parameters.InstanceName);
+         using (var fs = File.OpenWrite(restartFilePath))
+         using (var stream = pofStreamsFactory.CreatePofStream(fs)) {
+            var dto = new BootstrapDto(
+               parameters.InstanceName,
+               bootstrapArguments.EggPath,
+               parameters.Arguments);
+            stream.Write(dto);
+         }
+      }
+
       private bool FilterNestApplicationEggs(Type type) {
-         return type.GetInterfaces().Any(i => i.Name.Contains(nameof(INestApplicationEgg)));
+         return type.GetInterfaces().Any(i => i.Name.Contains(nameof(NestApplication)));
       }
    }
 }

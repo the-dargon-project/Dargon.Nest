@@ -15,15 +15,15 @@ namespace example_client {
       }
    } 
 
-   public class Program : INestApplicationEgg {
+   public class ExampleClientApplication : NestApplication {
       public static void Main() {
-         new Program().Start(null);
+         new ExampleClientApplication().Start(null);
          new ManualResetEvent(false).WaitOne();
       }
 
-      private IEggHost host;
+      private HatchlingHost host;
 
-      public NestResult Start(IEggParameters parameters) {
+      public NestResult Start(HatchlingParameters parameters) {
          host = parameters?.Host;
 
          var ryu = new RyuFactory().Create();
@@ -44,7 +44,7 @@ namespace example_client {
       }
 
       public NestResult Shutdown(ShutdownReason reason) {
-         Log("Received shutdown signal.");
+         Log($"Received shutdown signal with reason: {reason}.");
          host?.Shutdown();
          return NestResult.Success;
       }

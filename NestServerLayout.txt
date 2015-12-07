@@ -1,5 +1,10 @@
 root
 :- eggs
+:  :- init
+:  :  :- cache
+:  :  :- channels
+:  :  :  '- stable
+:  :  '- releases
 :  '- thumbnail-generator
 :     :- cache
 :     :  '- a9fe3452
@@ -13,10 +18,8 @@ root
 :  :  '- releases
 :  :     :- list
 :  :     '- client-0.0.0
-:  :        '- CONTENTS
-:  :        '- configuration
-:  :           :- list
-:  :           '- system-state.json
+:  :        :- EGGS
+:  :        '- init.json
 :  '- trinket
 '- deployments
    '- dargon-client

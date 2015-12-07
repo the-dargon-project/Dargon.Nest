@@ -23,7 +23,7 @@ namespace Dargon.Nest.Daemon.Hosts {
                var relativePath = assemblyFileInfo.FullName.Substring(nestHostDirectory.FullName.Length + 1);
                var destinationPath = Path.Combine(localEgg.Location, relativePath);
 
-               if (localEgg.EnumerateFiles().None(x => x.InternalPath.Equals(relativePath, StringComparison.OrdinalIgnoreCase))) {
+               if (localEgg.EnumerateFilesAsync().Result.None(x => x.InternalPath.Equals(relativePath, StringComparison.OrdinalIgnoreCase))) {
                   File.Copy(assemblyFileInfo.FullName, destinationPath, true);
                }
             } catch (IOException) {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Dargon.Nest.Internals.Eggs {
    public class ReadableEggProxy : ReadableEgg {
@@ -18,7 +19,7 @@ namespace Dargon.Nest.Internals.Eggs {
 
       // ReadableEggRepository
       public string Location => Repository.Location;
-      public IEnumerable<EggFileEntry> EnumerateFiles() => Repository.EnumerateFiles();
+      public Task<IEnumerable<EggFileEntry>> EnumerateFilesAsync() => Repository.EnumerateFilesAsync();
       public string ComputeFullPath(string internalPath) => Repository.ComputeFullPath(internalPath);
    }
 }

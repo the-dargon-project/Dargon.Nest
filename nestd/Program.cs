@@ -15,6 +15,7 @@ using System.Net;
 using System.Reflection;
 using Dargon.Nest.Daemon.Hatchlings;
 using Dargon.Nest.Daemon.Init;
+using Dargon.Nest.Daemon.Restart;
 using ItzWarty.IO;
 
 namespace Dargon.Nest.Daemon {
@@ -92,9 +93,12 @@ namespace Dargon.Nest.Daemon {
          logger.Info($"nestd initialized. dmi: {options.ManagementPort}. services: {options.DspPort}. Daemon configuration: {daemonConfiguration}");
 
          var initScriptRunner = ryu.Get<InitScriptRunner>();
-         foreach (var nest in ryu.Get<ReadableNestDirectory>().EnumerateNests()) {
+         foreach (var nest in ryu.Get<ReadableBundleDirectory>().EnumerateBundles()) {
             initScriptRunner.RunNestInitializationScript(nest);
          }
+
+         var restartSignalService = ryu.Get<RestartSignalService>();
+         restartSignalService.ProcessRestartSignals();
 
          ryu.Get<NestDaemonService>().WaitForShutdown();
          logger.Info("Shutting down nestd.");

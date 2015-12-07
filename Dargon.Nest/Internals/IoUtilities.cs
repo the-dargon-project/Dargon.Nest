@@ -1,12 +1,24 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Dargon.Nest.Internals {
    public static class IoUtilities {
-      public static string ReadString(string absolutePath) {
-         return Encoding.UTF8.GetString(ReadBytes(absolutePath));
+      public static async Task<string> ReadStringAsync(string absolutePath) {
+         return Encoding.UTF8.GetString(await ReadBytesAsync(absolutePath));
+      }
+
+      public static async Task<string> ReadStringOrFallbackAsync(string absolutePath, string fallback = "") {
+         try {
+            return Encoding.UTF8.GetString(await ReadBytesAsync(absolutePath));
+         } catch (Exception e) {
+            Console.Error.WriteLine(absolutePath);
+            Console.Error.WriteLine(e);
+            return fallback;
+         }
       }
 
       public static void PrepareDirectory(string path) {
@@ -24,7 +36,11 @@ namespace Dargon.Nest.Internals {
       }
 
       public static string FormatSystemPath(string absolutePath) {
-         return Path.GetFullPath(absolutePath).TrimEnd('/', '\\');
+         return Path.GetFullPath(absolutePath).Replace('\\', '/').TrimEnd('/');
+      }
+
+      public static string FormatWebPath(string absolutePath) {
+         return new Uri(absolutePath.Replace('\\', '/').TrimEnd('/')).AbsoluteUri;
       }
 
       public static string GetDescendentRelativePath(string basePath, string descendentPath) {
@@ -32,11 +48,15 @@ namespace Dargon.Nest.Internals {
          return FormatSystemPath(descendentPath).Substring(FormatSystemPath(basePath).Length + kLeadingSlashLength);
       }
 
-      public static byte[] ReadBytes(string absolutePath) {
-         if (File.Exists(absolutePath)) {
-            return File.ReadAllBytes(absolutePath);
+      public static async Task<byte[]> ReadBytesAsync(string absolutePath) {
+         if (IsLocal(absolutePath)) {
+            using (var fs = File.OpenRead(absolutePath)) {
+               var result = new byte[fs.Length];
+               await fs.ReadAsync(result, 0, result.Length);
+               return result;
+            }
          } else {
-            throw new NotSupportedException();
+            return await new WebClient().DownloadDataTaskAsync(FormatWebPath(absolutePath));
          }
       }
 
@@ -46,8 +66,11 @@ namespace Dargon.Nest.Internals {
          return path.Substring(delimiterIndex + 1);
       }
 
-      public static string CombinePath(string basePath, string extPath) {
-         return Path.Combine(basePath, extPath);
+      public static string CombinePath(string basePath, params string[] extPaths) {
+         foreach (var extPath in extPaths) {
+            basePath = Path.Combine(basePath, extPath);
+         }
+         return basePath;
       }
 
       public static bool IsLocal(string path) {
@@ -62,12 +85,16 @@ namespace Dargon.Nest.Internals {
          }
       }
 
-      public static DirectoryInfo GetAncestorInfoOfName(string startPath, string ancestorName) {
+      public static string FindAncestorCachePath(string startPath) {
          var currentDirectory = new FileInfo(startPath).Directory;
-         while (currentDirectory != null && !currentDirectory.Name.Equals(ancestorName, StringComparison.OrdinalIgnoreCase)) {
+         while (currentDirectory != null) {
+            var cacheDirectoryPath = Path.Combine(currentDirectory.FullName, NestConstants.kCacheDirectoryName);
+            if (Directory.Exists(cacheDirectoryPath)) {
+               return cacheDirectoryPath;
+            }
             currentDirectory = currentDirectory.Parent;
          }
-         return currentDirectory;
+         return null;
       }
    }
 }

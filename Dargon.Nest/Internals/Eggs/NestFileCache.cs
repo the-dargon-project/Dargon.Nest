@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Dargon.Nest.Internals.Eggs {
    public class NestFileCache {
@@ -28,7 +29,7 @@ namespace Dargon.Nest.Internals.Eggs {
          return false;
       }
 
-      public FileStream OpenOrAddAndOpen(Guid guid, Func<Guid, byte[]> readContents) {
+      public async Task<FileStream> OpenOrAddAndOpenAsync(Guid guid, Func<Guid, Task<byte[]>> readContents) {
          var cacheFilePath = BuildPath(guid);
 
          while (true) {
@@ -43,7 +44,7 @@ namespace Dargon.Nest.Internals.Eggs {
             // cache file didn't exist, try pulling.
             try {
                using (var fs = File.Open(cacheFilePath, FileMode.CreateNew, FileAccess.Write, FileShare.None)) {
-                  var data = readContents(guid);
+                  var data = await readContents(guid);
                   fs.Write(data, 0, data.Length);
                }
             } catch (IOException) {

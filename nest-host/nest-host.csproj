@@ -97,7 +97,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EggHost.cs" />
+    <Compile Include="HatchlingHostImpl.cs" />
     <Compile Include="NestHostBundleDummy.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

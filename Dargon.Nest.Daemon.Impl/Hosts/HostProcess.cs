@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Nito.AsyncEx;
 
 namespace Dargon.Nest.Daemon.Hosts {
    [RequiredFieldsConstructor]
@@ -57,7 +58,7 @@ namespace Dargon.Nest.Daemon.Hosts {
       private readonly PofStream pofStream;
       private readonly PofDispatcher pofDispatcher;
 
-      private readonly ManualResetEvent startResultLatch = new ManualResetEvent(false);
+      private readonly AsyncManualResetEvent startResultLatch = new AsyncManualResetEvent();
       private NestResult startResult;
 
       public event HostProcessExitedEventHandler Exited;
@@ -74,7 +75,10 @@ namespace Dargon.Nest.Daemon.Hosts {
       public SpawnConfiguration SpawnConfiguration => spawnConfiguration;
       public PofStream Stream => pofStream;
       public PofDispatcher Dispatcher => pofDispatcher;
-      public NestResult StartResult => startResultLatch.WaitOne().Pass(x => startResult);
+      public async Task<NestResult> GetStartResultAsync() {
+         await startResultLatch.WaitAsync();
+         return startResult;
+      }
 
       public void Initialize() {
          process.Exited += (s, e) => Exited?.Invoke(this, e);

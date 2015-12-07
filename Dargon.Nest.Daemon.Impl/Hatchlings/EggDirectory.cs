@@ -5,7 +5,7 @@ using System.Linq;
 namespace Dargon.Nest.Daemon.Hatchlings {
    [RequiredFieldsConstructor]
    public class EggDirectory {
-      private readonly NestDirectoryImpl nestDirectory = null;
+      private readonly BundleDirectoryImpl bundleDirectory = null;
 
       public EggContext GetContextByName(string name) {
          if (name.Contains('/')) {
@@ -19,13 +19,13 @@ namespace Dargon.Nest.Daemon.Hatchlings {
          var delimiterIndex = name.IndexOf('/');
          var nestName = name.Substring(0, delimiterIndex);
          var eggName = name.Substring(delimiterIndex + 1);
-         var nest = nestDirectory.GetNestContextByName(nestName);
+         var nest = bundleDirectory.GetBundleContextByName(nestName);
          return nest.GetEggByName(eggName);
       }
 
       private EggContext GetContextByUnqualifiedName(string name) {
          EggContext egg = null;
-         if (!nestDirectory.EnumerateNests().Any(n => n.TryGetEggByName(name, out egg))) {
+         if (!bundleDirectory.EnumerateBundles().Any(n => n.TryGetEggByName(name, out egg))) {
             throw new KeyNotFoundException($"Could not find egg of name {name}!");
          }
          return egg;

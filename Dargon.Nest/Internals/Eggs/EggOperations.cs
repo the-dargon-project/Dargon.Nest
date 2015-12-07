@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Dargon.Nest.Internals.Eggs.Common;
+using Dargon.Nest.Internals.Eggs.Local;
+using Dargon.Nest.Internals.Eggs.Remote;
 
 namespace Dargon.Nest.Internals.Eggs {
    public static class EggOperations {
-      public static void Install(string destinationEggDirectory, ReadableEgg remoteEgg) {
+      public static Task InstallAsync(string destinationEggDirectory, ReadableEgg remoteEgg) {
          IoUtilities.PrepareDirectory(destinationEggDirectory);
 
          // initialize to empty nest
@@ -16,27 +18,32 @@ namespace Dargon.Nest.Internals.Eggs {
          File.WriteAllText(IoUtilities.CombinePath(destinationEggDirectory, NestConstants.kRemoteFileName), "");
          File.WriteAllText(IoUtilities.CombinePath(destinationEggDirectory, NestConstants.kVersionFileName), "");
 
-         Update(destinationEggDirectory, remoteEgg);
+         return UpdateAsync(destinationEggDirectory, remoteEgg);
       }
 
-      public static void Update(string destinationEggDirectory, ReadableEggRepository remoteRepository) {
-         var remoteEgg = new ReadableEggProxy(new RepositoryBackedEggMetadata(remoteRepository), remoteRepository);
-         Update(destinationEggDirectory, remoteEgg);
-      }
+      public static async Task UpdateAsync(string destinationEggDirectory, ReadableEgg remoteEgg) {
+         IoUtilities.PrepareDirectory(destinationEggDirectory);
 
-      public static void Update(string destinationEggDirectory, ReadableEgg remoteEgg) {
-         var bundlesDirectory = IoUtilities.GetAncestorInfoOfName(destinationEggDirectory, NestConstants.kBundlesDirectoryName);
-         var cacheDirectory = Path.Combine(bundlesDirectory.FullName, "..", NestConstants.kCacheDirectoryName);
+         var fileListContents = "";
+         var fileListPath = IoUtilities.CombinePath(destinationEggDirectory, NestConstants.kFileListFileName);
+         if (File.Exists(fileListPath)) {
+            fileListContents = File.ReadAllText(fileListPath);
+         }
+         var fileList = EggFileEntrySerializer.Deserialize(fileListContents);
+         var existingHashesByInternalPathLower = fileList.ToDictionary(entry => entry.InternalPath.ToLower(), entry => entry.Guid);
+         
+         var cacheDirectory = IoUtilities.FindAncestorCachePath(destinationEggDirectory);
          var cache = new NestFileCache(cacheDirectory);
-
          var cacheFileStreamsByGuid = new Dictionary<Guid, FileStream>();
 
          try {
+            var remoteEggFiles = (await remoteEgg.EnumerateFilesAsync()).ToArray();
+
             // pull all remote files to cache and get reader stream
-            foreach (var file in remoteEgg.EnumerateFiles()) {
+            foreach (var file in remoteEggFiles) {
                if (cacheFileStreamsByGuid.ContainsKey(file.Guid)) continue;
                var remotePath = remoteEgg.ComputeFullPath(file.InternalPath);
-               var fileStream = cache.OpenOrAddAndOpen(file.Guid, add => IoUtilities.ReadBytes(remotePath));
+               var fileStream = await cache.OpenOrAddAndOpenAsync(file.Guid, add => IoUtilities.ReadBytesAsync(remotePath));
                cacheFileStreamsByGuid.Add(file.Guid, fileStream);
             }
 
@@ -49,12 +56,20 @@ namespace Dargon.Nest.Internals.Eggs {
             }
 
             // update / add to all files from remote egg
-            foreach (var file in remoteEgg.EnumerateFiles()) {
+            foreach (var file in remoteEggFiles) {
                FileStream destinationFileStream = null;
                try {
                   var internalPathLower = file.InternalPath.ToLower();
                   if (existingFileStreamsByInternalPathLower.TryGetValue(internalPathLower, out destinationFileStream)) {
                      existingFileStreamsByInternalPathLower.Remove(internalPathLower);
+
+                     // don't overwrite if we already have this file version.
+                     Guid existingHash;
+                     if (existingHashesByInternalPathLower.TryGetValue(internalPathLower, out existingHash)) {
+                        if (existingHash == file.Guid) {
+                           continue;
+                        }
+                     }
                   } else {
                      var absolutePath = Path.Combine(destinationEggDirectory, file.InternalPath);
                      IoUtilities.PrepareParentDirectory(absolutePath);
@@ -64,7 +79,7 @@ namespace Dargon.Nest.Internals.Eggs {
                   var cacheFileStream = cacheFileStreamsByGuid[file.Guid];
                   cacheFileStream.Seek(0, SeekOrigin.Begin);
                   destinationFileStream.Seek(0, SeekOrigin.Begin);
-                  cacheFileStream.CopyTo(destinationFileStream);
+                  await cacheFileStream.CopyToAsync(destinationFileStream);
                   destinationFileStream.SetLength(cacheFileStream.Length);
                } finally {
                   destinationFileStream?.Dispose();
@@ -79,7 +94,7 @@ namespace Dargon.Nest.Internals.Eggs {
             }
 
             // write file list, version info, remote
-            var fileListString = EggFileEntrySerializer.Serialize(remoteEgg.EnumerateFiles());
+            var fileListString = EggFileEntrySerializer.Serialize(remoteEggFiles);
             File.WriteAllText(Path.Combine(destinationEggDirectory, NestConstants.kFileListFileName), fileListString);
             File.WriteAllText(Path.Combine(destinationEggDirectory, NestConstants.kRemoteFileName), remoteEgg.Location);
             File.WriteAllText(Path.Combine(destinationEggDirectory, NestConstants.kVersionFileName), remoteEgg.Version);

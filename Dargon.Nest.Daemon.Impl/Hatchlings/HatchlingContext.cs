@@ -11,11 +11,11 @@ namespace Dargon.Nest.Daemon.Hatchlings {
 
       HostProcess Process { get; }
       BundleContext Bundle { get; }
-      NestResult StartResult { get; }
+      Task<NestResult> GetStartResultAsync();
 
       Task ShutdownAsync(ShutdownReason reason);
 
-      HatchlingStateDto ToDataTransferObject();
+      Task<HatchlingStateDto> ToDataTransferObjectAsync();
    }
 
    public class HatchlingContextImpl : HatchlingContext {
@@ -43,15 +43,16 @@ namespace Dargon.Nest.Daemon.Hatchlings {
 
       public HostProcess Process => hostProcess;
       public BundleContext Bundle => eggContext.BundleContext;
-      public NestResult StartResult => hostProcess.StartResult;
+
+      public Task<NestResult> GetStartResultAsync() => hostProcess.GetStartResultAsync();
 
       public Task ShutdownAsync(ShutdownReason reason) => hostProcess.ShutdownAsync(reason);
 
-      public HatchlingStateDto ToDataTransferObject() {
+      public async Task<HatchlingStateDto> ToDataTransferObjectAsync() {
          return new HatchlingStateDto {
             Id = Id,
             Name = Name,
-            StartResult = StartResult
+            StartResult = await GetStartResultAsync()
          };
       }
    }

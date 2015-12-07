@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Dargon.Nest.Internals.Bundles {
    public class ManageableBundleProxy : ManageableBundle {
@@ -12,18 +13,19 @@ namespace Dargon.Nest.Internals.Bundles {
       ReadableEggContainer ReadableBundle.EggContainer => EggContainer;
 
       // ReadableBundleMetadata
-      public string Channel => Metadata.Channel;
+      public string Name => Metadata.Name;
       public string Remote => Metadata.Remote;
       public string Version => Metadata.Version;
+      public string InitScript => Metadata.InitScript;
 
       // ReadableEggContainer
       public string Location => EggContainer.Location;
-      IEnumerable<ReadableEgg> ReadableEggContainer.EnumerateEggs() => EnumerateEggs();
+      async Task<IEnumerable<ReadableEgg>> ReadableEggContainer.EnumerateEggsAsync() => await EnumerateEggsAsync();
 
       // ManageableBundle
       public ManageableEggContainer EggContainer { get; }
 
       // ManageableEggContainer
-      public IEnumerable<ManageableEgg> EnumerateEggs() => EggContainer.EnumerateEggs();
+      public Task<IEnumerable<ManageableEgg>> EnumerateEggsAsync() => EggContainer.EnumerateEggsAsync();
    }
 }
