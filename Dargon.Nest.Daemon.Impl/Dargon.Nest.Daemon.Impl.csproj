@@ -124,6 +124,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExeggutorServiceDispatchProxyImpl.cs" />
     <Compile Include="Management\ExeggutorMob.cs" />
     <Compile Include="Hatchlings\EggContext.cs" />
     <Compile Include="Hatchlings\EggDirectory.cs" />

@@ -35,10 +35,10 @@ namespace example_client {
          Log("Successfully initialized example client.");
          new Thread(() => {
             Thread.Sleep(2500);
-            Log("Sending killall + update signal.");
+            Log("Sending killall signal.");
             var exeggutor = ryu.Get<ExeggutorService>();
-            exeggutor.KillHatchlingsAndUpdateAllPackages();
-            Log("Sending killall + update signal - done!");
+            exeggutor.KillAllHatchlings(ShutdownReason.None);
+            Log("Sending killall signal - done!");
          }) { IsBackground = true }.Start();
          return NestResult.Success;
       }

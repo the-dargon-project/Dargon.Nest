@@ -25,12 +25,11 @@ namespace Dargon.Nest.Daemon {
          Singleton<HatchlingSpawner, HatchlingSpawnerImpl>();
          Singleton<HostOperations>();
          Singleton<HostProcessFactory>();
-//         Singleton<exeggutorse>();
+         Singleton<ExeggutorServiceDispatchProxyImpl>();
          Singleton<HatchlingDirectoryImpl>();
          Singleton<ReadableHatchlingDirectory, HatchlingDirectoryImpl>();
          Singleton<ManageableHatchlingDirectory, HatchlingDirectoryImpl>();
          Singleton<BundleDirectoryImpl>();
-//         Singleton<UpdateService, UpdateServiceImpl>();
          Singleton<StagedUpdateProcessor, StagedUpdateProcessorImpl>();
          Singleton<StagedUpdateProcessorImpl>(ConstructStagedUpdateProcessor);
          Singleton<ReadableBundleDirectory, BundleDirectoryImpl>();
@@ -40,7 +39,7 @@ namespace Dargon.Nest.Daemon {
          Singleton<RunEggInitScriptActionHandlerImpl>(RyuTypeFlags.Required);
          Singleton<InitScriptRunner>(ConstructInitScriptRunner);
          Singleton<NestDaemonServiceImpl>();
-//         LocalService<ExeggutorService, ExeggutorServiceImpl>();
+         LocalService<ExeggutorService, ExeggutorServiceDispatchProxyImpl>();
          Singleton<ReadableDeployment, ManageableDeployment>();
          Singleton<ManageableDeployment>(GetLocalDeployment);
          Singleton<HatchlingSpawnerServiceImpl>();

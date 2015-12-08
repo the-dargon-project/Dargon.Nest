@@ -14,6 +14,7 @@ using System;
 using System.IO;
 using System.Threading;
 using Dargon.Nest.Daemon;
+using Dargon.Nest.Eggs;
 
 namespace dev_egg_runner {
    public class Options {
@@ -81,7 +82,7 @@ namespace dev_egg_runner {
                SpawnEgg(pofSerializer, exeggutor, options);
                break;
             case "kill-nest": 
-               exeggutor.KillHatchlings();
+               exeggutor.KillAllHatchlings(ShutdownReason.None);
                nestDaemon.KillDaemon();
                break;
          }
